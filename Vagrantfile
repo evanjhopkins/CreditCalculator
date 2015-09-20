@@ -16,6 +16,7 @@ Vagrant.configure(2) do |config|
 #######################################  
  ## Box and OS #####NEEDED#####
   config.vm.box = "hashicorp/precise64"
+  #config.vm.box = "parallels/ubuntu-14.04"
 
 #######################################  
   # Disable automatic box update checking. If you disable this, then
@@ -40,6 +41,7 @@ Vagrant.configure(2) do |config|
 #######################################
  ## Connecting Dir from Host(computer) to Guest(VM)
   config.vm.synced_folder "~/CreditCalculator", "/var/www"
+ # config.vm.synced_folder "C:\Users\brad", "/var/www", type: "nfs"
 
 #######################################
  ## Setting up the VM "hardware"   
