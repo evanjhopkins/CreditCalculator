@@ -42,6 +42,7 @@ Vagrant.configure(2) do |config|
  ## Connecting Dir from Host(computer) to Guest(VM)
   config.vm.synced_folder "~/CreditCalculator", "/var/www"
  # config.vm.synced_folder "C:\Users\brad", "/var/www", type: "nfs"
+ # config.vm.synced_folder "~/Documents/School/Capping/Shared", "/var/www"
 
 #######################################
  ## Setting up the VM "hardware"   
