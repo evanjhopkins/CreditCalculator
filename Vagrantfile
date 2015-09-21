@@ -15,8 +15,9 @@ Vagrant.configure(2) do |config|
 
 #######################################  
  ## Box and OS #####NEEDED#####
-  config.vm.box = "hashicorp/precise64"
-  #config.vm.box = "parallels/ubuntu-14.04"
+ # config.vm.box = "hashicorp/precise64"
+  config.vm.box = "precise64" 
+  config.vm.box_url = "http:// files.vagrantup.com/ precise64. box"
 
 #######################################  
   # Disable automatic box update checking. If you disable this, then
