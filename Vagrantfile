@@ -78,7 +78,14 @@ Vagrant.configure(2) do |config|
      sudo apt-get install -y vim
      # install python package
      sudo apt-get install -y python
-   SHELL
+     # debconf allows us to have more control over shell commands 
+     apt-get install debconf-utils -y > /dev/null
+     # use debconf to preset the mysql root pass for the mysql install
+     debconf-set-selections <<< "mysql-server mysql-server/root_password password bbemt"
+     debconf-set-selections <<< "mysql-server mysql-server/root_password_again password bbemt"
+     # install mysql client + server packages
+     apt-get install mysql-server -y > /dev/null
+  SHELL
 
 #######################################   
  ## End of File, this end connect back to the top command
