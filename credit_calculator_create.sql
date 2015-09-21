@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `admissions_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admissions_user` (
   `user_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `admissions_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -71,7 +72,7 @@ DROP TABLE IF EXISTS `completed_course`;
 CREATE TABLE `completed_course` (
   `transfer_id` int(11) unsigned NOT NULL,
   `course_id` int(11) unsigned NOT NULL,
-  KEY `transfer_id` (`transfer_id`),
+  PRIMARY KEY (`transfer_id`,`course_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `transfer_id` FOREIGN KEY (`transfer_id`) REFERENCES `transfer_user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -126,7 +127,7 @@ CREATE TABLE `course_mapping` (
   `local_course_id` int(11) unsigned NOT NULL,
   `foreign_course_id` int(11) unsigned NOT NULL,
   `program_id` int(11) unsigned NOT NULL,
-  KEY `local_course_id` (`local_course_id`),
+  PRIMARY KEY (`local_course_id`,`foreign_course_id`,`program_id`),
   KEY `foreign_course_id` (`foreign_course_id`),
   KEY `program_id` (`program_id`),
   CONSTRAINT `foreign_course_id` FOREIGN KEY (`foreign_course_id`) REFERENCES `course` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -202,6 +203,7 @@ DROP TABLE IF EXISTS `transfer_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transfer_user` (
   `user_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `transfer_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -254,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-20 19:45:27
+-- Dump completed on 2015-09-20 20:20:00
