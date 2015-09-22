@@ -23,3 +23,8 @@ Calculates the amount of credits that will transfer from DCCC to Marist College
  - To nicely stop the VM "vagrant halt"
  - If your VM gets messed up run "vagrant destroy" to obliterate your VM and run
    "vagrant up" to create a fresh new one
+
+## Tools & Extensions
+ - [Foundation](http://foundation.zurb.com/)
+ - [Selectize.js](https://brianreavis.github.io/selectize.js/)
+ - [Jquery](https://code.jquery.com/)
