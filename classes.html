@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/local.css" />
+    <link rel="stylesheet" href="css/classes.css" />
+    <link rel="stylesheet" href="css/selectize.css" />
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/standalone/selectize.js"></script>
+  </head>
+  <body>
+
+    <div class="content">
+        <select id="select-class">
+          <!-- value will corespond with UID for classes in database -->
+          <option value="">What classes have you taken?</option>
+          <option value="CMPT302">[CMPT302] Centering in CSS </option> 
+          <option value="CMPT100">[CMPT100] Swing UI Development</option> 
+          <option value="BUS101">[BUS101] Introduction to Business</option> 
+          <option value="MAT208">[MAT208] Statistics I</option> 
+          <option value="MAT209">[MAT209] Statistics II</option> 
+        </select>
+
+        <ul class="classes">
+        </ul>
+    </div>
+
+    <script>
+      $('#select-class').selectize();
+      // triggered when a class is selected
+      $( "#select-class" ).change(function() {
+        // get info of class selected
+        var class_id = $('#select-class').val();
+        var class_title = $( "#select-class option:selected" ).text();
+        if (class_id != ""){
+          // remove class from class select dropdown
+          $('#select-class')[0].selectize.removeOption(class_id);
+          // add class to list of added classes
+          $('.classes').append('<li class="class"><span class="class-title">'+class_title+'</span><div class="remove">x</div></li>');
+        }
+
+        // triggered when a class is removed from the added classes list
+        $(".class").click(function() {
+          // remove class from added classes
+          $(this).remove();
+          var class_title = $(this).context.children[0].innerText;
+          // add class back into dropdown
+          //$('#select-class')[0].selectize.addOption({value:Math.random(),text:class_title});
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+.classes{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+.class{
+	width: 100%;
+	border: 1px solid #D6D6D6;
+	border-radius: 15px;
+	height: 50px;
+	line-height: 50px;
+	margin-top: 5px;
+}
+.class .class-title{
+	color: #373B40;
+	margin-left: 20px;
+	font-size: 25px;
+}
+.class .remove{
+	float: right;
+	color: #F37C6C;
+	font-size: 40px;
+	margin-right: 10px;
+}
+.class .remove:hover{
+	cursor: pointer;
+	color: #D75E53;
+}
