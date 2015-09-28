@@ -19,10 +19,17 @@
 .class .remove{
 	float: right;
 	color: #F37C6C;
-	font-size: 40px;
-	margin-right: 10px;
+	font-size: 30px;
+	width: 50px;
+	height: 100%;
+	line-height: 50px;
+	display: none;
+	text-align: center;
 }
 .class .remove:hover{
 	cursor: pointer;
 	color: #D75E53;
+}
+.class:hover .remove{
+	display: block;
 }
