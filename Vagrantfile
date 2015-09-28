@@ -15,9 +15,9 @@ Vagrant.configure(2) do |config|
 
 #######################################  
  ## Box and OS #####NEEDED#####
- # config.vm.box = "hashicorp/precise64"
-  config.vm.box = "precise64" 
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "hashicorp/precise64"
+ # config.vm.box = "precise64" 
+ # config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
 #######################################  
   # Disable automatic box update checking. If you disable this, then
@@ -42,8 +42,7 @@ Vagrant.configure(2) do |config|
 #######################################
  ## Connecting Dir from Host(computer) to Guest(VM)
   config.vm.synced_folder "~/CreditCalculator", "/var/www"
- # config.vm.synced_folder "C:\Users\brad", "/var/www", type: "nfs"
- # config.vm.synced_folder "~/Documents/School/Capping/Shared", "/var/www"
+ # config.vm.synced_folder ".", "/var/www", type: "nfs"
 
 #######################################
  ## Setting up the VM "hardware"   
