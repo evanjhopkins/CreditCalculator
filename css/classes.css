@@ -33,3 +33,6 @@
 .class:hover .remove{
 	display: block;
 }
+.selectize-input{
+	height: 35px;
+}

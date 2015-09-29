@@ -9,9 +9,16 @@
     <script src="js/vendor/jquery.js"></script>
     <script src="js/standalone/selectize.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
   </head>
   <body>
+    <!--  modal will be hidden by default, triggered via JS-->
+    <div class="modal-bg">
+      <div class="modal">
+    
+      </div>
+    </div>
 
     <div class="content">
         <select id="select-class">
@@ -22,35 +29,59 @@
           <option value="BUS101">[BUS101] Introduction to Business</option> 
           <option value="MAT208">[MAT208] Statistics I</option> 
           <option value="MAT209">[MAT209] Statistics II</option> 
+          <option value="not-found">Request a class for approval</option> 
         </select>
 
         <ul class="classes">
         </ul>
     </div>
+  </body>
 
-    <script>
+      <script>
       $('#select-class').selectize();
+
       // triggered when a class is selected
       $( "#select-class" ).change(function() {
         // get info of class selected
         var class_id = $('#select-class').val();
         var class_title = $( "#select-class option:selected" ).text();
-        if (class_id != ""){
+
+        //special case where we need to present the modal for requesting a new class
+        if (class_id == "not-found"){
+          // present modal
+          $(".modal-bg").fadeIn();
+          // reset dropdown
+          $('#select-class')[0].selectize.clear();
+        }else if (class_id != ""){
           // remove class from class select dropdown
-          $('#select-class')[0].selectize.removeOption(class_id);
+          // works but disabled for testing
+          //$('#select-class')[0].selectize.removeOption(class_id);
+
           // add class to list of added classes
           $('.classes').append('<li class="class"><span class="class-title">'+class_title+'</span><i class="remove fa fa-trash-o"></i></li>');
+          // reset dropdown
+          $('#select-class')[0].selectize.clear();
         }
 
         // triggered when a class is removed from the added classes list
         $(".class").click(function() {
           // remove class from added classes
-          $(this).remove();
+          $(this).slideUp();
           var class_title = $(this).context.children[0].innerText;
-          // add class back into dropdown
-          //$('#select-class')[0].selectize.addOption({value:Math.random(),text:class_title});
+          // TODO: add class back into dropdown
         });
       });
+      
+      // if background is clicked while modal is up, exit
+      $(".modal-bg").click(function(){
+        // hide modal
+        $(".modal-bg").fadeOut();
+      });
+
+      // we need to have a second listener for the inner div to stop propagation when its clicked
+      //     singce its on top of .modal-bg
+      $(".modal").click(function(e){
+        e.stopPropagation();
+      });
     </script>
-  </body>
 </html>

@@ -1,9 +1,30 @@
 body {
     margin: 0;
     width: 100%;
+    font-family: 'Open Sans', sans-serif;
 }
 .content{
-	  margin: 0 auto;
-	margin-top: 75px;
+	left: 20%;
+	top: 0px;
+	margin: 0 auto;
+	margin-top: 200px;
 	width: 60%;
+	position: absolute;
+}
+.modal-bg{
+	position: absolute;
+	background-color: rgba(0,0,0,0.5);
+	width: 100%;
+	height: 100%;
+	display: none;
+	z-index: 10;
+}
+.modal{
+	margin-top: 100px;
+	background-color: #ffffff;
+	width: 60%;
+	min-height: 200px;
+	opacity: 1;
+	margin-left: 20%;
+	border-radius: 15px;
 }
