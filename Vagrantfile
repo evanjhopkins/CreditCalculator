@@ -27,7 +27,10 @@ Vagrant.configure(2) do |config|
 
 #######################################  
  ## Forwarding/Mapping ports from Guest(VM) to Host(computer)
+  # Connecting apache port 80 from guest to port 8080 of host
   config.vm.network "forwarded_port", guest: 80, host: 8080
+  # Connecting flask port 5000 from guest to port 80 of host
+  config.vm.network "forwarded_port", guest: 5000, host: 80
 
 #######################################
   # Create a private network, which allows host-only access to the machine
