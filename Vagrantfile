@@ -27,10 +27,8 @@ Vagrant.configure(2) do |config|
 
 #######################################  
  ## Forwarding/Mapping ports from Guest(VM) to Host(computer)
-  # Connecting apache port 80 from guest to port 8080 of host
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  # Connecting flask port 5000 from guest to port 80 of host
-  config.vm.network "forwarded_port", guest: 5000, host: 80
+  # Connecting flask port 5000 from guest to port 8080 of host
+  config.vm.network "forwarded_port", guest: 5000, host: 8080
 
 #######################################
   # Create a private network, which allows host-only access to the machine
@@ -44,7 +42,7 @@ Vagrant.configure(2) do |config|
 
 #######################################
  ## Connecting Dir from Host(computer) to Guest(VM)
-  config.vm.synced_folder "~/CreditCalculator", "/var/www"
+  config.vm.synced_folder "~/CreditCalculator", "/home/vagrant/CreditCalculator"
   #config.vm.synced_folder ".", "/var/www", type: "nfs"
 
 #######################################
@@ -74,8 +72,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
      # Updating
      sudo apt-get update
-     # install apache 2
-     sudo apt-get install -y apache2
      # install vim text editor
      sudo apt-get install -y vim
      # install python package
