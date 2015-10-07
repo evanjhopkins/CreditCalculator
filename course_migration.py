@@ -4,6 +4,9 @@ Sept. 17 2105
 BBEMT Capping Team
 '''
 import csv
+import MySQLdb
+
+db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
 
 def isSubjectValid(course_name):
 	if (any(char.isdigit() for char in course_name) ):
@@ -33,7 +36,9 @@ with open('courses.csv', 'rb') as f:
         courses.append(new_course)
 
 valids = 0
+cur = db.cursor()
 for course in courses:
+	
 	valid = True
 	errors = ""
 
@@ -46,7 +51,9 @@ for course in courses:
 
 	# if all validations passed...
 	if (valid):
-		# insert query would be done here
+		stmt = """INSERT INTO classes (title) VALUES ('%s')""" % course['foreign_course_title']
+		cur.execute(stmt)
+		db.commit()
 		valids = valids + 1
 
 	# alert user of courses that failed validation (and thus were not added) so they can be added manually
