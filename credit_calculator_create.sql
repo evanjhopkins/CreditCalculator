@@ -18,6 +18,9 @@
 --
 -- Table structure for table `admissions_user`
 --
+DROP DATABASE IF EXISTS creditcalc;
+CREATE DATABASE creditcalc;
+USE creditcalc;
 
 DROP TABLE IF EXISTS `admissions_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
