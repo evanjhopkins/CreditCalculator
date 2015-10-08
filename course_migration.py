@@ -51,7 +51,7 @@ for course in courses:
 
 	# if all validations passed...
 	if (valid):
-		stmt = """INSERT INTO classes (title) VALUES ('%s')""" % course['foreign_course_title']
+		stmt = """INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', '%s', '%s')""" % (course['foreign_course_title'], course['foreign_couse_subject'], course['foreign_course_number'], 1 )
 		cur.execute(stmt)
 		db.commit()
 		valids = valids + 1
