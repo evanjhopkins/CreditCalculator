@@ -14,8 +14,8 @@
         <select id="select-school">
           <!-- these will be pulled from api, but i have static values until then -->
           <option value="">Where do you currently attend college?</option>
-          {% for college in data['colleges'] %}
-             <option value="{{college['id']}}">{{college['name']}}</option> 
+          {% for college in data.content.colleges %}
+             <option value="{{college.id}}">{{college.name}}</option> 
           {% endfor %}
         </select>
       </div>
