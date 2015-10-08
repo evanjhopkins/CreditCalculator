@@ -24,12 +24,9 @@
         <select id="select-class">
           <!-- value will corespond with UID for classes in database -->
           <option value="">What classes have you taken?</option>
-          <option value="CMPT302">[CMPT302] Centering in CSS </option> 
-          <option value="CMPT100">[CMPT100] Swing UI Development</option> 
-          <option value="BUS101">[BUS101] Introduction to Business</option> 
-          <option value="MAT208">[MAT208] Statistics I</option> 
-          <option value="MAT209">[MAT209] Statistics II</option> 
-          <option value="not-found">Request a class for approval</option> 
+          {% for class in data['classes'] %}
+             <option value="{{ loop.index }}">[{{ class['subject'] }}{{ class['number'] }}]  {{ class['title'] }}</option> 
+          {% endfor %}
         </select>
 
         <ul class="classes">
