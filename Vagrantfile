@@ -43,7 +43,7 @@ Vagrant.configure(2) do |config|
 
 #######################################
  ## Connecting Dir from Host(computer) to Guest(VM)
-  config.vm.synced_folder "~/CreditCalculator", "/home/vagrant/CreditCalculator"
+  config.vm.synced_folder "../CreditCalculator", "/home/vagrant/CreditCalculator"
   #config.vm.synced_folder ".", "/var/www", type: "nfs"
 
 #######################################
@@ -83,9 +83,12 @@ Vagrant.configure(2) do |config|
      debconf-set-selections <<< "mysql-server mysql-server/root_password password bbemt"
      debconf-set-selections <<< "mysql-server mysql-server/root_password_again password bbemt"
      # install mysql client + server packages
-     apt-get install mysql-server -y > /dev/null 
+     apt-get install mysql-server -y > /dev/null
+     sudo apt-get install -y python-dev libmysqlclient-dev
      # install pip
      sudo apt-get install -y python-pip
+     # install mysql for python
+     pip install MySQL-python
      # install Flask
      pip install Flask
      # install Flask Session for server side connection
