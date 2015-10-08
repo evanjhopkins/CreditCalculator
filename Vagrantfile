@@ -88,6 +88,8 @@ Vagrant.configure(2) do |config|
      sudo apt-get install -y python-pip
      # install Flask
      pip install Flask
+     # install Flask Session for server side connection
+     pip install Flask-Session
      # create and populate database
      mysql -u root -pbbemt < /home/vagrant/CreditCalculator/credit_calculator_create.sql
      mysql -u root -pbbemt creditcalc < /home/vagrant/CreditCalculator/build_db.sql
