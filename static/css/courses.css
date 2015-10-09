@@ -1,9 +1,9 @@
-.classes{
+.courses{
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
-.class{
+.course{
 	width: 100%;
 	border: 1px solid #D6D6D6;
 	border-radius: 15px;
@@ -11,12 +11,12 @@
 	line-height: 50px;
 	margin-top: 5px;
 }
-.class .class-title{
+.course .course-title{
 	color: #373B40;
 	margin-left: 20px;
 	font-size: 25px;
 }
-.class .remove{
+.course .remove{
 	float: right;
 	color: #F37C6C;
 	font-size: 30px;
@@ -26,11 +26,11 @@
 	display: none;
 	text-align: center;
 }
-.class .remove:hover{
+.course .remove:hover{
 	cursor: pointer;
 	color: #D75E53;
 }
-.class:hover .remove{
+.course:hover .remove{
 	display: block;
 }
 .selectize-input{

@@ -15,15 +15,15 @@ def index():
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
-@app.route('/classes')
+@app.route('/courses')
 def classes():
-	response = api_classes(None)
+	response = api_course(None)
 	response_obj = json.loads(response)
-	return render_template('classes.html', data=response_obj)
+	return render_template('courses.html', data=response_obj)
 
 @app.route('/api/course/', defaults={'course_id':None})
 @app.route('/api/course/<int:course_id>')
-def api_classes(course_id):
+def api_course(course_id):
 
 	# statement depends on if were looking for one class, or all classes
 	if (course_id):
@@ -31,11 +31,11 @@ def api_classes(course_id):
 	else:
 		results = query("SELECT * FROM course")
 
-	classes = []
+	courses = []
 	for row in results:
-		classes.append( { 'id':row[0], 'title':re.sub(r'[^\x00-\x7F]','', row[1]), 'subject':row[2], 'number':row[3]} )
+		courses.append( { 'id':row[0], 'title':re.sub(r'[^\x00-\x7F]','', row[1]), 'subject':row[2], 'number':row[3]} )
 
-	return prepare_for_departure(content={'classes':classes})
+	return prepare_for_departure(content={'courses':courses})
 
 @app.route('/api/college')
 def api_school():
