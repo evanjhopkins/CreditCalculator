@@ -4,6 +4,7 @@ import MySQLdb
 import json
 import urllib2
 import re
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -22,56 +23,37 @@ def classes():
 @app.route('/api/course/get', defaults={'course_id':None})
 @app.route('/api/course/get/<int:course_id>')
 def api_classes(course_id):
-	db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
-	cur = db.cursor()
 
 	# statement depends on if were looking for one class, or all classes
 	if (course_id):
-		stmt = "SELECT * FROM course WHERE id="+str(course_id)
+		results = query("SELECT * FROM course WHERE id="+str(course_id))
 	else:
-		stmt = "SELECT * FROM course "
+		results = query("SELECT * FROM course")
 
 	classes = []
-	try:
-		cur.execute(stmt)
-		results = cur.fetchall()
-		for row in results:
-			class_id = row[0]
-			class_title = re.sub(r'[^\x00-\x7F]','', row[1])
-			class_subject = row[2]
-			class_number = row[3]
-			classes.append( { 'id':class_id, 'title':class_title, 'subject':class_subject, 'number':class_number} )
-	except:
-		print "/api/couse/get request failed"
-		return {}
+	for row in results:
+		classes.append( { 'id':row[0], 'title':re.sub(r'[^\x00-\x7F]','', row[1]), 'subject':row[2], 'number':row[3]} )
 
-	# if no results were found
-	if (len(classes) < 1):
-		return json.dumps(prepare_for_departure({}, [warn("No results found")]), ensure_ascii=False)
-	# if fetching single class
-	if (len(classes) == 1):
-		return json.dumps(prepare_for_departure(classes[0]), ensure_ascii=False)
-	# else, must be multiple classes
 	return json.dumps(prepare_for_departure({'classes':classes}), ensure_ascii=False)
 
 @app.route('/api/college/get')
 def api_school():
-	db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
-	cur = db.cursor()
-	stmt = "SELECT * FROM college"
 	colleges = []
-	try:
-		cur.execute(stmt)
-		results = cur.fetchall()
-		for row in results:
-			college_id = row[0]
-			college_name = row[1]
-			colleges.append({'id':college_id, 'name':college_name})
-	except:
-		test = "/api/college/get request failed"
-		return {}
+	results = query("SELECT * FROM college")
+	for row in results:
+		colleges.append({'id':row[0], 'name':row[1]})
 
 	return json.dumps(prepare_for_departure({'colleges':colleges}) , ensure_ascii=False)
+
+def query(stmt):
+	try:
+		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
+		cur = db.cursor()
+		cur.execute(stmt)
+		results = cur.fetchall()
+		return results
+	except:
+		print "!! query failed"
 
 def warn(msg):
 	return {'level':1, 'msg':msg}
