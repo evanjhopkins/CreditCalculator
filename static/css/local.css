@@ -28,3 +28,20 @@ body {
 	margin-left: 20%;
 	border-radius: 15px;
 }
+.alert{
+	padding-left: 10%;
+	padding-right: 10%;
+	width: 80%;
+	min-height: 30px;
+	line-height: 30px;
+}
+.error{
+	background-color: #F1DEDE;
+	color: #A54540;
+	border: 1px solid #E9CCD1;
+}
+.warn{
+	background-color: #FCF8E1;
+	color: #896D32;
+	border: 1px solid #FAEBC8;
+}

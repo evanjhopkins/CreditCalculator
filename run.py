@@ -56,14 +56,14 @@ def query(stmt):
 		print "!! query failed"
 
 def warn(msg):
-	return {'level':1, 'msg':msg}
+	return {'level':'warn', 'msg':msg}
 def error(msg):
-	return {'level':0, 'msg':msg}
+	return {'level':'error', 'msg':msg}
 
 # content: dictionary ex: {'classes':[{'id':1}, {'id':2}]}
-# errors:  array      ex: [{'level':1, 'msg':'a warning occured!'}, {'level':0, 'msg':'a severe error has occured!'}] 
-def prepare_for_departure(content, errors=[]):
-	return_obj = {'content':content, 'errors':errors }
+# alerts:  array      ex: [{'level':1, 'msg':'a warning occured!'}, {'level':0, 'msg':'a severe error has occured!'}] 
+def prepare_for_departure(content, alerts=[]):
+	return_obj = {'content':content, 'alerts':alerts }
 	return return_obj
 
 if __name__ == '__main__':

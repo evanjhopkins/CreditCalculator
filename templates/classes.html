@@ -20,6 +20,14 @@
       </div>
     </div>
 
+    {% if data.alerts|length > 0 %}
+        {% for alert in data.alerts %}
+          <div class="alert {{alert.level}}">
+            <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
+          </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="content">
         <select id="select-class">
           <!-- value will corespond with UID for classes in database -->

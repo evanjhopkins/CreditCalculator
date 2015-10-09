@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
   </head>
   <body>
+    {% if data.alerts|length > 0 %}
+        {% for alert in data.alerts %}
+          <div class="alert {{alert.level}}">
+            <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
+          </div>
+        {% endfor %}
+    {% endif %}
 
     <div class="content">
         <select id="select-school">
