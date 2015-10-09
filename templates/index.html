@@ -10,13 +10,11 @@
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
   </head>
   <body>
-    {% if data.alerts|length > 0 %}
-        {% for alert in data.alerts %}
-          <div class="alert {{alert.level}}">
-            <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
-          </div>
-        {% endfor %}
-    {% endif %}
+    {% for alert in data.alerts %}
+      <div class="alert {{alert.level}}">
+        <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
+      </div>
+    {% endfor %}
 
     <div class="content">
         <select id="select-school">
