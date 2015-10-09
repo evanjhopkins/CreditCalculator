@@ -20,8 +20,8 @@ def classes():
 	response_obj = json.loads(response)
 	return render_template('classes.html', data=response_obj)
 
-@app.route('/api/course/get', defaults={'course_id':None})
-@app.route('/api/course/get/<int:course_id>')
+@app.route('/api/course/', defaults={'course_id':None})
+@app.route('/api/course/<int:course_id>')
 def api_classes(course_id):
 
 	# statement depends on if were looking for one class, or all classes
@@ -36,7 +36,7 @@ def api_classes(course_id):
 
 	return json.dumps(prepare_for_departure({'classes':classes}), ensure_ascii=False)
 
-@app.route('/api/college/get')
+@app.route('/api/college')
 def api_school():
 	colleges = []
 	results = query("SELECT * FROM college")
