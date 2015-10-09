@@ -33,6 +33,7 @@
           {% for class in data.content.classes %}
              <option value="{{ loop.index }}">[{{ class.subject }}{{ class.number }}]  {{ class.title }}</option> 
           {% endfor %}
+          <option value="not-found">Request to add class</option>
         </select>
 
         <ul class="classes">
