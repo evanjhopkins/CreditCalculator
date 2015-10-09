@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask import request
 import MySQLdb
 import json
 import urllib2
@@ -36,6 +37,20 @@ def api_course(course_id):
 
 	return json.dumps(prepare_for_departure({'courses':courses}), ensure_ascii=False)
 
+@app.route('/api/course/new', methods=['POST'])
+def api_course_new():
+	post_body = request.data
+	post_body_obj = json.loads(post_body)
+
+	course_title = post_body_obj[course][title]
+	course_subject = post_body_obj[course][subject]
+	course_number = post_body_obj[course][course_number]
+	course_college_id = post_body_obj.[course].[college_id]
+
+	query("INSERT INTO course (title, subject, course_number, college_id) VALUES (%s, %s, %s, %i)" % (course_title, course_subject, course_number, course_college_id))
+	prepare_for_departure(status=true)
+
+
 @app.route('/api/college')
 def api_school():
 	colleges = []
@@ -51,6 +66,7 @@ def query(stmt):
 		cur = db.cursor()
 		cur.execute(stmt)
 		results = cur.fetchall()
+		b.commit()
 		return results
 	except:
 		print "!! query failed"
