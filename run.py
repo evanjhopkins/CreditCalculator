@@ -42,13 +42,13 @@ def api_course_new():
 	post_body = request.data
 	post_body_obj = json.loads(post_body)
 
-	course_title = post_body_obj[course][title]
-	course_subject = post_body_obj[course][subject]
-	course_number = post_body_obj[course][course_number]
-	course_college_id = post_body_obj.[course].[college_id]
+	course_name = post_body_obj['course']['name']
+	course_subject = post_body_obj['course']['subject']
+	course_number = post_body_obj['course']['course_number']
+	course_college_id = post_body_obj['course']['college_id']
 
-	query("INSERT INTO course (title, subject, course_number, college_id) VALUES (%s, %s, %s, %i)" % (course_title, course_subject, course_number, course_college_id))
-	prepare_for_departure(status=true)
+	query("INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', %s, %s)" % (course_name, course_subject, course_number, course_college_id))
+	prepare_for_departure(success=True)
 
 
 @app.route('/api/college')
