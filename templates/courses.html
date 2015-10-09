@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/classes.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
     <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
@@ -27,52 +27,52 @@
     {% endfor %}
 
     <div class="content">
-        <select id="select-class">
-          <!-- value will corespond with UID for classes in database -->
-          <option value="">What classes have you taken?</option>
-          {% for class in data.content.classes %}
-             <option value="{{ loop.index }}">[{{ class.subject }}{{ class.number }}]  {{ class.title }}</option> 
+        <select id="select-course">
+          <!-- value will corespond with UID for courses in database -->
+          <option value="">What courses have you taken?</option>
+          {% for course in data.content.courses %}
+             <option value="{{ loop.index }}">[{{ course.subject }}{{ course.number }}]  {{ course.title }}</option> 
           {% endfor %}
-          <option value="not-found">Request to add class</option>
+          <option value="not-found">Request to add course</option>
         </select>
 
-        <ul class="classes">
+        <ul class="courses">
         </ul>
     </div>
   </body>
 
       <script>
-      $('#select-class').selectize();
+      $('#select-course').selectize();
 
       // triggered when a class is selected
-      $( "#select-class" ).change(function() {
+      $( "#select-course" ).change(function() {
         // get info of class selected
-        var class_id = $('#select-class').val();
-        var class_title = $( "#select-class option:selected" ).text();
+        var course_id = $('#select-course').val();
+        var course_title = $( "#select-course option:selected" ).text();
 
         //special case where we need to present the modal for requesting a new class
-        if (class_id == "not-found"){
+        if (course_id == "not-found"){
           // present modal
           $(".modal-bg").fadeIn();
           // reset dropdown
-          $('#select-class')[0].selectize.clear();
-        }else if (class_id != ""){
-          // remove class from class select dropdown
+          $('#select-course')[0].selectize.clear();
+        }else if (course_id != ""){
+          // remove course from course select dropdown
           // works but disabled for testing
-          //$('#select-class')[0].selectize.removeOption(class_id);
+          //$('#select-course')[0].selectize.removeOption(course_id);
 
-          // add class to list of added classes
-          $('.classes').append('<li class="class"><span class="class-title">'+class_title+'</span><i class="remove fa fa-trash-o"></i></li>');
+          // add course to list of added courses
+          $('.courses').append('<li class="course"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');
           // reset dropdown
-          $('#select-class')[0].selectize.clear();
+          $('#select-course')[0].selectize.clear();
         }
 
-        // triggered when a class is removed from the added classes list
-        $(".class").click(function() {
-          // remove class from added classes
+        // triggered when a course is removed from the added classes list
+        $(".course").click(function() {
+          // remove course from added courses
           $(this).slideUp();
-          var class_title = $(this).context.children[0].innerText;
-          // TODO: add class back into dropdown
+          var course_title = $(this).context.children[0].innerText;
+          // TODO: add course back into dropdown
         });
       });
       
