@@ -84,6 +84,15 @@ def api_user_new():
 
 	return prepare_for_departure(success=True)	
 
+@app.route('/api/user/<int:user_id>/courses')
+def api_user_courses(user_id):
+	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % user_id)
+	courses = []
+	for course in result:
+		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
+		
+	return prepare_for_departure(content={'courses':courses})
+
 def query(stmt):
 	try:
 		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
