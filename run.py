@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+import hashlib
 import MySQLdb
 import json
 import urllib2
@@ -11,7 +12,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/index')
 def index():
-	response = api_school()
+	response = api_college()
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
@@ -20,6 +21,11 @@ def classes():
 	response = api_course(None)
 	response_obj = json.loads(response)
 	return render_template('courses.html', data=response_obj)
+
+@app.route('/user/new')
+def user_new():
+	response_obj = {}
+	return render_template('user_new.html', data=response_obj)
 
 @app.route('/api/course/', defaults={'course_id':None})
 @app.route('/api/course/<int:course_id>')
@@ -52,7 +58,7 @@ def api_course_new():
 
 
 @app.route('/api/college')
-def api_school():
+def api_college():
 	colleges = []
 	results = query("SELECT * FROM college")
 	for row in results:
@@ -63,12 +69,18 @@ def api_school():
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
 	post_body = request.data
-	post_body_obj = json.loads(post_body)
+	print str(request.form)
+	try:#invalid json will cause a crash
+		post_body_obj = json.loads(post_body)
+	except:
+		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
 	user = post_body_obj['user']
+	hashed_pass = md5(user['password_hash'])
 
 	query("""INSERT INTO user (first_name, last_name, email, password_hash, college_id) 
 		     VALUES('%s', '%s', '%s', '%s', %s)""" %
-		     (user['first_name'], user['last_name'], user['email'], user['password_hash'], user['college_id']))
+		     (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
 
 	return prepare_for_departure(success=True)	
 
@@ -93,6 +105,12 @@ def error(msg):
 def prepare_for_departure(content={}, alerts=[], success=True):
 	return_obj = {'content':content, 'alerts':alerts, 'success':success}
 	return json.dumps(return_obj, ensure_ascii=False)	
+
+def md5(password):
+	salt = "oi87f0987n1efnp9fs8d7bf9a8df"
+	salted = salt + password
+	hash = hashlib.md5(salted).hexdigest()
+	return hash
 
 if __name__ == '__main__':
 	app.run("0.0.0.0", debug=True)
