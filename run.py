@@ -107,6 +107,20 @@ def api_user_courses_add(user_id):
 
 	return prepare_for_departure(success=True)
 
+@app.route('/api/user/<int:user_id>/courses/remove', methods=['POST'])
+def api_user_courses_remove(user_id):
+	post_body = request.data
+
+	try:#invalid json will cause a crash
+		post_body_obj = json.loads(post_body)
+	except:
+		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
+	for course in post_body_obj['courses']:
+		query("DELETE FROM completed_course WHERE transfer_id=%s AND course_id=%s" % (user_id, course['course_id']))
+
+	return prepare_for_departure(success=True)
+
 def query(stmt):
 	try:
 		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
