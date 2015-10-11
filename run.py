@@ -102,8 +102,6 @@ def api_user_courses_add(user_id):
 	except:
 		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
 
-	user_id = post_body_obj['user_id']
-
 	for course in post_body_obj['courses']:
 		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (user_id, course['course_id']))
 
