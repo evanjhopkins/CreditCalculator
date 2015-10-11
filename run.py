@@ -69,7 +69,7 @@ def api_college():
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
 	post_body = request.data
-	print str(request.form)
+
 	try:#invalid json will cause a crash
 		post_body_obj = json.loads(post_body)
 	except:
@@ -90,8 +90,24 @@ def api_user_courses(user_id):
 	courses = []
 	for course in result:
 		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
-		
+
 	return prepare_for_departure(content={'courses':courses})
+
+@app.route('/api/user/<int:user_id>/courses/add', methods=['POST'])
+def api_user_courses_add(user_id):
+	post_body = request.data
+
+	try:#invalid json will cause a crash
+		post_body_obj = json.loads(post_body)
+	except:
+		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
+	user_id = post_body_obj['user_id']
+
+	for course in post_body_obj['courses']:
+		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (user_id, course['course_id']))
+
+	return prepare_for_departure(success=True)
 
 def query(stmt):
 	try:
