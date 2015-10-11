@@ -2,14 +2,28 @@ body {
     margin: 0;
     width: 100%;
     font-family: 'Open Sans', sans-serif;
+    background-color: #A54540;
 }
 .content{
-	left: 20%;
-	top: 0px;
+	padding: 0 5% 0 5%;
 	margin: 0 auto;
-	margin-top: 200px;
 	width: 60%;
-	position: absolute;
+	min-height: 600px;
+	background-color: #FCF8E1;
+}
+.top{
+	padding: 25px 0 25px 0;
+	text-align: center;
+}
+.title{
+	font-weight: 900;
+	font-size: 50px;
+	color: #A54540;
+}
+.sub_title{
+	font-weight: 100;
+	font-size: 40px;
+	color: #5F5F5F;
 }
 .modal-bg{
 	position: absolute;
@@ -44,4 +58,10 @@ body {
 	background-color: #FCF8E1;
 	color: #896D32;
 	border: 1px solid #FAEBC8;
+}
+hr{ 
+	border-color: #5F5F5F;
+	background-color: #5F5F5F;
+	color: #5F5F5F;
+	margin: 20px 0 20px 0;
 }

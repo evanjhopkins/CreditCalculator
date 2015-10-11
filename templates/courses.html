@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
     <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
@@ -27,6 +28,11 @@
     {% endfor %}
 
     <div class="content">
+      <div class="top">
+        <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
+        <hr noshade>
+      </div>
+
         <select id="select-course">
           <!-- value will corespond with UID for courses in database -->
           <option value="">What courses have you taken?</option>
