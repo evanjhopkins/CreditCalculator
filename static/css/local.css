@@ -11,6 +11,24 @@ body {
 	min-height: 600px;
 	background-color: #FCF8E1;
 }
+.nav{
+	text-align: center;
+	width: 100%;
+	margin-bottom: 15px;
+}
+.nav a{
+	color: #A54540;
+	text-decoration: none;
+}
+.nav a:hover{
+	color: #CE5A52;
+}
+.step_done{
+	color: #A54540;
+}
+.step{
+	color: #A19EA3;
+}
 .top{
 	padding: 25px 0 25px 0;
 	text-align: center;
@@ -63,5 +81,5 @@ hr{
 	border-color: #5F5F5F;
 	background-color: #5F5F5F;
 	color: #5F5F5F;
-	margin: 20px 0 20px 0;
+	margin: 20px 0 0 0;
 }

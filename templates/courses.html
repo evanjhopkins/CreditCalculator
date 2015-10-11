@@ -11,6 +11,7 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
   </head>
   <body>
@@ -32,6 +33,10 @@
         <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
         <hr noshade>
       </div>
+      <div class="nav">
+      <span class="step_done"><a href="/">College</a></span>
+      <span class="step"><span class="current_step"> > Classes</span> > Majors > Minors > Save</span>
+      </div>
 
         <select id="select-course">
           <!-- value will corespond with UID for courses in database -->
@@ -48,6 +53,9 @@
   </body>
 
       <script>
+      $(document).ready(function(){
+        $(".current_step").animate({ color: "#A54540" }, 1000);
+      });
       $('#select-course').selectize();
 
       // triggered when a class is selected
