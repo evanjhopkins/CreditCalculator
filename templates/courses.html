@@ -16,9 +16,15 @@
   </head>
   <body>
     <!--  modal will be hidden by default, triggered via JS-->
-    <div class="modal-bg">
+    <div class="request_course modal-bg">
       <div class="modal">
     
+      </div>
+    </div>
+
+    <div class="login modal-bg">
+      <div class="modal">
+      Login
       </div>
     </div>
 
@@ -30,7 +36,10 @@
 
     <div class="content">
       <div class="top">
+       <div class="login_btn">Log In</div>
+      <div class="header">
         <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
+      </div>
         <hr noshade>
       </div>
       <div class="nav">
@@ -67,7 +76,7 @@
         //special case where we need to present the modal for requesting a new class
         if (course_id == "not-found"){
           // present modal
-          $(".modal-bg").fadeIn();
+          $(".request_course").fadeIn();
           // reset dropdown
           $('#select-course')[0].selectize.clear();
         }else if (course_id != ""){
@@ -88,6 +97,10 @@
           var course_title = $(this).context.children[0].innerText;
           // TODO: add course back into dropdown
         });
+      });
+
+      $(".login_btn").click(function(){
+        $(".login").fadeIn();
       });
       
       // if background is clicked while modal is up, exit

@@ -11,6 +11,12 @@
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
   </head>
   <body>
+    <div class="login modal-bg">
+      <div class="modal">
+      Login
+      </div>
+    </div>
+
     {% for alert in data.alerts %}
       <div class="alert {{alert.level}}">
         <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
@@ -20,7 +26,10 @@
     <div class="content">
 
         <div class="top">
-          <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
+          <div class="login_btn">Log In</div>
+          <div class="header">
+            <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
+          </div>
           <hr noshade>
         </div>
          <div class="nav">
@@ -41,6 +50,22 @@
       $( "#select-school" ).change(function() {
         //this function is triggered when a school is selected
         window.location.href = 'courses';
+      });
+
+      $(".login_btn").click(function(){
+        $(".login").fadeIn();
+      });
+      
+      // if background is clicked while modal is up, exit
+      $(".modal-bg").click(function(){
+        // hide modal
+        $(".modal-bg").fadeOut();
+      });
+
+      // we need to have a second listener for the inner div to stop propagation when its clicked
+      //     singce its on top of .modal-bg
+      $(".modal").click(function(e){
+        e.stopPropagation();
       });
     </script>
   </body>
