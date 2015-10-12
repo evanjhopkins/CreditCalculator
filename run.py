@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import render_template
-from flask import request
+from flask import Flask, render_template, request, session
 import hashlib
 import MySQLdb
 import json
@@ -8,7 +6,10 @@ import urllib2
 import re
 
 app = Flask(__name__)
-
+app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
+#############
+#  Web App  #
+#############
 @app.route('/')
 @app.route('/index')
 def index():
@@ -27,6 +28,14 @@ def user_new():
 	response_obj = {}
 	return render_template('user_new.html', data=response_obj)
 
+@app.route('/user/login')
+def user_login():
+	response_obj = {}
+	return render_template('user_login.html', data=response_obj)
+
+#########
+#  API  #
+#########
 @app.route('/api/course/', defaults={'course_id':None})
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
@@ -120,6 +129,42 @@ def api_user_courses_remove(user_id):
 		query("DELETE FROM completed_course WHERE transfer_id=%s AND course_id=%s" % (user_id, course['course_id']))
 
 	return prepare_for_departure(success=True)
+
+@app.route('/api/user/login', methods=['POST'])
+def api_login():
+	post_body_obj = getData()
+	
+	#return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
+	results = query("SELECT * FROM user WHERE email='%s'" % post_body_obj['email'])
+	if (not results):
+		return prepare_for_departure(alerts=[error("Invalid login credentials")], success=False)
+
+	pass_on_record = results[0][4]
+	pass_attempt = md5(str(post_body_obj['password']))
+
+	try:
+		session['attempts'] += 1
+	except:
+		session['attempts'] = 1
+
+	if(pass_on_record==pass_attempt):
+		session['email'] = results[0][3]
+		session['college_id'] = results[0][5]
+		return prepare_for_departure(success=True)
+	else:
+		return prepare_for_departure(content={"attempts":session['attempts']}, alerts=[warn("Invalid login credentials")], success=False)
+
+def getData():
+	obj = request.form
+	if(not request.form):
+		try:
+			obj = json.loads(request.data)
+		except:
+			obj = {}
+	print obj
+	return obj
+
 
 def query(stmt):
 	try:
