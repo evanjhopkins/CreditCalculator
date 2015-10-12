@@ -37,6 +37,11 @@ body {
 	-webkit-transition:.25s;
 	transition:.25s;
 }
+.user{
+	position: absolute;
+	right: 20%;
+	color: #A19EA3;
+}
 .login_btn:hover, .login_btn:focus{
 	color: #646464;
 	cursor: pointer;
@@ -85,7 +90,7 @@ body {
 	padding-left: 10%;
 	padding-right: 10%;
 	width: 80%;
-	min-height: 30px;
+	/*min-height: 30px;*/
 	line-height: 30px;
 }
 .error{

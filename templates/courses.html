@@ -22,9 +22,16 @@
       </div>
     </div>
 
-    <div class="login modal-bg">
+     <div class="login modal-bg">
       <div class="modal">
-      Login
+      <div class="alert error">
+        </i> <span class=" alert-error alert_message"></span>
+      </div>
+      <form class="login-form" action="/api/user/login" method="POST">
+        <input type="text" name="email" />
+        <input type="password" name="password" />
+        <button class="login">Login</button>
+      </form>
       </div>
     </div>
 
@@ -36,7 +43,11 @@
 
     <div class="content">
       <div class="top">
-       <div class="login_btn">Log In</div>
+      {% if session['email'] is none %}
+      <div class="login_btn">Log In</div>
+      {% else %}
+      <div class="user">{{session['email']}}</div>
+      {% endif %}
       <div class="header">
         <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
       </div>
@@ -113,6 +124,20 @@
       //     singce its on top of .modal-bg
       $(".modal").click(function(e){
         e.stopPropagation();
+      });
+
+      $(".login").click(function(e){
+        e.preventDefault();
+        var data = $('.login-form').serializeArray();
+        $.post( "/api/user/login", data)
+        .done(function( data ) {
+          data = JSON.parse(data);
+          if(data.success == true){
+            location.reload();
+          }else{
+            $(".alert-error").text(data.alerts[0].msg);
+          }
+        });
       });
     </script>
 </html>
