@@ -29,7 +29,8 @@ body {
 	color: #CE5A52;
 }
 .login_btn{
-	float: right;
+	position: absolute;
+	right: 20%;
 	color:  #A54540;
 	-o-transition:.25s;
 	-ms-transition:.25s;

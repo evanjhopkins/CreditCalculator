@@ -43,10 +43,10 @@
 
     <div class="content">
       <div class="top">
-      {% if session['email'] is none %}
-      <div class="login_btn">Log In</div>
+      {% if not session['email'] %}
+        <div class="login_btn">Log In</div>
       {% else %}
-      <div class="user">{{session['email']}}</div>
+        <div class="user">{{session['email']}}</div>
       {% endif %}
       <div class="header">
         <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
