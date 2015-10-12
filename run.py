@@ -1,10 +1,16 @@
 from flask import Flask, render_template, request, session
+import logging
+from logging.handlers import RotatingFileHandler
 import hashlib
 import MySQLdb
 import json
 import urllib2
 import re
 
+#boolean for logging level
+#  true = debug
+#  false = info
+debug= False
 app = Flask(__name__)
 app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
 #############
@@ -13,18 +19,21 @@ app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
 @app.route('/')
 @app.route('/index')
 def index():
+	app.logger.info('/index')
 	response = api_college()
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
 @app.route('/courses')
 def classes():
+	app.logger.info('/courses')
 	response = api_course(None)
 	response_obj = json.loads(response)
 	return render_template('courses.html', data=response_obj)
 
 @app.route('/user/new')
 def user_new():
+	app.logger.info('/user/new')
 	response_obj = {}
 	return render_template('user_new.html', data=response_obj)
 
@@ -39,6 +48,7 @@ def user_login():
 @app.route('/api/course/', defaults={'course_id':None})
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
+	app.logger.info('/api/course/')
 
 	# statement depends on if were looking for one class, or all classes
 	if (course_id):
@@ -54,6 +64,8 @@ def api_course(course_id):
 
 @app.route('/api/course/new', methods=['POST'])
 def api_course_new():
+	app.logger.info('/api/course/new')
+
 	post_body = request.data
 	post_body_obj = json.loads(post_body)
 
@@ -68,6 +80,8 @@ def api_course_new():
 
 @app.route('/api/college')
 def api_college():
+	app.logger.info('/api/college')
+
 	colleges = []
 	results = query("SELECT * FROM college")
 	for row in results:
@@ -77,6 +91,7 @@ def api_college():
 
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
+	app.logger.info('/api/user/new')
 	post_body = request.data
 
 	try:#invalid json will cause a crash
@@ -88,13 +103,14 @@ def api_user_new():
 	hashed_pass = md5(user['password_hash'])
 
 	query("""INSERT INTO user (first_name, last_name, email, password_hash, college_id) 
-		     VALUES('%s', '%s', '%s', '%s', %s)""" %
-		     (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
+			 VALUES('%s', '%s', '%s', '%s', %s)""" %
+			 (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
 
 	return prepare_for_departure(success=True)	
 
 @app.route('/api/user/<int:user_id>/courses')
 def api_user_courses(user_id):
+	app.logger.info('/api/user/<int:user_id>/courses')
 	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % user_id)
 	courses = []
 	for course in result:
@@ -104,6 +120,7 @@ def api_user_courses(user_id):
 
 @app.route('/api/user/<int:user_id>/courses/add', methods=['POST'])
 def api_user_courses_add(user_id):
+	app.logger.info('/api/user/<int:user_id>/courses/add')
 	post_body = request.data
 
 	try:#invalid json will cause a crash
@@ -118,6 +135,7 @@ def api_user_courses_add(user_id):
 
 @app.route('/api/user/<int:user_id>/courses/remove', methods=['POST'])
 def api_user_courses_remove(user_id):
+	app.logger.info('/api/user/<int:user_id>/courses/remove')
 	post_body = request.data
 
 	try:#invalid json will cause a crash
@@ -199,4 +217,10 @@ def md5(password):
 	return hash
 
 if __name__ == '__main__':
+
+	handler = RotatingFileHandler('temp.log',maxBytes=10*1024*1024,backupCount=2)
+	if(debug):
+		handler.setLevel(logging.DEBUG)
+	else:
+		handler.setLevel(logging.INFO)
 	app.run("0.0.0.0", debug=True)
