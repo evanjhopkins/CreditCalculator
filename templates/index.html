@@ -11,18 +11,6 @@
     <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
   </head>
   <body>
-    <div class="login modal-bg">
-      <div class="modal">
-      <div class="alert error">
-        </i> <span class=" alert-error alert_message"></span>
-      </div>
-      <form class="login-form" action="/api/user/login" method="POST">
-        <input type="text" name="email" />
-        <input type="password" name="password" />
-        <button class="login-submit">Login</button>
-      </form>
-      </div>
-    </div>
 
     {% for alert in data.alerts %}
       <div class="alert {{alert.level}}">
@@ -34,7 +22,11 @@
 
         <div class="top">
           {% if not session['email'] %}
-            <div class="login_btn">Log In</div>
+            <form class="login-form" action="/api/user/login" method="POST">
+              <input type="text" name="email" placeholder="email..."/>
+              <input type="password" name="password" placeholder="password..." />
+              <span class="login-submit">Log In</span>
+            </form>
           {% else %}
             <div class="user">{{session['email']}}</div>
           {% endif %}
@@ -63,10 +55,6 @@
         window.location.href = 'courses';
       });
 
-      $(".login_btn").click(function(){
-        $(".login").fadeIn();
-      });
-      
       // if background is clicked while modal is up, exit
       $(".modal-bg").click(function(){
         // hide modal

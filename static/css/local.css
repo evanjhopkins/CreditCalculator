@@ -28,23 +28,27 @@ body {
 .nav a:hover{
 	color: #CE5A52;
 }
-.login_btn{
-	position: absolute;
-	right: 20%;
-	color:  #A54540;
+.login-submit{
+	font-size: 13px;
+	color:  #646464;
 	-o-transition:.25s;
 	-ms-transition:.25s;
 	-moz-transition:.25s;
 	-webkit-transition:.25s;
 	transition:.25s;
 }
+.login-form{
+	float: right;
+	position: absolute;
+	right: 20%;
+}
 .user{
 	position: absolute;
 	right: 20%;
 	color: #A19EA3;
 }
-.login_btn:hover, .login_btn:focus{
-	color: #646464;
+.login-submit:hover, .login-submit:focus{
+	color: #A54540;
 	cursor: pointer;
 }
 .step_done{
@@ -79,10 +83,10 @@ body {
 	z-index: 10;
 }
 .modal{
+	padding: 2%;
 	margin-top: 100px;
 	background-color: #ffffff;
 	width: 60%;
-	min-height: 200px;
 	opacity: 1;
 	margin-left: 20%;
 	border-radius: 15px;
@@ -109,4 +113,17 @@ hr{
 	background-color: #5F5F5F;
 	color: #5F5F5F;
 	margin: 20px 0 0 0;
+}
+input[type=text], input[type=password] {
+	background-color: #FCF8DF;
+	color: #A1463E	;
+	border: 0;
+	margin-left:1px;
+	box-shadow: -8px 10px 0px -7px #ebebeb, 8px 10px 0px -7px #ebebeb;
+	-webkit-transition: box-shadow 0.3s;
+	transition: box-shadow 0.3s;
+}
+input[type=text]:focus, input[type=password]:focus {
+  outline: none;
+  box-shadow: -8px 10px 0px -7px #4EA6EA, 8px 10px 0px -7px #4EA6EA;
 }
