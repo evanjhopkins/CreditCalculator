@@ -28,7 +28,7 @@
               <span class="login-submit">Log In</span>
             </form>
           {% else %}
-            <div class="user">{{session['email']}}</div>
+            <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
           {% endif %}
           <div class="header">
             <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
@@ -78,6 +78,12 @@
           }else{
             $(".alert-error").text(data.alerts[0].msg+" ("+data.content.attempts+")");
           }
+        });
+      });
+
+      $(".logout").click(function(){
+        $.get( "/api/user/logout", function( data ) {
+          location.reload();
         });
       });
     </script>

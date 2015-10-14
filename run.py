@@ -77,7 +77,6 @@ def api_course_new():
 	query("INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', %s, %s)" % (course_name, course_subject, course_number, course_college_id))
 	prepare_for_departure(success=True)
 
-
 @app.route('/api/college')
 def api_college():
 	app.logger.info('/api/college')
@@ -155,7 +154,7 @@ def api_login():
 	except:
 		session['attempts'] = 1
 
-	post_body_obj = getData()
+	post_body_obj = request_data()
 	
 	results = query("SELECT * FROM user WHERE email='%s'" % post_body_obj['email'])
 
@@ -178,7 +177,7 @@ def api_logout():
 	session.clear()
 	return prepare_for_departure(success=True)
 
-def getData():
+def request_data():
 	obj = request.form
 	if(not request.form):
 		try:
