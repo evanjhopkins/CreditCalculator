@@ -46,6 +46,11 @@ body {
 	position: absolute;
 	right: 20%;
 }
+.login-error{
+	font-size: 10px;
+	font-style: italic;
+	color: #A1463E;
+}
 .user{
 	font-size: 13px;
 	position: absolute;
