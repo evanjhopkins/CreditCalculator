@@ -35,10 +35,11 @@
        <i class="fa fa-long-arrow-right"></i> Classes 
        <i class="fa fa-long-arrow-right"></i> Majors 
        <i class="fa fa-long-arrow-right"></i> Minors 
-       <i class="fa fa-long-arrow-right"></i> Save</span>
+       <i class="fa fa-long-arrow-right"></i> Save
+       </span>
       </div>
 
-        <select id="select-school">
+        <select id="select-school" class="selectize-dimensions">
           <!-- these will be pulled from api, but i have static values until then -->
           <option value="">Where do you currently attend college?</option>
           {% for college in data.content.colleges %}
