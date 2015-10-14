@@ -19,7 +19,7 @@
       <form class="login-form" action="/api/user/login" method="POST">
         <input type="text" name="email" />
         <input type="password" name="password" />
-        <button class="login">Login</button>
+        <button class="login-submit">Login</button>
       </form>
       </div>
     </div>
@@ -79,7 +79,7 @@
         e.stopPropagation();
       });
 
-      $(".login").click(function(e){
+      $(".login-submit").click(function(e){
         e.preventDefault();
         var data = $('.login-form').serializeArray();
         $.post( "/api/user/login", data)
@@ -88,7 +88,7 @@
           if(data.success == true){
             location.reload();
           }else{
-            $(".alert-error").text(data.alerts[0].msg);
+            $(".alert-error").text(data.alerts[0].msg+" ("+data.content.attempts+")");
           }
         });
       });
