@@ -88,11 +88,14 @@ def api_college():
 
 	return prepare_for_departure(content={'colleges':colleges})
 
-@app.route('/api/user/<int:user_id>/college/<int:college_id>')
-def api_user_college(user_id, college_id):
+#api v.02
+@app.route('/api/user/college/<int:college_id>')
+def api_user_setcollege(college_id):
+	if (hasSession()):
+		query("UPDATE user SET college_id=%s WHERE id=%s" % (college_id, session['user_id']))
+
 	session['college_id'] = college_id
-	print "College Changed to: "+str(session['college_id'])
-	return "College Changed to: "+str(session['college_id'])
+	return prepare_for_departure(success=True)
 
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
@@ -193,6 +196,10 @@ def request_data():
 			obj = {}
 	return obj
 
+def hasSession():
+	if ('user_id' in session):
+		return True
+	return False
 
 def query(stmt):
 	try:

@@ -65,7 +65,7 @@
       //on selection of college
       $( "#select-school" ).change(function() {
         //update session with college selection
-        $.get("/api/user/{{session['user_id']}}/college/"+$('#select-school').val(), function( data ) {
+        $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
           window.location.href = 'courses';
         });
       });
