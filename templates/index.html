@@ -65,9 +65,9 @@
       //on selection of college
       $( "#select-school" ).change(function() {
         //update session with college selection
-        $.get("/api/user/{{session['user_id']}}/college/"+$('#select-school').val());
-        //advance to courses page
-        window.location.href = 'courses';
+        $.get("/api/user/{{session['user_id']}}/college/"+$('#select-school').val(), function( data ) {
+          window.location.href = 'courses';
+        });
       });
 
       // if background is clicked while modal is up, exit
