@@ -65,7 +65,14 @@
         </select>
 
         <ul class="courses">
+        {% for course in session['courses'] %}
+          <li class="course" value="{{course['course_id']}}">
+            <span class="course-title">{{course['course_name']}}</span>
+            <i class="remove fa fa-trash-o"></i>
+          </li>
+        {% endfor %}
         </ul>
+        <button class="next_step">Next</button>
     </div>
   </body>
 
@@ -94,18 +101,47 @@
           //$('#select-course')[0].selectize.removeOption(course_id);
 
           // add course to list of added courses
-          $('.courses').append('<li class="course"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');
+          $('.courses').append('<li class="course" value="'+course_id+'"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');
           // reset dropdown
           $('#select-course')[0].selectize.clear();
         }
 
         // triggered when a course is removed from the added classes list
-        $(".course").click(function() {
+          $('.remove').click( function(){
           // remove course from added courses
-          $(this).slideUp();
-          var course_title = $(this).context.children[0].innerText;
-          // TODO: add course back into dropdown
+          $(this).parent().remove();
         });
+      });
+
+      $(".next_step").click(function(){
+        //build json obj of added courses
+        var courses = {};
+        courses["courses"] = [];
+        var course_id, course_name, course;
+        //build array of all courses
+        $.each( $(".courses")[0].children, function( key, value ) {
+          course_id = value.value;
+          course_name = value.getElementsByClassName("course-title")[0].textContent
+          course = {}
+          course["course_id"] = course_id;
+          course["course_name"] = course_name;
+          courses["courses"].push(course);
+        });
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/api/user/courses',
+            dataType : 'json',
+            data : JSON.stringify(courses),
+            success : function(result) {
+              //advance to next page
+            },error : function(result){
+               console.log(result);
+            }
+        });
+
+        //advance step
       });
       
       // if background is clicked while modal is up, exit

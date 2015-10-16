@@ -126,19 +126,21 @@ def api_user_courses(user_id):
 
 	return prepare_for_departure(content={'courses':courses})
 
-@app.route('/api/user/<int:user_id>/courses/add', methods=['POST'])
-def api_user_courses_add(user_id):
+#api v.02
+@app.route('/api/user/courses', methods=['POST'])
+def api_user_courses_add():
+
 	app.logger.info('/api/user/<int:user_id>/courses/add')
-	post_body = request.data
+	post_body_obj = request_data()
 
-	try:#invalid json will cause a crash
-		post_body_obj = json.loads(post_body)
-	except:
-		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+	session['courses'] = post_body_obj['courses']
 
-	for course in post_body_obj['courses']:
-		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (user_id, course['course_id']))
+	if (hasSession()):
+		query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
+		for course in post_body_obj['courses']:
+			query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course['course_id']))
 
+	session['courses'] = post_body_obj['courses']
 	return prepare_for_departure(success=True)
 
 @app.route('/api/user/<int:user_id>/courses/remove', methods=['POST'])
@@ -173,14 +175,21 @@ def api_login():
 	pass_on_record = results[0][4]
 	pass_attempt = md5(str(post_body_obj['password']))
 
-	if(pass_on_record==pass_attempt):
-		session['user_id'] = results[0][0]
-		session['email'] = results[0][3]
-		session['college_id'] = results[0][5]
-		session['attempts'] = 0
-		return prepare_for_departure(success=True)
-	else:
+	if(pass_on_record!=pass_attempt):
 		return prepare_for_departure(content={"attempts":session['attempts']}, alerts=[error("Invalid login credentials")], success=False)
+
+	session['user_id'] = results[0][0]
+	session['email'] = results[0][3]
+	session['college_id'] = results[0][5]
+	session['attempts'] = 0
+
+	course_results = query("SELECT completed_course.course_id, course.name FROM completed_course, course WHERE transfer_id=%s AND course.id = completed_course.course_id" % session['user_id'])
+	session['courses'] = []
+	for course in course_results:
+		session['courses'].append({'course_id': course[0], 'course_name': course[1]})
+
+	return prepare_for_departure(success=True)
+
 
 @app.route('/api/user/logout', methods=['POST', 'GET'])
 def api_logout():

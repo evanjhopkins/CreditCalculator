@@ -45,6 +45,7 @@
              <option value="{{college.id}}">{{college.name}}</option> 
           {% endfor %}
         </select>
+        <button class="next_step">Next</button>
       </div>
 
     <script>
@@ -62,8 +63,8 @@
       $('#select-school').removeClass("selectize-dimensions");
       $('#select-school').selectize();
 
-      //on selection of college
-      $( "#select-school" ).change(function() {
+      //on click of next step button
+      $( ".next_step" ).click(function() {
         //update session with college selection
         $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
           window.location.href = 'courses';

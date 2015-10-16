@@ -142,3 +142,6 @@ input[type=text]:focus, input[type=password]:focus {
 	background-color: #ffffff;
 	border-color: #D0D0D0;
 }
+.next_step{
+	float: right;
+}
