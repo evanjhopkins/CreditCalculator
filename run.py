@@ -88,6 +88,12 @@ def api_college():
 
 	return prepare_for_departure(content={'colleges':colleges})
 
+@app.route('/api/user/<int:user_id>/college/<int:college_id>')
+def api_user_college(user_id, college_id):
+	session['college_id'] = college_id
+	print "College Changed to: "+str(session['college_id'])
+	return "College Changed to: "+str(session['college_id'])
+
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
 	app.logger.info('/api/user/new')
@@ -165,6 +171,7 @@ def api_login():
 	pass_attempt = md5(str(post_body_obj['password']))
 
 	if(pass_on_record==pass_attempt):
+		session['user_id'] = results[0][0]
 		session['email'] = results[0][3]
 		session['college_id'] = results[0][5]
 		session['attempts'] = 0

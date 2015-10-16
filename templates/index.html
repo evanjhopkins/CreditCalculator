@@ -13,7 +13,6 @@
   <body>
 
     <div class="content">
-
         <div class="top">
           {% if not session['email'] %}
             <form class="login-form" action="/api/user/login" method="POST">
@@ -49,12 +48,25 @@
       </div>
 
     <script>
-        $('#select-school').removeClass("selectize-dimensions");
+      //check if a flask session exists
+      var flask_session = ("{{session['user_id']}}") ? true : false;
+      //initialize any session vars as js local vars
+      var college_id = "{{session['college_id']}}";
 
+      //if college was already set, prepopulate
+      if(college_id){
+        $('#select-school').val(college_id);
+      }
+
+      //initialize selectize
+      $('#select-school').removeClass("selectize-dimensions");
       $('#select-school').selectize();
 
+      //on selection of college
       $( "#select-school" ).change(function() {
-        //this function is triggered when a school is selected
+        //update session with college selection
+        $.get("/api/user/{{session['user_id']}}/college/"+$('#select-school').val());
+        //advance to courses page
         window.location.href = 'courses';
       });
 
