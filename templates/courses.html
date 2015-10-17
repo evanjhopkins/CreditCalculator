@@ -1,179 +1,77 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
-    <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+{% extends "frame.html" %}
 
-  </head>
-  <body>
-    <!--  modal will be hidden by default, triggered via JS-->
-    <div class="request_course modal-bg">
-      <div class="modal">
-    
-      </div>
-    </div>
+{% block imports %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
+{% endblock %}
 
-    {% for alert in data.alerts %}
-      <div class="alert {{alert.level}}">
-        <i class="fa fa-exclamation-circle"></i> <span class="alert_message">{{ alert.msg }}</span>
-      </div>
-    {% endfor %}
+{% block content %}
 
-    <div class="content">
-      <div class="top">
-      {% if not session['email'] %}
-      <form class="login-form" action="/api/user/login" method="POST">
-        <span class="login-error"></span>
-        <input type="text" name="email" placeholder="email..."/>
-        <input type="password" name="password" placeholder="password..." />
-        <span class="login-submit">Log In</span>
-      </form>
-      {% else %}
-        <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
-      {% endif %}
-      <div class="header">
-        <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
-      </div>
-        <hr noshade>
-      </div>
-      <div class="nav">
-      <span class="step_done"><a href="/">College</a></span>
-      <span class="step">
-       <span class="current_step"><i class="fa fa-long-arrow-right"></i> Classes </span>
-       <i class="fa fa-long-arrow-right"></i> Majors 
-       <i class="fa fa-long-arrow-right"></i> Minors 
-       <i class="fa fa-long-arrow-right"></i> Save
-       </span>
-      </div>
+<select id="select-course" class="selectize-dimensions">
+  <!-- value will corespond with UID for courses in database -->
+  <option value="">What courses have you taken?</option>
+  {% for course in data.content.courses %}
+    <option value="{{ loop.index }}">[{{ course.subject }}{{ course.number }}]  {{ course.title }}</option> 
+  {% endfor %}
+  <option value="not-found">Request to add course</option>
+</select>
 
-        <select id="select-course" class="selectize-dimensions">
-          <!-- value will corespond with UID for courses in database -->
-          <option value="">What courses have you taken?</option>
-          {% for course in data.content.courses %}
-             <option value="{{ loop.index }}">[{{ course.subject }}{{ course.number }}]  {{ course.title }}</option> 
-          {% endfor %}
-          <option value="not-found">Request to add course</option>
-        </select>
+<ul class="courses">
+  {% for course in session['courses'] %}
+    <li class="course" value="{{course['course_id']}}">
+      <span class="course-title">{{course['course_name']}}</span>
+      <i class="remove fa fa-trash-o"></i>
+    </li>
+  {% endfor %}
+</ul>
+<button class="next_step">Next</button>
+{% endblock %}
 
-        <ul class="courses">
-        {% for course in session['courses'] %}
-          <li class="course" value="{{course['course_id']}}">
-            <span class="course-title">{{course['course_name']}}</span>
-            <i class="remove fa fa-trash-o"></i>
-          </li>
-        {% endfor %}
-        </ul>
-        <button class="next_step">Next</button>
-    </div>
-  </body>
+{% block script %}
+<script>
+  $(document).ready(function(){
+    $(".current_step").animate({ color: "#A54540" }, 1000);
+  });
 
-      <script>
-      $(document).ready(function(){
-        $(".current_step").animate({ color: "#A54540" }, 1000);
-      });
-      $('#select-course').removeClass("selectize-dimensions");
-      $('#select-course').selectize();
+  $('#select-course').removeClass("selectize-dimensions");
+  $('#select-course').selectize();
 
-      // triggered when a class is selected
-      $( "#select-course" ).change(function() {
-        // get info of class selected
-        var course_id = $('#select-course').val();
-        var course_title = $( "#select-course option:selected" ).text();
+  $( "#select-course" ).change(function() {
+    var course_id = $('#select-course').val();
+    var course_title = $( "#select-course option:selected" ).text();
 
-        //special case where we need to present the modal for requesting a new class
-        if (course_id == "not-found"){
-          // present modal
-          $(".request_course").fadeIn();
-          // reset dropdown
-          $('#select-course')[0].selectize.clear();
-        }else if (course_id != ""){
-          // remove course from course select dropdown
-          // works but disabled for testing
-          //$('#select-course')[0].selectize.removeOption(course_id);
+    if (course_id == "not-found"){//special case
+      $(".request_course").fadeIn();//show modal
+    }else if (course_id != ""){//general case
+      $('.courses').append('<li class="course" value="'+course_id+'"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');//display selected course in UI
+    }
+    $('#select-course')[0].selectize.clear();//reset selectize
+  });
 
-          // add course to list of added courses
-          $('.courses').append('<li class="course" value="'+course_id+'"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');
-          // reset dropdown
-          $('#select-course')[0].selectize.clear();
-        }
+  $('.remove').click( function(){ $(this).parent().remove(); });//when delete class is clicked
 
-        // triggered when a course is removed from the added classes list
-          $('.remove').click( function(){
-          // remove course from added courses
-          $(this).parent().remove();
-        });
-      });
+  $(".next_step").click(function(){
+    //build json obj of added courses
+    var courses = [];
+    var course_id, course_name;
+    //build array of all courses
+    $.each( $(".courses")[0].children, function( key, value ) {
+      course_id = value.value;
+      course_name = value.getElementsByClassName("course-title")[0].textContent
+      courses.push({"course_id":course_id, "course_name":course_name});
+    });
 
-      $(".next_step").click(function(){
-        //build json obj of added courses
-        var courses = {};
-        courses["courses"] = [];
-        var course_id, course_name, course;
-        //build array of all courses
-        $.each( $(".courses")[0].children, function( key, value ) {
-          course_id = value.value;
-          course_name = value.getElementsByClassName("course-title")[0].textContent
-          course = {}
-          course["course_id"] = course_id;
-          course["course_name"] = course_name;
-          courses["courses"].push(course);
-        });
-
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json',
-            url: '/api/user/courses',
-            dataType : 'json',
-            data : JSON.stringify(courses),
-            success : function(result) {
-              //advance to next page
-            },error : function(result){
-               console.log(result);
-            }
-        });
-
-        //advance step
-      });
-      
-      // if background is clicked while modal is up, exit
-      $(".modal-bg").click(function(){
-        // hide modal
-        $(".modal-bg").fadeOut();
-      });
-
-      // we need to have a second listener for the inner div to stop propagation when its clicked
-      //     singce its on top of .modal-bg
-      $(".modal").click(function(e){
-        e.stopPropagation();
-      });
-
-      $(".login-submit").click(function(e){
-        e.preventDefault();
-        var data = $('.login-form').serializeArray();
-        $.post( "/api/user/login", data)
-        .done(function( data ) {
-          data = JSON.parse(data);
-          if(data.success == true){
-            location.reload();
-          }else{
-            $(".login-error").text(data.alerts[0].msg);
-          }
-        });
-      });
-
-      $(".logout").click(function(){
-        $.get( "/api/user/logout", function( data ) {
-          location.reload();
-        });
-      });
-    </script>
-</html>
+    $.ajax({
+      type: 'POST',
+      contentType: 'application/json',
+      url: '/api/user/courses',
+      dataType : 'json',
+      data : JSON.stringify({"courses":courses}),
+      success : function(result) {
+        //advance to next page
+      },error : function(result){
+        console.log(result);
+      }
+    });
+  });
+</script>
+{% endblock %}
