@@ -57,11 +57,11 @@ body {
 	right: 20%;
 	color: #A19EA3;
 }
-.step_done{
-	color: #A54540;
-}
 .step{
 	color: #A19EA3;
+}
+.step:hover{
+	color: #A54540;
 }
 .top{
 	padding: 0 0 25px 0;

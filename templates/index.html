@@ -13,19 +13,20 @@
 
 {% block script %}
   <script>
-  var college_id = "{{session['college_id']}}";
+    if(isLoggedIn){ 
+      var college_id = "{{session['college_id']}}";
+      $('#select-school').val(college_id); 
+    }
 
-  if(college_id){ $('#select-school').val(college_id); }
+    $('#select-school').removeClass("selectize-dimensions");
+    $('#select-school').selectize();
 
-  $('#select-school').removeClass("selectize-dimensions");
-  $('#select-school').selectize();
-
-  $( ".next_step" ).click(function() {
-    $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
-      window.location.href = 'courses';
+    $( ".next_step" ).click(function() {
+      $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
+        window.location.href = 'courses';
+      });
     });
-  });
   </script>
-  
+
 {% endblock %}
 
