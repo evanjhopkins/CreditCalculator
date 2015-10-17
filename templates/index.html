@@ -13,10 +13,8 @@
 
 {% block script %}
   <script>
-    if(isLoggedIn){ 
-      var college_id = "{{session['college_id']}}";
-      $('#select-school').val(college_id); 
-    }
+    var college_id = "{{session['college_id']}}";
+    $('#select-school').val(college_id); 
 
     $('#select-school').removeClass("selectize-dimensions");
     $('#select-school').selectize();
