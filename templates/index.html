@@ -1,107 +1,31 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
-    <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/standalone/selectize.js') }}"></script>
-  </head>
-  <body>
+{% extends "frame.html" %}
 
-    <div class="content">
-        <div class="top">
-          {% if not session['email'] %}
-            <form class="login-form" action="/api/user/login" method="POST">
-             <span class="login-error"></span>
-              <input type="text" name="email" placeholder="email..."/>
-              <input type="password" name="password" placeholder="password..." />
-              <span class="login-submit">Log In</span>
-            </form>
-          {% else %}
-            <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
-          {% endif %}
-          <div class="header">
-            <span class="title">Marist</span> <span class="sub_title">Credit Calculator</span>
-          </div>
-          <hr noshade>
-        </div>
-         <div class="nav">
-      <span class="step_done">College</span><span class="step">
-       <i class="fa fa-long-arrow-right"></i> Classes 
-       <i class="fa fa-long-arrow-right"></i> Majors 
-       <i class="fa fa-long-arrow-right"></i> Minors 
-       <i class="fa fa-long-arrow-right"></i> Save
-       </span>
-      </div>
+{% block content %}
+  <select id="select-school" class="selectize-dimensions">
+    <!-- these will be pulled from api, but i have static values until then -->
+    <option value="">Where do you currently attend college?</option>
+    {% for college in data.content.colleges %}
+    <option value="{{college.id}}">{{college.name}}</option> 
+    {% endfor %}
+  </select>
+  <button class="next_step">Next</button>
+{% endblock %}
 
-        <select id="select-school" class="selectize-dimensions">
-          <!-- these will be pulled from api, but i have static values until then -->
-          <option value="">Where do you currently attend college?</option>
-          {% for college in data.content.colleges %}
-             <option value="{{college.id}}">{{college.name}}</option> 
-          {% endfor %}
-        </select>
-        <button class="next_step">Next</button>
-      </div>
+{% block script %}
+  <script>
+  var college_id = "{{session['college_id']}}";
 
-    <script>
-      //check if a flask session exists
-      var flask_session = ("{{session['user_id']}}") ? true : false;
-      //initialize any session vars as js local vars
-      var college_id = "{{session['college_id']}}";
+  if(college_id){ $('#select-school').val(college_id); }
 
-      //if college was already set, prepopulate
-      if(college_id){
-        $('#select-school').val(college_id);
-      }
+  $('#select-school').removeClass("selectize-dimensions");
+  $('#select-school').selectize();
 
-      //initialize selectize
-      $('#select-school').removeClass("selectize-dimensions");
-      $('#select-school').selectize();
+  $( ".next_step" ).click(function() {
+    $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
+      window.location.href = 'courses';
+    });
+  });
+  </script>
+  
+{% endblock %}
 
-      //on click of next step button
-      $( ".next_step" ).click(function() {
-        //update session with college selection
-        $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
-          window.location.href = 'courses';
-        });
-      });
-
-      // if background is clicked while modal is up, exit
-      $(".modal-bg").click(function(){
-        // hide modal
-        $(".modal-bg").fadeOut();
-      });
-
-      // we need to have a second listener for the inner div to stop propagation when its clicked
-      //     singce its on top of .modal-bg
-      $(".modal").click(function(e){
-        e.stopPropagation();
-      });
-
-      $(".login-submit").click(function(e){
-        e.preventDefault();
-        var data = $('.login-form').serializeArray();
-        $.post( "/api/user/login", data)
-        .done(function( data ) {
-          data = JSON.parse(data);
-          if(data.success == true){
-            location.reload();
-          }else{
-            $(".login-error").text(data.alerts[0].msg);
-          }
-        });
-      });
-
-      $(".logout").click(function(){
-        $.get( "/api/user/logout", function( data ) {
-          location.reload();
-        });
-      });
-    </script>
-  </body>
-</html>
