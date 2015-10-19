@@ -45,16 +45,19 @@ def user_login():
 #########
 #  API  #
 #########
-@app.route('/api/course/', defaults={'course_id':None})
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
+	results = query("SELECT * FROM course WHERE course.id=%s" % course_id)
+	course_obj = results[0]
+	course = {'course':{'course_id':course_obj[0], 'course_name':course_obj[1], 'course_subject':course_obj[2], 'course_number':course_obj[3]}}
+	return prepare_for_departure(content=course, success=True)
+
+@app.route('/api/college/<int:college_id>/course')
+def api_college_course(college_id):
 	app.logger.info('/api/course/')
 
 	# statement depends on if were looking for one class, or all classes
-	if (course_id):
-		results = query("SELECT * FROM course WHERE id="+str(course_id))
-	else:
-		results = query("SELECT * FROM course")
+	results = query("SELECT * FROM course WHERE course.college_id=%s" % college_id)
 
 	courses = []
 	for row in results:
