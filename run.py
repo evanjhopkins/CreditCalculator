@@ -95,6 +95,14 @@ def api_user_setcollege(college_id):
 		query("UPDATE user SET college_id=%s WHERE id=%s" % (college_id, session['user_id']))
 
 	session['college_id'] = college_id
+
+	#since the college has just changed, we need to update session with courses
+	#from the current college
+	course_results = query("SELECT completed_course.course_id, course.name FROM completed_course, course WHERE transfer_id=%s AND course.id = completed_course.course_id AND course.college_id=%s" % (session['user_id'], college_id))
+	session['courses'] = []
+	for course in course_results:
+		session['courses'].append({'course_id': course[0], 'course_name': course[1]})
+	print session['courses']
 	return prepare_for_departure(success=True)
 
 @app.route('/api/user/new',  methods=['POST'])
@@ -110,11 +118,11 @@ def api_user_new():
 	user = post_body_obj['user']
 	hashed_pass = md5(user['password_hash'])
 
-	query("""INSERT INTO user (first_name, last_name, email, password_hash, college_id) 
+	query("""INSERT INTO user (first_name, last_name, email, password_hash, college_id)
 			 VALUES('%s', '%s', '%s', '%s', %s)""" %
 			 (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
 
-	return prepare_for_departure(success=True)	
+	return prepare_for_departure(success=True)
 
 @app.route('/api/user/<int:user_id>/courses')
 def api_user_courses(user_id):
@@ -166,7 +174,7 @@ def api_login():
 		session['attempts'] = 1
 
 	post_body_obj = request_data()
-	
+
 	results = query("SELECT * FROM user WHERE email='%s'" % post_body_obj['email'])
 
 	if (not results):
@@ -227,10 +235,10 @@ def error(msg):
 	return {'level':'error', 'msg':msg}
 
 # content: dictionary ex: {'classes':[{'id':1}, {'id':2}]}
-# alerts:  array      ex: [{'level':1, 'msg':'a warning occured!'}, {'level':0, 'msg':'a severe error has occured!'}] 
+# alerts:  array      ex: [{'level':1, 'msg':'a warning occured!'}, {'level':0, 'msg':'a severe error has occured!'}]
 def prepare_for_departure(content={}, alerts=[], success=True):
 	return_obj = {'content':content, 'alerts':alerts, 'success':success}
-	return json.dumps(return_obj, ensure_ascii=False)	
+	return json.dumps(return_obj, ensure_ascii=False)
 
 def md5(password):
 	salt = "oi87f0987n1efnp9fs8d7bf9a8df"
