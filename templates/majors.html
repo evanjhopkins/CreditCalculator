@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block content %}
+  {% for major in data.majors | sort(attribute='percent', reverse=True) %}
+    <div class="major">
+      <div class="major_name">{{major.name}}</div>
+      <div class="percent_complete">{{major.percent}}%</div>
+    </div>
+  {% endfor %}
 {% endblock %}
 
 {% block script %}

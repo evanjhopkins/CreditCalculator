@@ -6,6 +6,8 @@ import MySQLdb
 import json
 import urllib2
 import re
+from random import randint
+
 
 #boolean for logging level
 #  true = debug
@@ -33,8 +35,13 @@ def classes():
 
 @app.route('/majors')
 def majors():
-	response_obj = {}
-	return render_template('majors.html', data="response_obj")
+	response_obj = {'majors':[
+		{'name':"Criminal Justice", 'percent':randint(0,99)},
+		{'name':"Criminal Justice", 'percent':randint(0,99)},
+		{'name':"Criminal Justice", 'percent':randint(0,99)},
+		{'name':"Criminal Justice", 'percent':randint(0,99)}
+	]}
+	return render_template('majors.html', data=response_obj)
 
 @app.route('/user/new')
 def user_new():

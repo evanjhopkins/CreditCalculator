@@ -1,0 +1,25 @@
+.major{
+  height: 300px;
+  width: 30%;
+  float: left;
+  margin-left: 3%;
+  margin-top: 3%;
+  border: 1px solid black;
+  font-weight: 300;
+}
+.major:hover{
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+
+.major_name{
+  margin-top: 1em;
+  font-size: 20px;
+  text-align: center;
+}
+.percent_complete{
+  margin-top: 1em;
+  font-size: 60px;
+  text-align: center;
+}

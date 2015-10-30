@@ -10,7 +10,7 @@
   <!-- value will corespond with UID for courses in database -->
   <option value="">What courses have you taken?</option>
   {% for course in data.content.courses %}
-    <option value="{{ loop.index }}">[{{ course.subject }}{{ course.number }}]  {{ course.title }}</option> 
+    <option value="{{ loop.index }}">[{{ course.subject }}{{ course.number }}]  {{ course.title }}</option>
   {% endfor %}
   <option value="not-found">Request to add course</option>
 </select>
@@ -67,7 +67,7 @@
       dataType : 'json',
       data : JSON.stringify({"courses":courses}),
       success : function(result) {
-        //advance to next page
+        window.location.href = 'majors';
       },error : function(result){
         console.log(result);
       }
