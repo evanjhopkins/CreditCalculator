@@ -27,7 +27,7 @@ def index():
 @app.route('/courses')
 def classes():
 	app.logger.info('/courses')
-	response = api_course(None)
+	response = api_college_course(session['college_id'])
 	response_obj = json.loads(response)
 	return render_template('courses.html', data=response_obj)
 
@@ -94,7 +94,7 @@ def api_college():
 #api v.02
 @app.route('/api/user/college/<int:college_id>')
 def api_user_setcollege(college_id):
-	if (hasSession()):
+	if (loggedIn()):
 		query("UPDATE user SET college_id=%s WHERE id=%s" % (college_id, session['user_id']))
 
 	session['college_id'] = college_id
@@ -147,7 +147,7 @@ def api_user_courses_add():
 
 	session['courses'] = post_body_obj['courses']
 
-	if (hasSession()):
+	if (loggedIn()):
 		query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
 		for course in post_body_obj['courses']:
 			query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course['course_id']))
@@ -217,7 +217,7 @@ def request_data():
 			obj = {}
 	return obj
 
-def hasSession():
+def loggedIn():
 	if ('user_id' in session):
 		return True
 	return False
