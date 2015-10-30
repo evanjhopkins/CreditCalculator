@@ -148,6 +148,16 @@ input[type=text]:focus, input[type=password]:focus {
 }
 .next_step{
 	float: right;
+	width: 60px;
+	height: 30px;
+	background-color: #4EA6EA;
+	border: none;
+	color: white;
+	margin-top: 10px;
+}
+.next_step:hover{
+	cursor: pointer;
+	background-color: #71b7ee;
 }
 .footer{
 	width: 60%;
