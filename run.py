@@ -101,11 +101,12 @@ def api_user_setcollege(college_id):
 
 	#since the college has just changed, we need to update session with courses
 	#from the current college
-	course_results = query("SELECT completed_course.course_id, course.name FROM completed_course, course WHERE transfer_id=%s AND course.id = completed_course.course_id AND course.college_id=%s" % (session['user_id'], college_id))
 	session['courses'] = []
-	for course in course_results:
-		session['courses'].append({'course_id': course[0], 'course_name': course[1]})
-	print session['courses']
+	if(hasSession()):
+		course_results = query("SELECT completed_course.course_id, course.name FROM completed_course, course WHERE transfer_id=%s AND course.id = completed_course.course_id AND course.college_id=%s" % (session['user_id'], college_id))
+		for course in course_results:
+			session['courses'].append({'course_id': course[0], 'course_name': course[1]})
+			
 	return prepare_for_departure(success=True)
 
 @app.route('/api/user/new',  methods=['POST'])
