@@ -29,9 +29,11 @@ def index():
 @app.route('/courses')
 def classes():
 	app.logger.info('/courses')
-	response = api_college_course(session['college_id'])
-	response_obj = json.loads(response)
-	return render_template('courses.html', data=response_obj)
+	if 'college_id' in session:#only try to get courses if user has selected a college
+		response = api_college_course(session['college_id'])
+		response_obj = json.loads(response)
+		return render_template('courses.html', data=response_obj)
+	return render_template('courses.html', data={'alert':"You must select a college before adding courses", 'content':{'courses':[]}})
 
 @app.route('/majors')
 def majors():

@@ -41,6 +41,10 @@
         </span>
       </div>
 
+      {% if data.alert %}
+        <div class="error">{{data.alert}}</div>
+      {% endif %}
+
       {% block content %}{% endblock %}
 
       <div class="footer">
