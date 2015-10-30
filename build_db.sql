@@ -50,7 +50,7 @@ CREATE TABLE `college` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,7 +59,7 @@ CREATE TABLE `college` (
 
 LOCK TABLES `college` WRITE;
 /*!40000 ALTER TABLE `college` DISABLE KEYS */;
-INSERT INTO `college` VALUES (1,'Dutchess County Community College');
+INSERT INTO `college` VALUES (1,'Dutchess County Community College'),(2,'Marist College');
 /*!40000 ALTER TABLE `college` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,6 +86,7 @@ CREATE TABLE `completed_course` (
 
 LOCK TABLES `completed_course` WRITE;
 /*!40000 ALTER TABLE `completed_course` DISABLE KEYS */;
+INSERT INTO `completed_course` VALUES (13,4),(1,5),(1,8),(1,55),(13,83),(13,414),(13,513);
 /*!40000 ALTER TABLE `completed_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,6 +218,7 @@ CREATE TABLE `transfer_user` (
 
 LOCK TABLES `transfer_user` WRITE;
 /*!40000 ALTER TABLE `transfer_user` DISABLE KEYS */;
+INSERT INTO `transfer_user` VALUES (1),(5),(13);
 /*!40000 ALTER TABLE `transfer_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +239,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `user_college_id` (`college_id`),
   CONSTRAINT `user_college_id` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,6 +248,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'tester','testington','test@test.com','7c9fb847d117531433435b68b61f91f6',1),(5,'Evan','Hopkins','moviemaker7@gmail.com','alpine',2),(6,'Evan','Hopkins','moviemaker7@gmail.com','alpine',1),(7,'Evan2','Hopkins','moviemaker72@gmail.com','alpine',1),(8,'Evan2','Hopkins','moviemaker72@gmail.com','43ee72e0063ae972277127f51d8759e8',1),(9,'d','d','d','cdafdcd49364011a10e1e446a9549aa6',1),(10,'d','d','d','cdafdcd49364011a10e1e446a9549aa6',1),(11,'d','d','d','cdafdcd49364011a10e1e446a9549aa6',1),(12,'d','d','d','cdafdcd49364011a10e1e446a9549aa6',1),(13,'evan','hopkins','evan.hopkins1@marist.edu','43ee72e0063ae972277127f51d8759e8',1),(14,'evan','hopkins','evan.hopkins1@marist.edu','43ee72e0063ae972277127f51d8759e8',1),(15,'evan','hopkins','evan.hopkins1@marist.edu','43ee72e0063ae972277127f51d8759e8',1),(16,'evan','hopkins','e@e.com','7c9fb847d117531433435b68b61f91f6',1),(17,'evan','hopkins','e@e.com','43ee72e0063ae972277127f51d8759e8',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +261,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-08  1:30:33
+-- Dump completed on 2015-10-30  1:24:22
