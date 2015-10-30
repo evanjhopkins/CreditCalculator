@@ -13,19 +13,19 @@ Vagrant.configure(2) do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
-#######################################  
+#######################################
  ## Box and OS #####NEEDED#####
   config.vm.box = "hashicorp/precise64"
- # config.vm.box = "precise64" 
+ # config.vm.box = "precise64"
  # config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
-#######################################  
+#######################################
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
 
-#######################################  
+#######################################
  ## Forwarding/Mapping ports from Guest(VM) to Host(computer)
   # Connecting flask port 5000 from guest to port 8080 of host
   config.vm.network "forwarded_port", guest: 5000, host: 5000
@@ -47,7 +47,7 @@ Vagrant.configure(2) do |config|
   #config.vm.synced_folder ".", "/var/www", type: "nfs"
 
 #######################################
- ## Setting up the VM "hardware"   
+ ## Setting up the VM "hardware"
   config.vm.provider "virtualbox" do |vb|
   # Amount of memory for the VM:
     vb.memory = "1024"
@@ -59,7 +59,7 @@ Vagrant.configure(2) do |config|
   #  vb.customize ["modifyhd", 05d56fa6-7abf-4fc8-8e52-6a2a94a59f83, "--resize", "30"]
   end
 
-#######################################  
+#######################################
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
   # https://docs.vagrantup.com/v2/push/atlas.html for more information.
@@ -67,7 +67,7 @@ Vagrant.configure(2) do |config|
   #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
   # end
 
-#######################################  
+#######################################
  ## Connecting to the VM shell at startup, the following commands are run as
   # script
   config.vm.provision "shell", inline: <<-SHELL
@@ -77,7 +77,7 @@ Vagrant.configure(2) do |config|
      sudo apt-get install -y vim
      # install python package
      sudo apt-get install -y python
-     # debconf allows us to have more control over shell commands 
+     # debconf allows us to have more control over shell commands
      apt-get install debconf-utils -y > /dev/null
      # use debconf to preset the mysql root pass for the mysql install
      debconf-set-selections <<< "mysql-server mysql-server/root_password password bbemt"
@@ -93,11 +93,13 @@ Vagrant.configure(2) do |config|
      pip install Flask
      # install Flask Session for server side connection
      pip install Flask-Sessions
+     # install requests for python
+     pip install requests
      # create and populate database
      mysql -u root -pbbemt < /home/vagrant/CreditCalculator/credit_calculator_create.sql
      mysql -u root -pbbemt creditcalc < /home/vagrant/CreditCalculator/build_db.sql
   SHELL
 
-#######################################   
+#######################################
  ## End of File, this end connect back to the top command
 end
