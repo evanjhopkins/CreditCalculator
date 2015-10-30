@@ -31,6 +31,11 @@ def classes():
 	response_obj = json.loads(response)
 	return render_template('courses.html', data=response_obj)
 
+@app.route('/majors')
+def majors():
+	response_obj = {}
+	return render_template('majors.html', data="response_obj")
+
 @app.route('/user/new')
 def user_new():
 	app.logger.info('/user/new')
