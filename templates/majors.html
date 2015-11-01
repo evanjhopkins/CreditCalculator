@@ -7,6 +7,7 @@
 {% block content %}
   {% for major in data.majors | sort(attribute='percent', reverse=True) %}
     <div class="major">
+      <i class="selected_major fa fa-check-circle-o"></i>
       <div class="major_name">{{major.name}}</div>
       <div class="percent_complete">{{major.percent}}%</div>
     </div>
@@ -14,4 +15,10 @@
 {% endblock %}
 
 {% block script %}
+<script>
+$(".major").click(function(){
+  $(this).find(".selected_major").toggle();
+
+});
+</script>
 {% endblock %}
