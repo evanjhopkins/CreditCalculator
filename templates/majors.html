@@ -5,20 +5,69 @@
 {% endblock %}
 
 {% block content %}
+  <div class="selected_majors">
+    Major(s): <span class="major_names"></span>
+    <span class="major_type"></span>
+  </div>
   {% for major in data.majors | sort(attribute='percent', reverse=True) %}
-    <div class="major">
+    <div class="major" id="{{major.id}}">
       <i class="selected_major fa fa-check-circle-o"></i>
       <div class="major_name">{{major.name}}</div>
       <div class="percent_complete">{{major.percent}}%</div>
     </div>
   {% endfor %}
+  <button class="next_step">Next</button><br><br>
 {% endblock %}
 
 {% block script %}
 <script>
+var selected = {};//holds the majors that are selected
 $(".major").click(function(){
   $(this).find(".selected_major").toggle();
+  var id = $(this)[0].id;
+  var name = $("#"+id+" .major_name").text();
 
+  //keep track of what majors are selected
+  if (id in selected){
+    delete selected[id];
+  }else{
+    selected[id] = name;
+
+  }
+
+  //if user selects more than 2 majors, denote double major
+  if(Object.keys(selected).length > 1){
+    $(".major_type").text("(Double Major)");
+  }else{
+    $(".major_type").text("");
+  }
+
+  //show the names of selected majors at the top of screen
+  $(".major_names").text("");
+  var str, i=0;
+  for(major in selected){
+    str = selected[major];
+    if(i > 0){
+      str = " + "+str;
+    }
+    $(".major_names").text($(".major_names").text()+str);
+    i++;
+  }
+
+});
+$(".next_step").click(function(){
+    window.location.href = 'minors';
+
+  // $.ajax({
+  //   type: 'POST',
+  //   contentType: 'application/json',
+  //   url: '/api/user/courses',
+  //   dataType : 'json',
+  //   data : JSON.stringify({"courses":courses}),
+  //   success : function(result) {
+  //   },error : function(result){
+  //   }
+  // });
 });
 </script>
 {% endblock %}

@@ -38,10 +38,9 @@ def classes():
 @app.route('/majors')
 def majors():
 	response_obj = {'majors':[
-		{'name':"Criminal Justice", 'percent':randint(0,99)},
-		{'name':"Criminal Justice", 'percent':randint(0,99)},
-		{'name':"Criminal Justice", 'percent':randint(0,99)},
-		{'name':"Criminal Justice", 'percent':randint(0,99)}
+		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
+		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
+		{'name':"Female Studies", 'percent':randint(0,99), 'id':3}
 	]}
 	return render_template('majors.html', data=response_obj)
 

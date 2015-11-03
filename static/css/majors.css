@@ -34,3 +34,11 @@
   right: 5px;
   top: 2px;
 }
+
+
+.selected_majors{
+  min-height: 25px;
+}
+.major_type{
+  color: #4EA6EA;
+}
