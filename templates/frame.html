@@ -40,10 +40,11 @@
         <a href=""><span class="step">Save</span></a>
         </span>
       </div>
-
+      <div class="errors">
       {% if data.alert %}
         <div class="error">{{data.alert}}</div>
       {% endif %}
+    </div>
 
       {% block content %}{% endblock %}
 

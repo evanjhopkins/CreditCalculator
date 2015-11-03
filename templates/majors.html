@@ -56,7 +56,12 @@ $(".major").click(function(){
 
 });
 $(".next_step").click(function(){
-    window.location.href = 'minors';
+  if(Object.keys(selected).length < 1){
+    //throw error message here
+    $(".errors").html("<div class='error'>Please select a major</div>");
+    return;
+  }
+  window.location.href = 'minors';
 
   // $.ajax({
   //   type: 'POST',
