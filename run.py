@@ -215,6 +215,16 @@ def api_login():
 
 	return prepare_for_departure(success=True)
 
+@app.route('/api/user/setmajor', methods=['POST'])
+def api_user_setmajor():
+	post_body_obj = request_data()
+
+	session['majors'] = post_body_obj['majors']
+	print "added majors to session"
+	if loggedIn():
+		print "added majors to account"
+
+	return prepare_for_departure(success=True)
 
 @app.route('/api/user/logout', methods=['POST', 'GET'])
 def api_logout():

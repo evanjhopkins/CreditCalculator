@@ -36,7 +36,9 @@ $(".major").click(function(){
   }
 
   //if user selects more than 2 majors, denote double major
-  if(Object.keys(selected).length > 1){
+  if(Object.keys(selected).length > 2){
+    $(".major_type").text("(Multi Major)");
+  }else if(Object.keys(selected).length > 1){
     $(".major_type").text("(Double Major)");
   }else{
     $(".major_type").text("");
@@ -61,18 +63,22 @@ $(".next_step").click(function(){
     $(".errors").html("<div class='error'>Please select a major</div>");
     return;
   }
-  window.location.href = 'minors';
+  console.log(Object.keys(selected));
 
-  // $.ajax({
-  //   type: 'POST',
-  //   contentType: 'application/json',
-  //   url: '/api/user/courses',
-  //   dataType : 'json',
-  //   data : JSON.stringify({"courses":courses}),
-  //   success : function(result) {
-  //   },error : function(result){
-  //   }
-  // });
+  //window.location.href = 'minors';
+
+  $.ajax({
+    type: 'POST',
+    contentType: 'application/json',
+    url: '/api/user/setmajor',
+    dataType : 'json',
+    data : JSON.stringify({"majors":[1,2,3]}),
+    success : function(result) {
+      console.log(result);
+    },error : function(result){
+      console.log(result);
+    }
+  });
 });
 </script>
 {% endblock %}
