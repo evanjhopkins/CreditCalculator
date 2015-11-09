@@ -1,0 +1,66 @@
+TRUE,,CMPT,120,L,Introduction to Programming,4
+TRUE,,CMPT,220,L,Software Development I,4
+TRUE,,CMPT,221,L,Software Development II,4
+TRUE,,CMPT,230,L,Software Systems and Analysis,4
+TRUE,,CMPT,306,N,Data Communications and Networks,4
+TRUE,,CMPT,308,L,Database Management,4
+TRUE,,CMPT,307,N,Internetworking,4
+TRUE,,CMPT,330,L,System Design,4
+TRUE,,CMPT,422,L,Computer Organization and Architecture,4
+TRUE,,CMPT,435,L,Algorithm Analysis and Design,3
+TRUE,,CMPT,414,L,Game Design and Programming I,4
+TRUE,,CMPT,415,L,Game Design and Programming II,4
+TRUE,,CMPT,404,L,Computer Graphics or Artificial Intel,3
+TRUE,,CMPT,475,L,Project I,3
+TRUE,,CMPT,476,L,Project II,1
+TRUE,,BUS,100,N,Introduction to Business & Management,3
+TRUE,,MATH,130,L,Introduction to Statistics,3
+TRUE,,MATH,241,L,Calculus I,4
+TRUE,,MATH,205,L,Discrete Mathematics,4
+TRUE,,PHYS,211,L,General Physics I,3
+TRUE,TRUE,MATH,241,L,Calculus I,4
+TRUE,TRUE,MATH,242,L,Calculus II,4
+TRUE,TRUE,MATH,343,L,Calculus III,4
+TRUE,TRUE,MATH,210,L,Linear Algebra,3
+TRUE,TRUE,MATH,310,L,Introduction to Mathematical Reasoning,3
+TRUE,FALSE,MATH,330,L,Probability and Statistics,3
+TRUE,FALSE,MATH,410,L,Abstract Algebra I,3
+TRUE,FALSE,MATH,420,L,Mathematical Analysis I,3
+TRUE,FALSE,MATH,450,L,Fundamental Concepts of Geometry,3
+TRUE,FALSE,MATH,477,L,Capping Course,3
+TRUE,FALSE,CMPT,120,L,Introduction to Programming,3
+FALSE,TRUE,MATH,205,L,Discrete Mathematics,4
+TRUE,FALSE,MATH,321,L,Differential Equations,3
+TRUE,FALSE,MATH,331,L,Applied Statistics,3
+TRUE,FALSE,MATH,393,L,Special Topics in Mathematics I,3
+TRUE,FALSE,MATH,394,L,Special Topics in Mathematics II,3
+TRUE,FALSE,MATH,411,L,Abstract Algebra II,3
+TRUE,FALSE,MATH,412,L,Computational Linear Algebra,3
+TRUE,FALSE,MATH,421,L,Mathematical Analysis II,3
+TRUE,FALSE,MATH,422,L,Applied Mathematics,3
+TRUE,FALSE,MATH,424,L,Complex Analysis,3
+TRUE,FALSE,MATH,430,L,Operations Research,3
+TRUE,FALSE,MATH,440,L,Numerical Analysis,3
+TRUE,FALSE,MATH,441,L,Combinatorics,3
+TRUE,FALSE,MATH,451,L,Elementary Topology,3
+TRUE,FALSE,MATH,452,L,Foundations of Mathematics,3
+TRUE,TRUE,CRJU,101,L,Introduction to Criminal Justice,3
+TRUE,TRUE,CRJU,202,L,Criminology,3
+TRUE,TRUE,CRJU,230,L,Policing In America,3
+TRUE,TRUE,CRJU,235,L,Corrections,3
+TRUE,TRUE,CRJU,250,L,Introduction to U.S. Courts,3
+TRUE,TRUE,CRJU,305,L,Juvenile Justice System,3
+TRUE,TRUE,CRJU,370,L,Theories of Punishment,3
+TRUE,FALSE,CRJU,221,L,Law and Society,3
+TRUE,FALSE,CRJU,301,L,Criminal Justice Organization and Administration,3
+TRUE,FALSE,CRJU,303,L,Criminal Law,3
+TRUE,FALSE,CRJU,304,L,Criminal Procedure,3
+TRUE,FALSE,CRJU,374,L,Criminal Justice Research Methods,3
+TRUE,FALSE,CRJU,440,L,Cross Cultural Criminal Justice Systems,3
+TRUE,FALSE,CRJU,477,L,Senior Seminar: Capping Course,3
+TRUE,FALSE,CRJU,496,L,Criminal Justice Internship I,3
+TRUE,FALSE,CRJU,497,L,Criminal Justice Internship II,3
+TRUE,FALSE,CRJU,105,L,Criminal Justice Information Literacy,1
+TRUE,FALSE,MATH,130,L,Introductory Statisitcs I,3
+TRUE,FALSE,POSC,110,L,American National Government,3
+FALSE,TRUE,CRJU,304,L,Criminal Procedure II: Constitutional Law,3
