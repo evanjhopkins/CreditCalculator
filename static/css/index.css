@@ -1,3 +1,22 @@
+.add-courses{
+  display: none;
+}
+.step{
+  position: relative;
+  margin-top: 25px;
+}
+.step .name{
+
+}
+.fa-check-circle{
+  position: absolute;
+  left: -40px;
+  bottom: 0px;
+  color: green;
+  font-size: 30px;
+  display: none;
+}
+
 .courses{
 	list-style-type: none;
 	margin: 0;
@@ -6,9 +25,8 @@
 .course{
 	width: 100%;
 	border: 1px solid #896D32;
-	border-radius: 15px;
-	height: 30px;
-	line-height: 30px;
+	height: 35px;
+	line-height: 35px;
 	margin-top: 5px;
 }
 .course .course-title{
@@ -20,10 +38,10 @@
 .course .remove{
 	float: right;
 	color: #F37C6C;
-	font-size: 30px;
+	font-size: 20px;
 	width: 50px;
 	height: 100%;
-	line-height: 50px;
+	line-height: 35px;
 	display: none;
 	text-align: center;
 }
@@ -33,7 +51,4 @@
 }
 .course:hover .remove{
 	display: block;
-}
-.selectize-input{
-	height: 35px;
 }

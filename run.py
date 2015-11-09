@@ -24,7 +24,7 @@ def index():
 	app.logger.info('/index')
 	response = api_college()
 	response_obj = json.loads(response)
-	return render_template('index.html', data = response_obj)
+	return render_template('information.html', data = response_obj)
 
 @app.route('/courses')
 def classes():

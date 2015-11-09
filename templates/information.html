@@ -1,0 +1,104 @@
+{% extends "frame.html" %}
+
+{% block imports %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}" />
+{% endblock %}
+
+{% block content %}
+  <div class="step add-school">
+    <i class="fa fa-check-circle"></i>
+    <div class="name">
+      Step One: Select College
+    </div>
+    <select id="select-school" class="selectize-dimensions select-course">
+      <!-- these will be pulled from api, but i have static values until then -->
+      <option value="">Where do you currently attend college?</option>
+      {% for college in data.content.colleges %}
+      <option value="{{college.id}}">{{college.name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="step add-courses">
+    <div class="name">
+      Step Two: Add Courses
+    </div>
+
+    <select id="select-course" class="selectize-dimensions">
+      <!-- value will corespond with UID for courses in database -->
+      <option value="">What courses have you taken?</option>
+      <option value="19">A Course</option>
+    </select>
+
+    <ul class="courses">
+      {% for course in session['courses'] %}
+        <li class="course" value="{{course['course_id']}}">
+          <span class="course-title">{{course['course_name']}}</span>
+          <i class="remove fa fa-trash-o"></i>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <button class="next_step">Save</button>
+{% endblock %}
+
+{% block script %}
+  <script>
+    //prepopulate college if possible
+    var college_id = "{{session['college_id']}}";
+    $('#select-school').val(college_id);
+
+    //fix selectize ui quirk before initializing
+    $('#select-school, #select-course').removeClass("selectize-dimensions");
+    //initialize selectize
+    $('#select-school').selectize();
+    $('#select-course').selectize();
+
+    //if a school has already been chosen (populated through either session or
+    //account) then we want to display the course selection
+    if ($("#select-school").val() != "") {
+        populate_course_options($("#select-school").val());
+        $('.add-school .fa-check-circle').show();
+        $('.add-courses').show();
+    }
+
+    //user has chosen a college, advance to next step
+    $('#select-school').change(function(){
+      $('.add-school .fa-check-circle').fadeIn();//mark step as complete
+      $('.add-courses').fadeIn();//show next step
+    });
+
+    $( "#select-course" ).change(function() {
+      //get values of selected course
+      var course_id = $('#select-course').val();
+      var course_title = $( "#select-course option:selected" ).text();
+
+      if (course_id != ""){//add course to selected courses li in ui
+        $('.courses').append('<li class="course" value="'+course_id+'"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');//display selected course in UI
+      }
+      //de-select the selection dropdown
+      $('#select-course')[0].selectize.clear();//reset selectize
+    });
+
+    $('.remove').click( function(){ $(this).parent().remove(); });//when delete class is clicked
+
+    //save data
+    $( ".next_step" ).click(function() {
+      $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
+        //window.location.href = 'courses';
+      });
+    });
+
+    //populate course selection with courses from specified college
+    function populate_course_options(college_id){
+      $.get("/api/college/"+college_id+"/course", function( data ) {
+        obj = JSON.parse(data);
+        obj.content.courses.forEach(function(course){
+          $('#select-course')[0].selectize.addOption({value:course.id,text:course.title});
+        });
+      });
+    }
+  </script>
+
+{% endblock %}
