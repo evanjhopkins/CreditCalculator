@@ -44,7 +44,7 @@ Vagrant.configure(2) do |config|
 #######################################
  ## Connecting Dir from Host(computer) to Guest(VM)
   config.vm.synced_folder "../CreditCalculator", "/home/vagrant/CreditCalculator"
-  #config.vm.synced_folder ".", "/var/www", type: "nfs"
+  #config.vm.synced_folder ".", "/home/vagrant/Creditcalculator", type: "nfs"
 
 #######################################
  ## Setting up the VM "hardware"
