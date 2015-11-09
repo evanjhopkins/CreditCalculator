@@ -49,6 +49,8 @@
     var college_id = "{{session['college_id']}}";
     $('#select-school').val(college_id);
 
+    var courses = [];
+
     //fix selectize ui quirk before initializing
     $('#select-school, #select-course').removeClass("selectize-dimensions");
     //initialize selectize
@@ -77,6 +79,7 @@
 
       if (course_id != ""){//add course to selected courses li in ui
         $('.courses').append('<li class="course" value="'+course_id+'"><span class="course-title">'+course_title+'</span><i class="remove fa fa-trash-o"></i></li>');//display selected course in UI
+        courses.push(course_id);
       }
       //de-select the selection dropdown
       $('#select-course')[0].selectize.clear();//reset selectize
@@ -86,8 +89,33 @@
 
     //save data
     $( ".next_step" ).click(function() {
-      $.get("/api/user/college/"+$('#select-school').val(), function( data ) {
-        //window.location.href = 'courses';
+      console.log($('#select-school').val());
+      if($('#select-school').val() === ""){
+        $(".error_text").text("You must select a college");
+        $(".error").fadeIn();
+        return;
+      }
+
+      if(courses.length<1){
+        $(".error_text").text("You must add some courses");
+        $(".error").fadeIn();
+        return;
+      }
+
+      $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        url: '/api/user/courses',
+        dataType : 'json',
+        data : JSON.stringify({"courses":[{course_id:1, course_name:"test"}]}),
+        success : function(result) {
+          console.log(result);
+          $.get("/api/user/college/"+$('#select-school').val(), function( data ){
+            window.location.href = "/overview";
+          });
+        },error : function(result){
+          console.log("fail");
+        }
       });
     });
 

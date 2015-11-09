@@ -26,14 +26,9 @@ def index():
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
-@app.route('/courses')
-def classes():
-	app.logger.info('/courses')
-	if 'college_id' in session:#only try to get courses if user has selected a college
-		response = api_college_course(session['college_id'])
-		response_obj = json.loads(response)
-		return render_template('courses.html', data=response_obj)
-	return render_template('courses.html', data={'alert':"You must select a college before adding courses", 'content':{'courses':[]}})
+@app.route('/overview')
+def overview():
+	return render_template('overview.html', data={})
 
 @app.route('/majors')
 def majors():
@@ -107,6 +102,7 @@ def api_college():
 #api v.02
 @app.route('/api/user/college/<int:college_id>')
 def api_user_setcollege(college_id):
+
 	if (loggedIn()):
 		query("UPDATE user SET college_id=%s WHERE id=%s" % (college_id, session['user_id']))
 
@@ -165,6 +161,8 @@ def api_user_courses_add():
 		for course in post_body_obj['courses']:
 			query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course['course_id']))
 
+	print "COURSES"
+	print post_body_obj
 	session['courses'] = post_body_obj['courses']
 	return prepare_for_departure(success=True)
 

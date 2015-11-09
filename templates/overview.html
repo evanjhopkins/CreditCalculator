@@ -1,0 +1,50 @@
+{% extends "frame.html" %}
+
+{% block imports %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/overview.css') }}" />
+{% endblock %}
+
+{% block content %}
+
+<div class="section">
+  <span class="text welcome">Welcome back, Evan</span>
+  <a href="/index"><span class="edit_info"><i class="fa fa-pencil"></i> Change College or Courses</span></a>
+</div><br><br>
+
+<div class="section">
+  <span class="text">Your Scenarios:</span>
+  <button class="new_scenario">New Scenario</button>
+</div>
+<div class="scenario">
+  <div class="major">Major in Computer Science</div>
+  <div class="minor">Minor in Economics & Film</div>
+  <i class="fa fa-file-text icon report"></i>
+  <i class="fa fa-trash icon delete"></i>
+
+</div>
+<div class="scenario">
+  <div class="major">Major in Criminal Justice & Communications</div>
+  <div class="minor">Minor in Archery</div>
+</div>
+
+
+<div class="modal-bg">
+  <div class="modal">
+    Select Major(s)
+    <div class="program">
+      78%
+    </div>
+    <button class="new_scenario">Select Minor(s)</button>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(".new_scenario").click(function(){
+    $(".modal-bg").fadeIn();
+    $(".modal").fadeIn();
+  });
+</script>
+{% endblock %}

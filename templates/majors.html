@@ -72,7 +72,7 @@ $(".next_step").click(function(){
     contentType: 'application/json',
     url: '/api/user/setmajor',
     dataType : 'json',
-    data : JSON.stringify({"majors":[1,2,3]}),
+    data : JSON.stringify({"majors":[{course_id:"1"}]}),
     success : function(result) {
       console.log(result);
     },error : function(result){
