@@ -55,9 +55,25 @@ def user_login():
 	response_obj = {}
 	return render_template('user_login.html', data=response_obj)
 
+@app.route('/admin')
+def admin():
+	#problem with db connection
+	#response_obj = api_users()
+	response_obj=[]
+	return render_template('admin_recent_activity.html',data=response_obj)#data= response_obj)
+
 #########
 #  API  #
 #########
+@app.route('/api/admin')
+def api_users():
+	app.logger.info('/api/admin')
+	results = query("SELECT user.id,user.first_name,user.last_name,user.college_id FROM user")
+	users= []
+	for row in results:
+		print row
+		users.append({'id':row[0],'first_name':row[1],'last_name':row[2],'college_id':row[3]})
+	return prepare_for_departure(content={'users':users})
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
 	results = query("SELECT * FROM course WHERE course.id=%s" % course_id)
