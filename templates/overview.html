@@ -15,18 +15,16 @@
   <span class="text">Your Scenarios:</span>
   <button class="new_scenario">New Scenario</button>
 </div>
+
+{% for scenario in data.scenarios %}
+
 <div class="scenario">
-  <div class="major">Major in Computer Science</div>
-  <div class="minor">Minor in Economics & Film</div>
+  <div class="major">Major in {{scenario.major}}</div>
+  <div class="minor">Minor in {{scenario.minor}}</div>
   <i class="fa fa-file-text icon report"></i>
   <i class="fa fa-trash icon delete"></i>
-
 </div>
-<div class="scenario">
-  <div class="major">Major in Criminal Justice & Communications</div>
-  <div class="minor">Minor in Archery</div>
-</div>
-
+{% endfor %}
 
 <div class="modal-bg">
   <div class="modal">
@@ -45,6 +43,9 @@
   $(".new_scenario").click(function(){
     $(".modal-bg").fadeIn();
     $(".modal").fadeIn();
+  });
+  $('.scenario .delete').click(function(e){
+    $(this).parent().slideUp();
   });
 </script>
 {% endblock %}

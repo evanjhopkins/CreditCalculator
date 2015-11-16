@@ -29,7 +29,12 @@ def index():
 
 @app.route('/overview')
 def overview():
-	return render_template('overview.html', data={})
+	scenarios = [
+		{'major':'Math', 'minor':'Art' },
+		{'major':'Computer Science', 'minor':'Math'},
+		{'major':'Economics', 'minor':'Business Administration'}
+	]
+	return render_template('overview.html', data={'scenarios':scenarios})
 
 @app.route('/majors')
 def majors():
