@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
+    <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/selectize.js') }}"></script>
+    {% block imports %}{% endblock %}
+  </head>
+  <body>
+
+    <div class="content">
+      <div class="top">
+        {% if 1>2 %}
+          <form class="login-form" action="/api/user/login" method="POST">
+            <span class="login-error"></span>
+            <input type="text" name="email" placeholder="email..."/>
+            <input type="password" name="password" placeholder="password..." />
+            <span class="login-submit">Log In</span>
+          </form>
+        {% else %}
+          <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
+        {% endif %}
+        <div class="header">
+          <span class="title">Marist</span>
+          <span class="sub_title"><b>Admin</b> Credit Calculator</span>
+        </div>
+        <hr noshade>
+      </div>
+
+      <div class="nav">
+        <a href="/admin/activity"><span class="step">Recent Activity - </span></a>
+          <a href="/admin/users/"><span class="step">Users -</span></a>
+          <a href="/admin/makechanges"><span class="step">Course </span></a>
+
+        </span>
+      </div>
+      <div class="errors">
+      {% if data.alert %}
+        <div class="error">{{data.alert}}</div>
+      {% endif %}
+    </div>
+
+      {% block content %}{% endblock %}
+
+      <div class="footer">
+        <div class="footer-text">Marist College Copyright 2069 - DANK MEMES</div>
+        <div class="footer-links">
+        Home - CLG - Annies Pasta - Santiago
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var isLoggedIn = ("{{session['user_id']}}") ? true : false;//is user logged in?
+
+    $(".modal-bg").click(function(){//if modal bg is clicked
+      $(".modal-bg").fadeOut();//dismiss modal
+    });
+
+    $(".modal").click(function(e){//if modal content is clicked
+      e.stopPropagation();//prevent dismissal
+    });
+
+    $(".login-submit").click(function(e){
+      e.preventDefault();
+      var data = $('.login-form').serializeArray();
+      $.post( "/api/user/login", data)
+      .done(function( data ) {
+        data = JSON.parse(data);
+        if(data.success == true){
+          location.reload();
+        }else{
+          $(".login-error").text(data.alerts[0].msg);
+        }
+      });
+    });
+
+    $(".logout").click(function(){
+      $.get( "/api/user/logout", function( data ) {
+        location.reload();
+      });
+    });
+  </script>
+  {% block script %}{% endblock %}
+
+</html>

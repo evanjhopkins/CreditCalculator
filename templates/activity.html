@@ -1,0 +1,13 @@
+{% extends "admin_frame.html" %}
+
+{% block imports %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
+ <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="img">
+{{chart|safe}}
+</div>
+{% endblock %}
+<!-- add in a list when an item is selected show user and generate messege underneath?
