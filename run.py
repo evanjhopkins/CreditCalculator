@@ -3,6 +3,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import hashlib
 import MySQLdb
+import pygal
 import json
 import urllib2
 import re
@@ -56,11 +57,44 @@ def user_login():
 	return render_template('user_login.html', data=response_obj)
 
 @app.route('/admin')
-def admin():
-	#problem with db connection
-	#response_obj = api_users()
-	response_obj=[]
-	return render_template('admin_recent_activity.html',data=response_obj)#data= response_obj)
+@app.route('/admin/activity')
+def recent_activity():
+	data= {}
+	bar_chart = pygal.StackedLine()
+	bar_chart.title= "User Activity"
+	bar_chart.x_labels = map(str,range(11))
+	bar_chart.add('Requested Courses', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+	bar_chart.add('Added Users', [1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12])
+	chart = bar_chart.render(is_unicode=True)
+	return render_template('activity.html',data=data,chart =chart)
+
+
+@app.route('/admin/users/')
+def admin_user_list():
+	response_obj = api_users()
+	response_obj=json.dumps(response_obj,ensure_ascii=False)
+	response_obj=json.loads(response_obj)
+
+
+	for index,i in enumerate(response_obj):
+		print index, i['first_name']
+
+
+	return render_template('admin_users.html',data=response_obj,alternate=10)#data= response_obj)
+@app.route('/admin/user_info/<user_id>')
+def admin_user_details(user_id):
+	user_id=user_id.replace('%20','')
+	user_id =user_id.encode('ascii','ignore')
+	user_id=user_id.split('+')
+	response_obj = api_user_courses(user_id[0])
+	user_name = user_id[1]+" "+user_id[2]
+	print response_obj
+	# response_obj=json.dumps(response_obj,ensure_ascii=False)
+	# #print response_obj
+	response_obj=json.loads(response_obj)
+
+
+	return render_template('admin_users_details.html',data=response_obj,alternate=10,user_name=user_name)#data= response_obj)
 
 #########
 #  API  #
@@ -68,12 +102,11 @@ def admin():
 @app.route('/api/admin')
 def api_users():
 	app.logger.info('/api/admin')
-	results = query("SELECT user.id,user.first_name,user.last_name,user.college_id FROM user")
+	results = query("SELECT user.id,user.first_name,user.last_name,user.college_id,user.email FROM user")
 	users= []
 	for row in results:
-		print row
-		users.append({'id':row[0],'first_name':row[1],'last_name':row[2],'college_id':row[3]})
-	return prepare_for_departure(content={'users':users})
+		users.append({'id':row[0],'first_name':row[1],'last_name':row[2],'college_id':row[3],'email':row[4]})
+	return users
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
 	results = query("SELECT * FROM course WHERE course.id=%s" % course_id)

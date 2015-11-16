@@ -1,0 +1,53 @@
+{% extends "admin_frame.html" %}
+
+{% block imports %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
+ <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div> Users:</div>
+<div class="datagrid">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>College ID</th>
+            <th>Email</th>
+            <th>Pending Course Request</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="5">
+                <div id="paging"><ul><li><a href="#">
+                    <span>Previous</span></a>
+                        </li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr>
+        </tfoot>
+        <tbody>
+        {% for user in data %}
+        {% if loop.index%2==0 %}
+        <tr class="alt">
+        {% else %}
+        <tr>
+        {% endif %}
+            <td><a href="/admin/user_info/{{user['id']}} + {{user['first_name']}}+{{user['last_name']}}">{{user['first_name']}} {{user['last_name']}}</a></td>
+            <td>{{user['id']}}</td>
+            <td>{{user['college_id']}}</td>
+            <td><a href="mailto:{{user['email']}}">{{user['email']}}</a></td>
+             {% if loop.index%2==0 %}
+            <td>Yes</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+
+</tbody>
+</table></div>
+
+
+{% endblock %}
+<!-- add in a list when an item is selected show user and generate messege underneath?

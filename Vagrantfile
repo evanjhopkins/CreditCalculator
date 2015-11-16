@@ -95,6 +95,8 @@ Vagrant.configure(2) do |config|
      pip install Flask-Sessions
      # install requests for python
      pip install requests
+     #pygal graphs
+     pip install pygal
      # create and populate database
      mysql -u root -pbbemt < /home/vagrant/CreditCalculator/credit_calculator_create.sql
      mysql -u root -pbbemt creditcalc < /home/vagrant/CreditCalculator/build_db.sql

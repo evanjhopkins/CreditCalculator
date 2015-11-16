@@ -1,0 +1,59 @@
+{% extends "admin_frame.html" %}
+
+{% block imports %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
+ <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
+<script src="https://cdn.jsdelivr.net/tablesorter/2.17.4/js/jquery.tablesorter.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<div> Current Courses for: {{user_name}}</div>
+<div class="datagrid">
+    <table id="mytable" class="'tablesorter">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Course Number</th>
+            <th>College ID</th>
+
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="5">
+                <div id="paging"><ul><li><a href="#">
+                    <span>Previous</span></a>
+                        </li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr>
+        </tfoot>
+        <tbody>
+        {% for course in data.content.courses %}
+        {% if loop.index%2==0 %}
+        <tr class="alt">
+        {% else %}
+        <tr>
+        {% endif %}
+            <td>{{course['id']}}</td>
+            <td>{{course['name']}}</td>
+            <td>{{course['subject']}}</td>
+            <td>{{course['course_number']}}</td>
+            <td>{{course['college_id']}}</td>
+
+
+        </tr>
+        {% endfor %}
+        </tbody>
+
+</tbody>
+</table></div>
+<div>
+    Class Requests:
+</div>
+<div>
+
+</div>
+
+{% endblock %}
+<!-- add in a list when an item is selected show user and generate messege underneath?

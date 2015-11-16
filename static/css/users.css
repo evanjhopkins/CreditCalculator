@@ -55,3 +55,13 @@
           }
           .datagrid table tfoot  li { display: inline; }.datagrid table tfoot li a { text-decoration: none; display: inline-block;  padding: 2px 8px; margin: 1px;color: #FFFFFF;border: 1px solid #A54540;-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #A54540), color-stop(1, #A54540) );background:-moz-linear-gradient( center top, #A54540 5%, #A54540 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#A54540', endColorstr='#A54540');background-color:#A54540; }.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover { text-decoration: none;border-color: #A54540; color: #FFFFFF; background: none; background-color:#A54540;}div.dhtmlx_window_active, div.dhx_modal_cover_dv { position: fixed !important;
 }
+.imagebox {
+width: 42px; /*This is the height of the div class it self */
+height: 42px;
+}
+
+/* This changes the height of any image with the <img> tag within the div class*/
+.imagebox img {
+height: 500px;
+width: 500px;
+}
