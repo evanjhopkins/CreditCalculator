@@ -1,188 +1,52 @@
-html{
+html, body{
+	margin: 0;
+	width: 100%;
 	height: 100%;
 }
-body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Open Sans', sans-serif;
-    background-color: #A54540;
+.wrapper{
+	margin-top: 10px;
+	width: 80%;
+	margin-left: 10%;
 }
 .content{
-	padding: 0 5% 0 5%;
-	margin: 0 auto;
-	width: 60%;
-	min-height: 100%;
-	background-color: white;
+	width: 80%;
+	margin-left: 10%;
+	margin-top: 10px;
+	min-height: 300px;
 }
-.nav{
-	text-align: center;
-	width: 100%;
-	margin-bottom: 15px;
+
+/*##############################################
+       LOG IN FORM
+###############################################*/
+.user, .login .form{
+	float: right;
 }
-.nav a{
-	color: #A54540;
-	text-decoration: none;
-	-o-transition:.25s;
-	-ms-transition:.25s;
-	-moz-transition:.25s;
-	-webkit-transition:.25s;
-	transition:.25s;
+.login .submit{
+	color: white;
+	background-color: #990000;
+	padding: 3px 10px 3px 10px;
 }
-.nav a:hover{
-	color: #CE5A52;
+.login .submit:hover{
+	cursor: pointer;
+	background-color: #b30000;
 }
-.login-submit, .logout{
-	font-size: 13px;
-	color:  #A19EA3;
-	-o-transition:.25s;
-	-ms-transition:.25s;
-	-moz-transition:.25s;
-	-webkit-transition:.25s;
-	transition:.25s;
+.user .logout{
+	color: #990000;
 }
-.login-submit:hover, .login-submit:focus, .logout:hover, .logout:focus{
-	color: #A54540;
+.user .logout:hover{
+	color: #b30000;
 	cursor: pointer;
 }
-.login-form{
-	float: right;
-	position: absolute;
-	right: 20%;
-}
-.login-error{
-	font-size: 10px;
-	font-style: italic;
-	color: #A1463E;
-}
-.user{
-	font-size: 13px;
-	position: absolute;
-	right: 20%;
-	color: #A19EA3;
-}
-.step{
-	color: #A19EA3;
-}
-.step:hover{
-	color: #A54540;
-}
-.top{
-	padding: 0 0 25px 0;
-	text-align: center;
-}
-.header{
-	padding-top: 20px;
-}
-.title{
-	font-weight: 900;
-	font-size: 50px;
-	color: #A54540;
-}
-.sub_title{
-	font-weight: 100;
-	font-size: 40px;
-	color: #5F5F5F;
-}
-.modal-bg{
-	top: 0px;
-	left: 0px;
-	position: absolute;
-	background-color: rgba(0,0,0,0.5);
-	width: 100%;
-	height: 100%;
-	display: none;
-	z-index: 10;
-}
-.modal{
-	position: relative;
-	padding: 2%;
-	margin-top: 300px;
-	background-color: #ffffff;
-	width: 60%;
-	opacity: 1;
-	margin-left: 18%;
-	border-radius: 15px;
-}
-.alert{
-	padding-left: 10%;
-	padding-right: 10%;
-	width: 80%;
-	/*min-height: 30px;*/
-	line-height: 30px;
+
+/*##############################################
+       ERROR MESSAGES
+###############################################*/
+.error .message{
+	margin-bottom: 2px;
+	padding: 10px;
+	color: #b30000;
+	background-color: #ffe5e5;
 }
 .error{
-	display: none;
-	background-color: #F1DEDE;
-	color: #A54540;
-	border: 1px solid #E9CCD1;
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-.error .message{
-	margin-left: 50px;
-}
-.errors{
-	min-height: 75px;
-}
-.warn{
-	background-color: #FCF8E1;
-	color: #896D32;
-	border: 1px solid #FAEBC8;
-}
-hr{
-	border-color: #5F5F5F;
-	background-color: #5F5F5F;
-	color: #5F5F5F;
-	margin: 20px 0 0 0;
-}
-input[type=text], input[type=password] {
-	background-color: white;
-	color: #A1463E	;
-	border: 0;
-	margin-left:1px;
-	box-shadow: -8px 10px 0px -7px #ebebeb, 8px 10px 0px -7px #ebebeb;
-	-webkit-transition: box-shadow 0.3s;
-	transition: box-shadow 0.3s;
-}
-input[type=text]:focus, input[type=password]:focus {
-  outline: none;
-  box-shadow: -8px 10px 0px -7px #4EA6EA, 8px 10px 0px -7px #4EA6EA;
-}
-.selectize-dimensions{
-	width: 100%;
-	height: 38px;
-	-webkit-appearance: menulist-button;
-	color: #A9ABC0;
-	font-size: 13px;
-	background-color: #ffffff;
-	border-color: #D0D0D0;
-}
-.next_step{
-	float: right;
-	width: 60px;
-	height: 30px;
-	background-color: #4EA6EA;
-	border: none;
-	color: white;
-	margin-top: 10px;
-}
-.next_step:hover{
-	cursor: pointer;
-	background-color: #71b7ee;
-}
-.footer{
-	width: 60%;
-	position: absolute;
-	bottom: 0px;
-	padding-top: 100px;
-	color: #A9ABC0;
-	font-style: italic;
-	font-size: 12px;
-}
-.footer-text{
-	float: left;
-}
-.footer-links{
-	float: right;
+	min-height: 40px;
 }

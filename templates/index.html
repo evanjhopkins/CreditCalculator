@@ -5,42 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="step add-school">
-    <i class="fa fa-check-circle"></i>
-    <div class="name">
-      Step One: Select College
-    </div>
-    <select id="select-school" class="selectize-dimensions select-course">
-      <!-- these will be pulled from api, but i have static values until then -->
-      <option value="">Where do you currently attend college?</option>
-      {% for college in data.content.colleges %}
-      <option value="{{college.id}}">{{college.name}}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="step add-courses">
-    <div class="name">
-      Step Two: Add Courses
-    </div>
-
-    <select id="select-course" class="selectize-dimensions">
-      <!-- value will corespond with UID for courses in database -->
-      <option value="">What courses have you taken?</option>
-      <option value="19">A Course</option>
-    </select>
-
-    <ul class="courses">
-      {% for course in session['courses'] %}
-        <li class="course" value="{{course['course_id']}}">
-          <span class="course-title">{{course['course_name']}}</span>
-          <i class="remove fa fa-trash-o"></i>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <button class="next_step">Save</button>
+  fak rak
 {% endblock %}
 
 {% block script %}

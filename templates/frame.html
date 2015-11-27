@@ -13,15 +13,17 @@
   </head>
   <body>
 
-    <div class="content">
+    <div class="wrapper">
       <div class="top">
         {% if not session['email'] %}
-          <form class="login-form" action="/api/user/login" method="POST">
-            <span class="login-error"></span>
+          <div class="login">
+          <form class="form" action="/api/user/login" method="POST">
+            <span class="login .error"></span>
             <input type="text" name="email" placeholder="email..."/>
             <input type="password" name="password" placeholder="password..." />
-            <span class="login-submit">Log In</span>
+            <span class="submit">Log In</span>
           </form>
+        </div>
         {% else %}
           <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
         {% endif %}
@@ -32,13 +34,12 @@
         <hr noshade>
       </div>
 
-      <div class="errors">
-        <div class="error">
-          <div class="message"><i class=" fa fa-exclamation-triangle"></i> <span class="error_text">Error</span></div></div>
+      <div class="error">
       </div>
 
-      {% block content %}{% endblock %}
-
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
 
     </div>
   </body>
@@ -54,17 +55,26 @@
       e.stopPropagation();//prevent dismissal
     });
 
-    $(".login-submit").click(function(e){
+    $(".login .submit").click(function(e){
       e.preventDefault();
-      var data = $('.login-form').serializeArray();
+      var data = $('.login .form').serializeArray();
       $.post( "/api/user/login", data)
       .done(function( data ) {
         data = JSON.parse(data);
-        if(data.success == true){
+        if((data) && (data.success == true)){
           location.reload();
         }else{
-          $(".login-error").text(data.alerts[0].msg);
+          throw_page_error("Login failed, incorrect credentials");;
         }
+      })
+      .fail(function(){
+        throw_page_error("Login connection error");
+      })
+      .always(function(){
+        $(".login input").val("");
+        setTimeout(function(){
+            $(".error .message").fadeOut();
+        }, 5000);
       });
     });
 
@@ -73,6 +83,11 @@
         location.reload();
       });
     });
+
+    function throw_page_error(msg){
+      $('.error').html("");
+      $('.error').append( '<div class="message"><i class=" fa fa-exclamation-triangle"></i> <span class="text">'+msg+'</span></div>' );
+    }
   </script>
   {% block script %}{% endblock %}
 
