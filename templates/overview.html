@@ -6,46 +6,30 @@
 
 {% block content %}
 
-<div class="section">
-  <span class="text welcome">Welcome back, Evan</span>
+<div class="head">
+  {% if not session['email'] %}
+  {% else %}
+  <span class="welcome">Welcome back, Evan</span>
+  {% endif %}
   <a href="/index"><span class="edit_info"><i class="fa fa-pencil"></i> Change College or Courses</span></a>
-</div><br><br>
-
-<div class="section">
-  <span class="text">Your Scenarios:</span>
-  <button class="new_scenario">New Scenario</button>
 </div>
 
-{% for scenario in data.scenarios %}
+<div class="scenarios">
+ <button class="new_scenario btn">New Scenario</button>
 
-<div class="scenario">
-  <div class="major">Major in {{scenario.major}}</div>
-  <div class="minor">Minor in {{scenario.minor}}</div>
-  <i class="fa fa-file-text icon report"></i>
-  <i class="fa fa-trash icon delete"></i>
-</div>
-{% endfor %}
+  {% for scenario in data.scenarios %}
 
-<div class="modal-bg">
-  <div class="modal">
-    Select Major(s)
-    <div class="program">
-      78%
-    </div>
-    <button class="new_scenario">Select Minor(s)</button>
-
+  <div class="scenario">
+    <div class="major">Major in {{scenario.major}}</div>
+    <div class="minor">Minor in {{scenario.minor}}</div>
+    <i class="fa fa-file-text icon report"></i>
+    <i class="fa fa-trash icon delete"></i>
   </div>
-</div>
+  {% endfor %}
+</scenarios>
 {% endblock %}
 
 {% block script %}
 <script>
-  $(".new_scenario").click(function(){
-    $(".modal-bg").fadeIn();
-    $(".modal").fadeIn();
-  });
-  $('.scenario .delete').click(function(e){
-    $(this).parent().slideUp();
-  });
 </script>
 {% endblock %}

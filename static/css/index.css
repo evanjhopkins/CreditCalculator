@@ -1,0 +1,33 @@
+/*##############################################
+       GENERAL FORM PARTS
+###############################################*/
+.description{
+	font-size: 18px;
+}
+.description .welcome{
+	font-size: 35px;
+}
+.instructions{
+	margin-top: 50px;
+	font-size: 35px;
+	margin-bottom: 10px;
+}
+
+/*##############################################
+       COLLEGE FORM
+###############################################*/
+.college .instructions{
+	float: right;
+}
+
+/*##############################################
+       COURSES FORM
+###############################################*/
+.courses .course{
+	border: 1px solid black;
+	padding: 10px;
+	margin-bottom: 3px;
+}
+.courses .btn{
+	float: right;
+}

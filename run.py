@@ -25,8 +25,122 @@ def index():
 	app.logger.info('/index')
 	response = api_college()
 	response_obj = json.loads(response)
-	#response_obj = {}
 	return render_template('index.html', data = response_obj)
+
+@app.route('/overview')
+def overview():
+	scenarios = [
+		{'major':'Math', 'minor':'Art' },
+		{'major':'Computer Science', 'minor':'Math'},
+		{'major':'Economics', 'minor':'Business Administration'}
+	]
+	return render_template('overview.html', data={'scenarios':scenarios})
+
+@app.route('/majors')
+def majors():
+	response_obj = {'majors':[
+		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
+		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
+		{'name':"Female Studies", 'percent':randint(0,99), 'id':3}
+	]}
+	return render_template('majors.html', data=response_obj)
+
+@app.route('/user/new')
+def user_new():
+	app.logger.info('/user/new')
+	response_obj = {}
+	return render_template('user_new.html', data=response_obj)
+
+@app.route('/user/login')
+def user_login():
+	response_obj = {}
+	return render_template('user_login.html', data=response_obj)
+
+@app.route('/admin')
+@app.route('/admin/activity')
+def recent_activity():
+	data= {}
+	bar_chart = pygal.StackedLine()
+	bar_chart.title= "User Activity"
+	bar_chart.x_labels = map(str,range(11))
+	bar_chart.add('Requested Courses', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
+	bar_chart.add('Added Users', [1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12])
+	chart = bar_chart.render(is_unicode=True)
+	return render_template('activity.html',data=data,chart =chart)
+
+
+@app.route('/admin/users/')
+def admin_user_list():
+	response_obj = api_users()
+	response_obj=json.dumps(response_obj,ensure_ascii=False)
+	response_obj=json.loads(response_obj)
+
+
+	for index,i in enumerate(response_obj):
+		print index, i['first_name']
+
+
+	return render_template('admin_users.html',data=response_obj,alternate=10)#data= response_obj)
+@app.route('/admin/user_info/<user_id>')
+def admin_user_details(user_id):
+	user_id=user_id.replace('%20','')
+	user_id =user_id.encode('ascii','ignore')
+	user_id=user_id.split('+')
+	response_obj = api_user_courses(user_id[0])
+	user_name = user_id[1]+" "+user_id[2]
+	print response_obj
+	# response_obj=json.dumps(response_obj,ensure_ascii=False)
+	# #print response_obj
+	response_obj=json.loads(response_obj)
+
+
+	return render_template('admin_users_details.html',data=response_obj,alternate=10,user_name=user_name)#data= response_obj)
+
+#########
+#  API  #
+#########
+@app.route('/api/admin')
+def api_users():
+	app.logger.info('/api/admin')
+	results = query("SELECT user.id,user.first_name,user.last_name,user.college_id,user.email FROM user")
+	users= []
+	for row in results:
+		users.append({'id':row[0],'first_name':row[1],'last_name':row[2],'college_id':row[3],'email':row[4]})
+	return users
+@app.route('/api/course/<int:course_id>')
+def api_course(course_id):
+	results = query("SELECT * FROM course WHERE course.id=%s" % course_id)
+	course_obj = results[0]
+	course = {'course':{'course_id':course_obj[0], 'course_name':course_obj[1], 'course_subject':course_obj[2], 'course_number':course_obj[3]}}
+	return prepare_for_departure(content=course, success=True)
+
+@app.route('/api/college/<int:college_id>/course')
+def api_college_course(college_id):
+	app.logger.info('/api/course/')
+
+	# statement depends on if were looking for one class, or all classes
+	results = query("SELECT * FROM course WHERE course.college_id=%s" % college_id)
+
+	courses = []
+	for row in results:
+		courses.append( { 'id':row[0], 'title':re.sub(r'[^\x00-\x7F]','', row[1]), 'subject':row[2], 'number':row[3]} )
+
+	return prepare_for_departure(content={'courses':courses})
+
+@app.route('/api/course/new', methods=['POST'])
+def api_course_new():
+	app.logger.info('/api/course/new')
+
+	post_body = request.data
+	post_body_obj = json.loads(post_body)
+
+	course_name = post_body_obj['course']['name']
+	course_subject = post_body_obj['course']['subject']
+	course_number = post_body_obj['course']['course_number']
+	course_college_id = post_body_obj['course']['college_id']
+
+	query("INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', %s, %s)" % (course_name, course_subject, course_number, course_college_id))
+	prepare_for_departure(success=True)
 
 @app.route('/api/college')
 def api_college():
@@ -38,6 +152,90 @@ def api_college():
 		colleges.append({'id':row[0], 'name':row[1]})
 
 	return prepare_for_departure(content={'colleges':colleges})
+
+#api v.02
+@app.route('/api/user/college/<int:college_id>')
+def api_user_setcollege(college_id):
+
+	if (loggedIn()):
+		query("UPDATE user SET college_id=%s WHERE id=%s" % (college_id, session['user_id']))
+
+	session['college_id'] = college_id
+
+	#since the college has just changed, we need to update session with courses
+	#from the current college
+	session['courses'] = []
+	if(loggedIn()):
+		course_results = query("SELECT completed_course.course_id, course.name FROM completed_course, course WHERE transfer_id=%s AND course.id = completed_course.course_id AND course.college_id=%s" % (session['user_id'], college_id))
+		for course in course_results:
+			session['courses'].append({'course_id': course[0], 'course_name': course[1]})
+
+	return prepare_for_departure(success=True)
+
+@app.route('/api/user/new',  methods=['POST'])
+def api_user_new():
+	app.logger.info('/api/user/new')
+	post_body = request.data
+
+	try:#invalid json will cause a crash
+		post_body_obj = json.loads(post_body)
+	except:
+		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
+	user = post_body_obj['user']
+	hashed_pass = md5(user['password_hash'])
+
+	query("""INSERT INTO user (first_name, last_name, email, password_hash, college_id)
+			 VALUES('%s', '%s', '%s', '%s', %s)""" %
+			 (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
+
+	return prepare_for_departure(success=True)
+
+@app.route('/api/user/<int:user_id>/courses')
+def api_user_courses(user_id):
+	app.logger.info('/api/user/<int:user_id>/courses')
+	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % user_id)
+	courses = []
+	for course in result:
+		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
+
+	return prepare_for_departure(content={'courses':courses})
+
+@app.route('/api/user/courses', methods=['POST'])
+def api_user_courses_add():
+
+	app.logger.info('/api/user/<int:user_id>/courses/add')
+	post_body_obj = request_data()
+
+	courses = []
+	for course_id in post_body_obj['courses']:
+		result = query("SELECT * FROM course WHERE course.id=%s" % course_id)
+		course_name = result[0][1]
+		courses.append({'course_id':course_id, "course_name":course_name})
+	
+	session['courses'] = courses
+
+	# if (loggedIn()):
+	# 	query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
+	# 	for course in post_body_obj['courses']:
+	# 		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course['course_id']))
+
+	return prepare_for_departure(success=True)
+
+@app.route('/api/user/<int:user_id>/courses/remove', methods=['POST'])
+def api_user_courses_remove(user_id):
+	app.logger.info('/api/user/<int:user_id>/courses/remove')
+	post_body = request.data
+
+	try:#invalid json will cause a crash
+		post_body_obj = json.loads(post_body)
+	except:
+		return prepare_for_departure(alerts=[error("Invalid JSON")], success=False)
+
+	for course in post_body_obj['courses']:
+		query("DELETE FROM completed_course WHERE transfer_id=%s AND course_id=%s" % (user_id, course['course_id']))
+
+	return prepare_for_departure(success=True)
 
 @app.route('/api/user/login', methods=['POST'])
 def api_login():
@@ -71,6 +269,16 @@ def api_login():
 
 	return prepare_for_departure(success=True)
 
+@app.route('/api/user/setmajor', methods=['POST'])
+def api_user_setmajor():
+	post_body_obj = request_data()
+
+	session['majors'] = post_body_obj['majors']
+	print "added majors to session"
+	if loggedIn():
+		print "added majors to account"
+
+	return prepare_for_departure(success=True)
 
 @app.route('/api/user/logout', methods=['POST', 'GET'])
 def api_logout():

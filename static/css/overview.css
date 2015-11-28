@@ -1,5 +1,34 @@
+/*##############################################
+      PAGE HEADER
+###############################################*/
+.head{
+  margin-bottom: 30px;
+  width: 100%;
+}
+.head .welcome{
+  font-size: 35px;
+  color: black;
+}
+
+/*##############################################
+      CHANGE/ADD INFO (ADD/EDIT)
+###############################################*/
+.edit_info{
+  line-height: 50px;
+  float: right;
+  color: #4EA6EA;
+}
+.new_scenario{
+  float: right;
+  margin-bottom: 3px;
+}
+
+/*##############################################
+      SCENARIOS
+###############################################*/
 .scenario{
   position: relative;
+  float: right;
   width: 100%;
   border: 1px solid black;
   font-family: 'Open Sans', sans-serif;
@@ -25,7 +54,6 @@
 }
 .scenario:hover .report{ display: block; }
 .scenario:hover .delete{ display: block; }
-
 .report{
   position: absolute;
   right: 60px;
@@ -37,44 +65,4 @@
 .icon:hover{
   cursor: pointer;
   opacity: 0.8;
-}
-
-.edit_info{
-  position: absolute;
-  right: 0px;
-  bottom: 5px;
-  color: #4EA6EA;
-}
-.edit_info:hover{
-  color: #71b7ee;
-  cursor: pointer;
-}
-.section{
-  margin-top: 10px;
-  position: relative;
-  width: 100%;
-}
-.section .text{
-  position: absolute;
-  font-size: 20px;
-  left: 0px;
-  bottom: 0px;
-  color: #A54540;
-}
-.section .welcome{
-  font-size: 35px;
-}
-.new_scenario{
-  position: absolute;
-  right: -2px;
-  bottom: 2px;
-	width: 120px;
-	height: 30px;
-	background-color: #4EA6EA;
-	border: none;
-	color: white;
-}
-.new_scenario:hover{
-	cursor: pointer;
-	background-color: #71b7ee;
 }
