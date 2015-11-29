@@ -27,9 +27,116 @@
   </div>
   {% endfor %}
 </scenarios>
+
+<div class="modalbg hide">
+  <div class="modal hide">
+    <div class="major_pane">
+      <span class="header">Create a new scenario</span>
+      <hr>
+      Major: <span class="major_names"></span>
+      <div class="description">Recommended Majors:</div>
+      <div class="majors">
+      </div>
+
+      <div class="description">All Majors:</div>
+      <select id="select" class="selectize-dimensions select-course">
+        <option value="">Choose from all majors...</option>
+        <option value="cj">Criminal Justice</option>
+        <option value="bio">Biology</option>
+      </select>
+      <hr>
+      <button class="btn">Continue</button>
+    </div>
+
+    <div class="minor_pane hide">
+      <span class="header">Create a new scenario</span>
+      <hr>
+      Minor: <span class="minor_names"></span>
+      <div class="description">Recommended Minors:</div>
+      <div class="majors">
+      </div>
+
+      <div class="description">All Minors:</div>
+      <select id="select" class="selectize-dimensions select-course">
+        <option value="">Choose from all minors...</option>
+        <option value="cj">Criminal Justice</option>
+        <option value="bio">Biology</option>
+      </select>
+      <hr>
+        <button class="btn save">Save</button>
+        <button class="btn back">Back</button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
 <script>
+    var majors = [];
+    var minors = [];
+
+    $('.modal #select').removeClass("selectize-dimensions");
+    $('.modal #select').selectize();
+
+    $(".new_scenario").click(function(){
+      $('.modalbg, .modal').fadeIn();
+      $.get("/majors", function( data ) {
+        var obj = JSON.parse(data);
+        $(".major_pane .majors").html("");
+        obj.content.majors.forEach(function(major){
+          $('.major_pane .majors').append('<div class="block" id="'+major.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+major.name+'</div><div class="percent">72%</div></div>');
+        });
+        $('.majors .block').click(function(e){
+          $(".major_pane .block .fa-check-circle-o").hide();
+          $(this).find(".fa-check-circle-o").toggle();
+          var id = $(this).attr('id');
+          if (majors.indexOf(id) < 0){//if not in array, add it
+            majors.push(id);
+            $(".major_names").text($(this).find('.title').text());
+          }else{//else, must be in array so remove it
+            var index = majors.indexOf(id);
+            majors.splice(index, 1);
+          }
+        });
+      });
+
+      $.get("/minors", function( data ) {
+        var obj = JSON.parse(data);
+        $(".minor_pane .majors").html("");
+        obj.content.minors.forEach(function(minor){
+          $('.minor_pane .majors').append('<div class="block" id="'+minor.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+minor.name+'</div><div class="percent">72%</div></div>');
+        });
+        $('.minor_pane .block').click(function(e){
+          $(".minor_pane .block .fa-check-circle-o").hide();
+          $(this).find(".fa-check-circle-o").toggle();
+          var id = $(this).attr('id');
+          if (minors.indexOf(id) < 0){//if not in array, add it
+            minors.push(id);
+            $(".minor_names").text($(this).find('.title').text());
+          }else{//else, must be in array so remove it
+            var index = minors.indexOf(id);
+            minors.splice(index, 1);
+          }
+        });
+      });
+    });
+
+    $(".modalbg").click(function(){
+      $('.modalbg, .modal').fadeOut();
+    });
+
+    $(".major_pane .btn").click(function(){
+      $(".modal").css({ "max-height":  $(".modal").height() });
+      $(".minor_pane").show();
+      $(".major_pane").hide()
+    });
+    $(".minor_pane .back").click(function(){
+      $(".modal").css({ "max-height":  $(".modal").height() });
+      $(".major_pane").show();
+      $(".minor_pane").hide();
+    });
+    $(".minor_pane .save").click(function(){
+       $('.modalbg, .modal').fadeOut();
+    });
 </script>
 {% endblock %}

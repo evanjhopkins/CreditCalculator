@@ -41,9 +41,20 @@ def majors():
 	response_obj = {'majors':[
 		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
 		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
-		{'name':"Female Studies", 'percent':randint(0,99), 'id':3}
+		{'name':"Female Studies", 'percent':randint(0,99), 'id':3},
+		{'name':"Biology", 'percent':randint(0,99), 'id':4}
 	]}
-	return render_template('majors.html', data=response_obj)
+	return prepare_for_departure(content=response_obj, success=True)
+
+@app.route('/minors')
+def minors():
+	response_obj = {'minors':[
+		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
+		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
+		{'name':"Female Studies", 'percent':randint(0,99), 'id':3},
+		{'name':"Biology", 'percent':randint(0,99), 'id':4}
+	]}
+	return prepare_for_departure(content=response_obj, success=True)
 
 @app.route('/user/new')
 def user_new():
@@ -171,6 +182,13 @@ def api_user_setcollege(college_id):
 			session['courses'].append({'course_id': course[0], 'course_name': course[1]})
 
 	return prepare_for_departure(success=True)
+
+@app.route('/api/user/scenarios')
+def api_user_scenarios():
+	response_obj = [
+		{'major':"Biology", 'minor':"Chemistry"}
+	]
+	return prepare_for_departure(content=response_obj, success=True)
 
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
