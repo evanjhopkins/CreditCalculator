@@ -73,8 +73,8 @@
 
 {% block script %}
 <script>
-    var majors = [];
-    var minors = [];
+    var major = 0;
+    var minor = 0;
 
     $('.modal #select').removeClass("selectize-dimensions");
     $('.modal #select').selectize();
@@ -94,14 +94,15 @@
           $(".major_pane .block .fa-check-circle-o").hide();
           $(this).find(".fa-check-circle-o").toggle();
           var id = $(this).attr('id');
-          if (majors.indexOf(id) < 0){//if not in array, add it
-            majors.push(id);
+          if (major != id){//if not in array, add it
+            major = id;
             $(".major_names").text($(this).find('.title').text());
           }else{//else, must be in array so remove it
-            var index = majors.indexOf(id);
-            majors.splice(index, 1);
+            major = 0;
+            $(".major_names").text("");
+            $(".major_pane .block .fa-check-circle-o").hide();
+            $('.major_pane #select')[0].selectize.clear();
           }
-          $('.major_pane #select')[0].selectize.clear();
         });
       });
 
@@ -115,12 +116,14 @@
           $(".minor_pane .block .fa-check-circle-o").hide();
           $(this).find(".fa-check-circle-o").toggle();
           var id = $(this).attr('id');
-          if (minors.indexOf(id) < 0){//if not in array, add it
-            minors.push(id);
+          if (minor != id){//if not in array, add it
+            minor = id;
             $(".minor_names").text($(this).find('.title').text());
           }else{//else, must be in array so remove it
-            var index = minors.indexOf(id);
-            minors.splice(index, 1);
+            minor= 0;
+            $(".minor_names").text("");
+            $(".minor_pane .block .fa-check-circle-o").hide();
+            $('.minor_pane #select')[0].selectize.clear();
           }
         });
       });
@@ -133,7 +136,7 @@
     $(".major_pane .btn").click(function(){
       $(".modal").css({ "max-height":  $(".modal").height() });
       $(".minor_pane").show();
-      $(".major_pane").hide()
+      $(".major_pane").hide();
     });
     $(".minor_pane .back").click(function(){
       $(".modal").css({ "max-height":  $(".modal").height() });
@@ -144,10 +147,38 @@
        $('.modalbg, .modal').fadeOut();
     });
     $('.major_pane #select').change(function(){
-      var title = $(this).text()
+      var title = $(this).text();
       var id = $(this).val();
+
       $(".major_pane .block .fa-check-circle-o").hide();
       $(".major_names").text(title);
+
+      if (major != id){//if not in array, add it
+        major = id;
+        $(".major_names").text(title);
+      }else{//else, must be in array so remove it
+        major = 0;
+        $(".major_names").text("");
+        $(".major_pane .block .fa-check-circle-o").hide();
+        $('.major_pane #select')[0].selectize.clear();
+      }
+    });
+    $('.minor_pane #select').change(function(){
+      var title = $(this).text();
+      var id = $(this).val();
+
+      $(".minor_pane .block .fa-check-circle-o").hide();
+      $(".minor_names").text(title);
+
+      if (minor != id){//if not in array, add it
+        minor = id;
+        $(".minor_names").text(title);
+      }else{//else, must be in array so remove it
+        major = 0;
+        $(".minor_names").text("");
+        $(".minor_pane .block .fa-check-circle-o").hide();
+        $('.minor_pane #select')[0].selectize.clear();
+      }
     });
 
 </script>
