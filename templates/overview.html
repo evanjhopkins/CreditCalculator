@@ -85,7 +85,7 @@
         var obj = JSON.parse(data);
         $(".major_pane .majors").html("");
         obj.content.majors.forEach(function(major){
-          $('.major_pane .majors').append('<div class="block" id="'+major.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+major.name+'</div><div class="percent">72%</div></div>');
+          $('.major_pane .majors').append('<div class="block" id="'+major.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+major.name+'</div><div class="percent">'+major.percent+'%</div></div>');
         });
         $('.majors .block').click(function(e){
           $(".major_pane .block .fa-check-circle-o").hide();
@@ -98,6 +98,7 @@
             var index = majors.indexOf(id);
             majors.splice(index, 1);
           }
+          $('.major_pane #select')[0].selectize.clear();
         });
       });
 
@@ -105,7 +106,7 @@
         var obj = JSON.parse(data);
         $(".minor_pane .majors").html("");
         obj.content.minors.forEach(function(minor){
-          $('.minor_pane .majors').append('<div class="block" id="'+minor.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+minor.name+'</div><div class="percent">72%</div></div>');
+          $('.minor_pane .majors').append('<div class="block" id="'+minor.id+'"><i class="fa fa-check-circle-o hide"></i><div class="title">'+minor.name+'</div><div class="percent">'+minor.percent+'%</div></div>');
         });
         $('.minor_pane .block').click(function(e){
           $(".minor_pane .block .fa-check-circle-o").hide();
@@ -139,5 +140,12 @@
     $(".minor_pane .save").click(function(){
        $('.modalbg, .modal').fadeOut();
     });
+    $('.major_pane #select').change(function(){
+      var title = $(this).text()
+      var id = $(this).val();
+      $(".major_pane .block .fa-check-circle-o").hide();
+      $(".major_names").text(title);
+    });
+
 </script>
 {% endblock %}
