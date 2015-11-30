@@ -3,22 +3,19 @@
 {% block imports %}
   <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
  <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
-<script src="https://cdn.jsdelivr.net/tablesorter/2.17.4/js/jquery.tablesorter.min.js"></script>
-
 {% endblock %}
 
 {% block content %}
-<div> Current Courses for: {{user_name}}</div>
+<div> <a href=" /admin/course/mapping"></a></div>
 <div class="datagrid">
-    <table id="mytable" class="'tablesorter">
+    <table>
         <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Subject</th>
-            <th>Course Number</th>
-            <th>College ID</th>
-
+            <th>Number</th>
+            <th>College</th>
         </tr>
         </thead>
         <tfoot>
@@ -29,32 +26,29 @@
                         </li><li><a href="#" class="active"><span>1</span></a></li><li><a href="#"><span>2</span></a></li><li><a href="#"><span>3</span></a></li><li><a href="#"><span>4</span></a></li><li><a href="#"><span>5</span></a></li><li><a href="#"><span>Next</span></a></li></ul></div></tr>
         </tfoot>
         <tbody>
-        {% for course in data.content.courses %}
+        {% for course in data %}
         {% if loop.index%2==0 %}
         <tr class="alt">
         {% else %}
         <tr>
         {% endif %}
-            <td>{{course['id']}}</td>
-            <td>{{course['name']}}</td>
-            <td>{{course['subject']}}</td>
-            <td>{{course['course_number']}}</td>
-            <td>{{course['college_id']}}</td>
-
-
+            <td><a href="/admin/course_info/{{course['course_id']}} + {{course['course_name']}}">{{course['course_id']}}</a></td>
+            <td>{{course['course_name']}}</td>
+            <td>{{course['course_subject']}}</td>
+            <td>{{course['college_number']}}</td>
+             {% if course['college_id']==1 %}
+            <td>Dutchess</td>
+            {% endif %}
+            {% if course['college_id']==2 %}
+            <td>Marist</td>
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>
 
 </tbody>
 </table></div>
-<div>
-    Class Requests:
-    <a href="/admin/user_info/delete/{{userid}}" onclick="return confirm('Are you sure you would like to permanantly delete user:{{user_name}}?')">remove user</a>
-</div>
-<div>
 
-</div>
 
 {% endblock %}
 <!-- add in a list when an item is selected show user and generate messege underneath?

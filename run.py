@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session
 import logging
+from logging import Formatter
 from logging.handlers import RotatingFileHandler
 import hashlib
 import MySQLdb
@@ -22,7 +23,7 @@ app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
 @app.route('/')
 @app.route('/index')
 def index():
-	app.logger.info('/index')
+	app.logger.critical('/index')
 	response = api_college()
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
@@ -70,6 +71,10 @@ def user_login():
 @app.route('/admin')
 @app.route('/admin/activity')
 def recent_activity():
+	#with open append x append y
+	#if x[2] = /index
+	#y = x[0] x = xcounter+1
+	#else skip
 	data= {}
 	bar_chart = pygal.StackedLine()
 	bar_chart.title= "User Activity"
@@ -79,19 +84,30 @@ def recent_activity():
 	chart = bar_chart.render(is_unicode=True)
 	return render_template('activity.html',data=data,chart =chart)
 
-
-@app.route('/admin/users/')
+@app.route('/admin/users')
 def admin_user_list():
+
 	response_obj = api_users()
 	response_obj=json.dumps(response_obj,ensure_ascii=False)
 	response_obj=json.loads(response_obj)
 
 
-	for index,i in enumerate(response_obj):
-		print index, i['first_name']
 
 
 	return render_template('admin_users.html',data=response_obj,alternate=10)#data= response_obj)
+
+
+@app.route('/admin/user_info/delete/<user_id>')
+def admin_delete_user(user_id):
+	api_remove_user(user_id)
+
+	return render_template('admin_remove_user.html',data=user_id)
+
+@app.route('/admin/course_info/delete/<course_id>')
+def admin_delete_course(course_id):
+	api_remove_course(course_id)
+
+	return render_template('admin_remove_course.html',data=course_id)
 @app.route('/admin/user_info/<user_id>')
 def admin_user_details(user_id):
 	user_id=user_id.replace('%20','')
@@ -99,18 +115,55 @@ def admin_user_details(user_id):
 	user_id=user_id.split('+')
 	response_obj = api_user_courses(user_id[0])
 	user_name = user_id[1]+" "+user_id[2]
-	print response_obj
+	userid = user_id[0]
 	# response_obj=json.dumps(response_obj,ensure_ascii=False)
 	# #print response_obj
 	response_obj=json.loads(response_obj)
+	print response_obj
+	return render_template('admin_users_details.html',data=response_obj,alternate=10,userid=userid,user_name=user_name)#data= response_obj)
+
+@app.route('/admin/courses')
+def admin_course_list():
+
+	response_obj = api_course_list()
+	response_obj=json.dumps(response_obj,ensure_ascii=False)
+	response_obj=json.loads(response_obj)
+	return render_template('admin_course.html',data=response_obj,alternate=10)#data= response_obj)
+@app.route('/admin/course/mapping')
+def admin_course_mapping():
+	#thinking of having two text box lists and whateve is selected gets relation ships
+	return render_template('mapping.html')
+@app.route('/admin/course_info/<course_id>')
+def admin_course_details(course_id):
+	course_id=course_id.replace('%20','')
+	course_id =course_id.encode('ascii','ignore')
+	course_id=course_id.split('+')
+	print course_id[0]
+	response_obj = api_admin_course(course_id[0])
+	course_name = course_id[1]
+	course_id = course_id[0]
+	# response_obj=json.dumps(response_obj,ensure_ascii=False)
+	# #print response_obj
+	response_obj=json.loads(response_obj)
+	print response_obj
 
 
-	return render_template('admin_users_details.html',data=response_obj,alternate=10,user_name=user_name)#data= response_obj)
+	return render_template('admin_course_details.html',data=response_obj,alternate=10,course_id=course_id,course_name=course_name)#data= response_obj)
 
 #########
 #  API  #
 #########
-@app.route('/api/admin')
+@app.route('/api/admin/remove_user/<userid>')
+def api_remove_user(userid):
+	app.logger.critical('/api/remove_user/'+userid)
+	query("DELETE FROM user WHERE id =%s" % userid)
+
+@app.route('/api/admin/remove_course/<courseid>')
+def api_remove_course(courseid):
+	app.logger.critical('/api/remove_course/'+courseid)
+	query("DELETE FROM course WHERE id =%s" % courseid)
+
+@app.route('/api/admin/users')
 def api_users():
 	app.logger.info('/api/admin')
 	results = query("SELECT user.id,user.first_name,user.last_name,user.college_id,user.email FROM user")
@@ -118,6 +171,26 @@ def api_users():
 	for row in results:
 		users.append({'id':row[0],'first_name':row[1],'last_name':row[2],'college_id':row[3],'email':row[4]})
 	return users
+
+@app.route('/api/admin/course')
+def api_course_list():
+	results = query("SELECT * FROM course")
+	courses= []
+	for row in results:
+		courses.append({'course_id':row[0], 'course_name':row[1], 'course_subject':row[2], 'course_number':row[3],'college_id':row[4]})
+
+	return courses
+
+@app.route('/api/admin/courses/<course_id>')
+def api_admin_course(course_id):
+
+	result = query("SELECT * FROM course WHERE course.id =%s" % course_id)
+	courses = []
+	for course in result:
+		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
+
+	return prepare_for_departure(content={'courses':courses},success=True)
+
 @app.route('/api/course/<int:course_id>')
 def api_course(course_id):
 	results = query("SELECT * FROM course WHERE course.id=%s" % course_id)
@@ -347,9 +420,14 @@ def md5(password):
 
 if __name__ == '__main__':
 
-	handler = RotatingFileHandler('temp.log',maxBytes=10*1024*1024,backupCount=2)
-	if(debug):
-		handler.setLevel(logging.DEBUG)
-	else:
-		handler.setLevel(logging.INFO)
+	logger = RotatingFileHandler('temp.log',maxBytes=10*1024*1024,backupCount=2)
+	logger.setLevel(logging.DEBUG)
+	logger.setFormatter(Formatter('%(asctime)s,''%(message)s'))
+	app.logger.addHandler(logger)
+
+	info_handler = RotatingFileHandler('info_temp.log',maxBytes=10*1024*1024,backupCount=2)
+	info_handler.setLevel(logging.CRITICAL)
+	info_handler.setFormatter(Formatter('%(asctime)s,''%(message)s'))
+	app.logger.addHandler(info_handler)
+
 	app.run("0.0.0.0", debug=True)
