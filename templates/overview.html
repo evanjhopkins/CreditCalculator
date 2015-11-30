@@ -80,6 +80,9 @@
     $('.modal #select').selectize();
 
     $(".new_scenario").click(function(){
+      $(".minor_pane").hide();
+      $(".major_pane").show();
+
       $('.modalbg, .modal').fadeIn();
       $.get("/majors", function( data ) {
         var obj = JSON.parse(data);
