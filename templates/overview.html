@@ -33,7 +33,8 @@
   <div class="modal hide">
     <div class="major_pane">
       <span class="header">Create a new scenario</span>
-      <hr>
+      <hr> 
+      <div class="error"></div>
       Major: <span class="major_names"></span>
       <div class="description">Recommended Majors:</div>
       <div class="majors">
@@ -52,6 +53,7 @@
     <div class="minor_pane hide">
       <span class="header">Create a new scenario</span>
       <hr>
+      <div class="error"></div>
       Minor: <span class="minor_names"></span>
       <div class="description">Recommended Minors:</div>
       <div class="majors">
@@ -135,16 +137,27 @@
 
     $(".major_pane .btn").click(function(){
       $(".modal").css({ "max-height":  $(".modal").height() });
-      $(".minor_pane").show();
-      $(".major_pane").hide();
+      if(major > 0){
+        $(".minor_pane").show();
+        $(".major_pane").hide();
+      }else{
+        $('.major_pane .error').html("");
+        $('.major_pane .error').append( '<div class="message"><i class=" fa fa-exclamation-triangle"></i> <span class="text">Please select a major</span></div>' );
+      }
     });
+
     $(".minor_pane .back").click(function(){
       $(".modal").css({ "max-height":  $(".modal").height() });
       $(".major_pane").show();
       $(".minor_pane").hide();
     });
     $(".minor_pane .save").click(function(){
-       $('.modalbg, .modal').fadeOut();
+      if(minor > 0){
+        $('.modalbg, .modal').fadeOut();
+      }else{
+        $('.minor_pane .error').html("");
+        $('.minor_pane .error').append( '<div class="message"><i class=" fa fa-exclamation-triangle"></i> <span class="text">Please select a minor</span></div>' );
+      }
     });
     $('.major_pane #select').change(function(){
       var title = $(this).text();
