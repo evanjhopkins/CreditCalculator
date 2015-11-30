@@ -371,6 +371,14 @@ def api_user_setmajor():
 
 	return prepare_for_departure(success=True)
 
+@app.route('/api/user/college')
+def api_user_college():
+	if(loggedIn()):
+		college = query("SELECT college_id FROM user WHERE id='%s'" % session['user_id'])[0][0]
+		response_obj = {'college_id': college}
+		return prepare_for_departure(success=True, content=response_obj)
+	return prepare_for_departure(success=False)
+
 @app.route('/api/user/logout', methods=['POST', 'GET'])
 def api_logout():
 	session.clear()

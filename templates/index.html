@@ -48,26 +48,33 @@
 
 {% block script %}
   <script>
+  var url = window.location.href;
+  if(url.substring(url.length-4, url.length) == "edit"){
+    $.get("/api/user/college", function( data ) {
+      obj = JSON.parse(data);
+      $('.college #select')[0].selectize.setValue(obj.content.college_id);
+    });
+    $(".description").hide();
+    $(".courses").show();
+    $(".courses .btn").fadeIn();
 
-    //prepopulate college if possible
-    var college_id = "{{session['college_id']}}";
-    $('#select-school').val(college_id);
+  }
 
-    var courses = [];
+  var courses = [];
 
-    //fix selectize ui quirk before initializing
-    $('.college #select, .courses #select').removeClass("selectize-dimensions");
-    //initialize selectize
-    $('.college #select').selectize();
-    $('.courses #select').selectize();
+  //fix selectize ui quirk before initializing
+  $('.college #select, .courses #select').removeClass("selectize-dimensions");
+  //initialize selectize
+  $('.college #select').selectize();
+  $('.courses #select').selectize();
 
-    //if a school has already been chosen (populated through either session or
-    //account) then we want to display the course selection
-    if ($("#select-school").val() != "") {
-        populate_course_options($("#select-school").val());
-        $('.add-school .fa-check-circle').show();
-        $('.add-courses').show();
-    }
+  //if a school has already been chosen (populated through either session or
+  //account) then we want to display the course selection
+  if ($("#select-school").val() != "") {
+      populate_course_options($("#select-school").val());
+      $('.add-school .fa-check-circle').show();
+      $('.add-courses').show();
+  }
 
     //user has chosen a college, advance to next step
     $('.college #select').change(function(){
