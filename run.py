@@ -258,6 +258,9 @@ def api_user_setcollege(college_id):
 
 @app.route('/api/user/scenarios')
 def api_user_scenarios():
+	api.logger.info('/api/user/scenarios')
+	scenarios = []
+	sql = ""
 	response_obj = [
 		{'major':"Biology", 'minor':"Chemistry"}
 	]

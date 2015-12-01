@@ -163,8 +163,11 @@ CREATE TABLE `program` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `program_type_id` int(11) unsigned NOT NULL,
+  `college_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `program_type_id` (`program_type_id`),
+  KEY `college_id` (`college_id`),
+  CONSTRAINT `program_ibfk_1` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`),
   CONSTRAINT `program_type_id` FOREIGN KEY (`program_type_id`) REFERENCES `program_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -189,7 +192,7 @@ CREATE TABLE `program_type` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,6 +201,7 @@ CREATE TABLE `program_type` (
 
 LOCK TABLES `program_type` WRITE;
 /*!40000 ALTER TABLE `program_type` DISABLE KEYS */;
+INSERT INTO `program_type` VALUES (1,'Major'),(2,'Minor');
 /*!40000 ALTER TABLE `program_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,4 +320,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-30 22:34:02
+-- Dump completed on 2015-12-01  0:35:05
