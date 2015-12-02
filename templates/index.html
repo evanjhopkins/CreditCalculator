@@ -48,11 +48,14 @@
 
 {% block script %}
   <script>
+  var courses = [];
+
   var url = window.location.href;
   if(url.substring(url.length-4, url.length) == "edit"){
     $.get("/api/user/college", function( data ) {
       obj = JSON.parse(data);
       $('.college #select')[0].selectize.setValue(obj.content.college_id);
+      load_users_courses();
     });
     $(".description").hide();
     $(".courses").show();
@@ -60,21 +63,11 @@
 
   }
 
-  var courses = [];
-
   //fix selectize ui quirk before initializing
   $('.college #select, .courses #select').removeClass("selectize-dimensions");
   //initialize selectize
   $('.college #select').selectize();
   $('.courses #select').selectize();
-
-  //if a school has already been chosen (populated through either session or
-  //account) then we want to display the course selection
-  if ($("#select-school").val() != "") {
-      populate_course_options($("#select-school").val());
-      $('.add-school .fa-check-circle').show();
-      $('.add-courses').show();
-  }
 
     //user has chosen a college, advance to next step
     $('.college #select').change(function(){
@@ -89,9 +82,15 @@
 
       if (course_id != ""){
         $(".college").slideUp();
+
+        if(courses.indexOf(parseInt(course_id)) >= 0){
+          throw_page_error("Cannot add same course twice");
+          return;
+        }
+
         $(".courses").append("<div class='course'>"+course_title+"</div>");
         $(".courses .btn").fadeIn();
-        courses.push(course_id);
+        courses.push(parseInt(course_id));
       }
        $('.courses #select')[0].selectize.clear();//reset selectize
     });
@@ -100,22 +99,6 @@
 
     //save data
     $( ".courses .btn" ).click(function() {
-      window.location.href = "/overview";
-
-      // console.log($('#select-school').val());
-      // if($('#select-school').val() === ""){
-      //   $(".error_text").text("You must select a college");
-      //   $(".error").fadeIn();
-      //   return;
-      // }
-
-      // if(courses.length<1){
-      //   $(".error_text").text("You must add some courses");
-      //   $(".error").fadeIn();
-      //   return;
-      // }
-
-
       $.ajax({
         type: 'POST',
         contentType: 'application/json',
@@ -128,7 +111,7 @@
             window.location.href = "/overview";
           });
         },error : function(result){
-          throw_page_error("Failed to save information, cannot proceed");;
+          throw_page_error("Failed to save information, cannot proceed");
 
         }
       });
@@ -141,6 +124,15 @@
         obj = JSON.parse(data);
         obj.content.courses.forEach(function(course){
           $('.courses #select')[0].selectize.addOption({value:course.id,text:course.title});
+        });
+      });
+    }
+    function load_users_courses(){
+      $.get("/api/user/courses", function( data ) {
+        obj = JSON.parse(data);
+        obj.content.courses.forEach(function(course){
+        $(".selected").prepend("<div class='course'>"+course.name+"</div>");
+          courses.push(course.id);
         });
       });
     }

@@ -285,15 +285,16 @@ def api_user_new():
 
 	return prepare_for_departure(success=True)
 
-@app.route('/api/user/<int:user_id>/courses')
-def api_user_courses(user_id):
+@app.route('/api/user/courses')
+def api_user_courses():
 	app.logger.info('/api/user/<int:user_id>/courses')
-	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % user_id)
-	courses = []
-	for course in result:
-		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
-
-	return prepare_for_departure(content={'courses':courses})
+	if(loggedIn()):
+		result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % session['user_id'])
+		courses = []
+		for course in result:
+			courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
+		return prepare_for_departure(content={'courses':courses}, success=False)
+	return prepare_for_departure(success=False)
 
 @app.route('/api/user/courses', methods=['POST'])
 def api_user_courses_add():
@@ -309,10 +310,10 @@ def api_user_courses_add():
 	
 	session['courses'] = courses
 
-	# if (loggedIn()):
-	# 	query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
-	# 	for course in post_body_obj['courses']:
-	# 		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course['course_id']))
+	if (loggedIn()):
+		query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
+		for course_id in post_body_obj['courses']:
+			query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course_id))
 
 	return prepare_for_departure(success=True)
 
