@@ -1,0 +1,48 @@
+Server configuration:
+
+Server 1 - Production
+Ip Address: 10.10.7.193
+Hostname: MorseUbuntuMain
+Function: Production
+Username: creditcalc
+Passwd: tmppw4you 
+Root Passwd: pw4us2dev
+Status: Up/Running 
+
+Server 2 - Backup/Deploy
+Ip Address: 10.10.7.194
+Hostname: MorseUbuntuJenkins
+Function: Backup and Deployment
+Username: creditcalc
+Passwd: tmppw4you 
+Root Passwd: pw4us2dev
+Status: Up/Running 
+
+Server 3 - Development
+Ip Address: 10.10.7.195
+Hostname: MorseUbuntuDev
+Function: Development and Testing
+Username: creditcalc
+Passwd: tmppw4you 
+Username: jenkins
+Passwd: tmppw4you
+Root Passwd: pw4us2dev
+Status: Up/Running 
+
+
+Rebuild Servers:
+################
+Production and Development (Server 1 and 3)
+1. Create user with credentials from about (U: creditcalc P: tmppw4you)
+2. Install git and clone repository onto server
+3. Run build.sh to install require packages
+4. Run application via Jenkins or Manually (if manually enter the following command when inside the repo dir "python run.py")
+-If jenkins is being used make sure ssh keys are configure
+
+
+Backup and Deploy (Server 2)
+1. for latest jenkins package and install, search online
+2. create the user creditcalc with credentials above and edit user jenkins to create home dir 
+2. once installed follow the instruction in jenkins_scripts.txt to configure and setup jenkins
+-again make sure ssh key are configured and working (refer to server documents)
+-Also it is recommended to enable security settings also found under Manage Jenkins 

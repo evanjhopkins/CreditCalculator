@@ -1,0 +1,182 @@
+Jenkins setup:
+
+1. install the latest distribution of Jenkins onto server 2, 10.10.7.194
+2. create new jobs all freestyle type and with the following names 
+   -Nightly_Backup_Odd
+   -Build_Deploy_Dev
+   -Build_Deploy-Prod
+   -Reclone_Dev
+   -Reclone_Prod
+3. install the following plugins, these are necessary to build the jobs
+   -Publish Over Ssh
+   -Slack Notification Plugin
+   -Also complete and plugin updates that are avaliable
+4. Once the Plugins are installed they must be configured
+   -For publish over ssh, go into Manage Jenkins - Configure Systems once inside the configure systems option scroll down to Publish over ssh
+   and insert the private key of the backup_deploy server which jenkins should be on and input the rest of the necessary info for each server
+   (Prod: 10.10.7.193 and Dev: 10.10.7.195)
+   -For slack notification, this is enabled on a per-job basis, inside the desired job select which notification you desire (failure, success, 
+   unstable, etc.) once select, scroll down to post-build section and in the dropdown select slack notification   
+4. copy the commands under Nightly_Backup_Odd bellow into the job for Nightly_Backup_Odd 
+5. copy the commands under Build_Deploy_(Prod/Dev) bellow into the job for Build_Deploy_Prod and Build_Deploy_Dev 
+5. copy the commands under Reclone_(Prod/Dev) bellow into the job for Reclone_Prod and Reclone_Dev
+
+
+
+
+#################################################################################
+##Nightly_Backup_Odd
+################################################################
+###########################
+## Backup time 
+## Build Triggers -- Build Periodically
+###########################
+0 2 1-31/2 * *
+
+###########################
+## DB dump and ssh copy to back up server
+## Build -- Send files ... over SSH
+###########################
+cd /home/creditcalc/db/backups/
+mysqldump --user=root --password=bbemt creditcalc > backup$(date +%F).sql
+scp backup$(date +%F).sql jenkins@10.10.7.194:/home/jenkins/DB/backups/
+
+#############################
+## Calculating date and removing old files
+## Build -- Execute shell
+#############################
+cd /home/jenkins/DB/backups/
+
+#############################
+## Variables for testing date
+#############################
+export DATECHECK=$(date +%d)
+export DATEBACK=10
+
+#############################
+## Variables for month and year
+#############################
+set `date +%m" "%Y`
+CURMTH=$1
+CURYR=$2
+
+#############################
+## Gathering last month and year
+#############################
+if [ $CURMTH -eq 1 ]
+  then
+    PRVMTH=12
+    PRVYR=`expr $CURYR - 1`
+else
+  PRVMTH=`expr $CURMTH - 1`
+  PRVYR=$CURYR
+fi
+
+#############################
+## adding a zero infront of all month lower than 10
+#############################
+if [ $PRVMTH -lt 10 ]
+  then PRVMTH="0"$PRVMTH
+fi
+
+#############################
+## output the last day of the PRV month
+#############################
+export LASTDY=`cal $PRVMTH $PRVYR | egrep "28|29|30|31" |tail -1 |awk '{print $NF}'`
+
+#############################
+## Check date and calculate date 10 days back
+## Remove backups based on date produced
+#############################
+if [ $DATECHECK -ge $DATEBACK ]
+  then
+    export TEST=$(expr $(date +%d) - $DATEBACK)
+    echo $TEST
+    echo "more than 10"
+    pwd
+    whoami
+else
+  echo Last Day: $LASTDY
+  export TEST=$(expr $LASTDY - $(expr $DATEBACK - $DATECHECK))
+  echo $TEST
+  echo "hello less than 10"
+  pwd
+  whoami
+fi
+
+export BACKDAY=backup20$PRVYR-$PRVMTH-$TEST.sql
+rm -rf $BACKDAY
+
+#################################################################################
+##Build_Deploy_(Prod/Dev)
+################################################################
+#############################
+## Starts the application's python script
+## Build Environment -- Send files or ... SSH after
+## the build runs
+#############################
+cd /home/creditcalc/CreditCalculator/
+nohup python run.py &
+
+
+#############################
+## Update from repository
+## Build -- Send files ... over SSH
+#############################
+#Change to creditcalcs home folder
+cd /home/creditcalc/CreditCalculator
+
+#Update sourcecode
+git pull
+
+#################################################################################
+##Reclone_(Prod/Dev)
+################################################################
+#############################
+## Starts the application's python script
+## Build Environment -- Send files or ... SSH after
+## the build runs
+#############################
+cd /home/creditcalc/CreditCalculator/
+nohup python run.py &
+
+#############################
+## RM old files and reclone git repo
+## Build -- Send files ... over SSH
+#############################
+#RM old files to make sure we are up to date
+rm -rf /home/creditcalc/CreditCalculator
+
+#Go to creditcalc home dir
+cd /home/creditcalc
+
+#Clone git repo because git pull sucks
+git clone git@github.com:evanjhopkins/CreditCalculator.git
+
+
+
+
+
+
+
+
+
+#################################################################################
+##OLD build_deploy_(Prod/Dev)
+##Only for reference
+################################################################
+#RM old files to make sure we are up to date
+rm -rf /home/creditcalc/CreditCalculator
+
+#Go to creditcalc home dir
+cd /home/creditcalc
+
+#Clone git repo because git pull sucks
+git clone git@github.com:evanjhopkins/CreditCalculator.git
+
+#Change to creditcalcs home folder
+cd /home/creditcalc/CreditCalculator
+
+#Build and populate DB
+mysql -u root -pbbemt < /home/creditcalc/CreditCalculator/credit_calculator_create.sql
+mysql -u root -pbbemt creditcalc < /home/creditcalc/CreditCalculator/build_db.sql
