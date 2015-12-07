@@ -1,12 +1,24 @@
 {% extends "admin_frame.html" %}
 
 {% block imports %}
+    <style>
+.center {
+    margin: auto;
+    width: 70%;
+
+    padding: 10px;
+}
+	</style>
+
   <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
  <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
 {% endblock %}
 
 {% block content %}
-<div class="img">
+<div class="center" >
+{{chart|safe}}
+</div>
+<div class="center" >
 {{chart|safe}}
 </div>
 {% endblock %}
