@@ -258,13 +258,15 @@ def api_user_setcollege(college_id):
 
 @app.route('/api/user/scenarios')
 def api_user_scenarios():
-	api.logger.info('/api/user/scenarios')
-	scenarios = []
-	sql = ""
-	response_obj = [
-		{'major':"Biology", 'minor':"Chemistry"}
-	]
-	return prepare_for_departure(content=response_obj, success=True)
+	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = 1 AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;")
+	scenarios = {}
+	for scenario in result:
+		if scenario[0] not in scenarios:
+			scenarios[scenario[0]] = []
+
+		scenarios[scenario[0]].append({"program_id":scenario[1], "program_type_id":scenario[3], "program_name":scenario[2]})
+
+	return prepare_for_departure(content={"scenarios":scenarios}, success=True)
 
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
