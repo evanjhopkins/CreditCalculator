@@ -31,3 +31,14 @@
 .courses .btn{
 	float: right;
 }
+
+/*##############################################
+       SELECTED COURSE
+###############################################*/
+.course .remove{
+	float: right;
+}
+.course .remove:hover{
+	color: #e80000;
+	cursor: pointer;
+}

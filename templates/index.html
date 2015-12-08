@@ -7,9 +7,9 @@
 {% block content %}
   <div class="description">
   <span class="welcome">Welcome, </span><br>
-  The Marist Credit Calculator is a tool for students seeking to transfer into Marist. 
+  The Marist Credit Calculator is a tool for students seeking to transfer into Marist.
   You will be able to get an estimatie on which courses from your current school will transfer.
-  We will also help you select a degree by calculating your percentage of completion for each degree. 
+  We will also help you select a degree by calculating your percentage of completion for each degree.
   </div>
 
   <div class="college">
@@ -42,7 +42,8 @@
 
     <div class="selected">
       <!-- will be filled by courses upon their selection -->
-    </div>
+<!--       <div class="course" id="5">Test Course<i class="remove fa fa-trash-o"></i></div>
+ -->    </div>
   </div>
 {% endblock %}
 
@@ -87,15 +88,21 @@
           throw_page_error("Cannot add same course twice");
           return;
         }
-
-        $(".courses").append("<div class='course'>"+course_title+"</div>");
+        $(".courses").append("<div class='course' id='"+course_id+"'>"+course_title+"<i class='remove fa fa-trash-o'></i></div>");
+        $('.remove').click( function(){
+          $(this).parent().slideUp();
+          remove_item(courses,$(this).parent()[0].attributes.id.value );
+        });//when delete class is clicked
         $(".courses .btn").fadeIn();
         courses.push(parseInt(course_id));
       }
        $('.courses #select')[0].selectize.clear();//reset selectize
     });
 
-    $('.remove').click( function(){ $(this).parent().remove(); });//when delete class is clicked
+    $('.remove').click( function(){
+      $(this).parent().slideUp();
+      remove_item(courses,$(this).parent()[0].attributes.id.value );
+    });//when delete class is clicked
 
     //save data
     $( ".courses .btn" ).click(function() {
@@ -131,11 +138,23 @@
       $.get("/api/user/courses", function( data ) {
         obj = JSON.parse(data);
         obj.content.courses.forEach(function(course){
-        $(".selected").prepend("<div class='course'>"+course.name+"</div>");
+        $(".selected").prepend("<div class='course'>"+course.name+"<i class='remove fa fa-trash-o'></i></div>");
           courses.push(course.id);
+          $('.remove').click( function(){
+            $(this).parent().slideUp();
+            remove_item(courses,course.id);
+          });//when delete class is clicked
         });
       });
     }
+  function remove_item(array, item){
+    for(var i in array){
+      if(array[i]==item){
+        array.splice(i,1);
+        break;
+      }
+    }
+  }
   </script>
 
 {% endblock %}
