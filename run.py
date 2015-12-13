@@ -10,7 +10,6 @@ import pygal
 import json
 import urllib2
 import re
-import geoip2.database
 import urllib
 from random import randint
 
