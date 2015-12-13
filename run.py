@@ -67,7 +67,8 @@ def majors():
 	result = query(sql)
 	majors = []
 	for major in result:
-		majors.append({'name':major[1], 'id':major[0], 'percent':randint(0,99)})
+		percent = api_map(major[0])['percent']
+		majors.append({'name':major[1], 'id':major[0], 'percent':percent})
 
 	return prepare_for_departure(content={'majors':majors}, success=True)
 
@@ -535,14 +536,19 @@ def api_map(program_id):
 				break
 
 	courses_in_program = 0
+	percent = 0
 	if(program_id == 1):
 		courses_in_program = 15
+	if courses_in_program>0:
+		percent = ((len(final_map)*100/courses_in_program))
+
 
 	return_obj = {}
-	return_obj['percent'] = ((len(final_map)*100/courses_in_program))
+	return_obj['percent'] = percent
 	return_obj['map'] = final_map
-	return prepare_for_departure(success=True, content=return_obj)
-	#completed_courses = 	
+	return return_obj
+	# return prepare_for_departure(success=True, content=return_obj)
+	# #completed_courses = 	
 
 @app.route('/api/user/setmajor', methods=['POST'])
 def api_user_setmajor():

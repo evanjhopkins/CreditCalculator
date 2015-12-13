@@ -1,0 +1,37 @@
+body, html{
+	margin: 0;
+	width: 100%;
+}
+.map{
+	font-size: 150%;
+	margin-top: 10px;
+	width: 100%;
+	float: left;
+}
+.arrow{
+	text-align: center;
+	width: 5%;
+	font-size: 135%;
+	float: left;
+	padding: 0.45% 0px 0px 0px;
+}
+.course{
+/*	border: 1px solid red;
+*/	padding: 0.5% 0.5% 0.5% 0.5%;
+	width: 46%;
+	float: left;
+}
+.local{
+	text-align: right;
+}
+.green{
+	background-color: #B5FFB5;
+/*	border: 1px solid #007500;
+*/}
+
+.major{
+	font-size: 150%;
+}
+.percent{
+	opacity: 0.45;
+}
