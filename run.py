@@ -10,6 +10,8 @@ import pygal
 import json
 import urllib2
 import re
+import geoip2.database
+import urllib
 from random import randint
 
 
@@ -26,7 +28,9 @@ app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
 @app.route('/index',methods={"GET"})
 def index():
 
-	app.logger.critical('/index,'+request.environ['REMOTE_ADDR'])
+	ip = request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
+	app.logger.critical('/index,'+ip)
+
 	response = api_college()
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
@@ -74,22 +78,24 @@ def user_login():
 @app.route('/admin')
 @app.route('/admin/activity')
 def recent_activity():
+
+
 	#give the admin a feel for whats happening on the site without having to go through logs
 	#graph data from log
 	with open('info_temp.log','r') as f:
 		course_list=[]
+		tableint=0
 		course_counter=0
 		course_removed=[]
 		course_removed_date=[]
-		user_list=[]
 		user_counter=0
-		user_removed=[]
-		user_removed_date=[]
-		# user_dates=[]
-		# users_ip=[]
-		# new_date=[]
-		# day_list=[]
-		# new_number=0
+		city_list=[]
+		country_list=[]
+		city_date=[]
+		city_users=[]
+		user_date = []
+		user_location_counter=0
+		user_counter_list=[]
 		for line in f:
 			formatter = '%Y-%m-%d %H:%M:%S'
 
@@ -104,16 +110,34 @@ def recent_activity():
 			# if(line[2]=='/api/user/new'):
 			# 	new_date.append(date)
 			# 	new_number=new_number+1
+			if(line[2]=='/index'):
+				user_location_counter= user_location_counter+1
+				user_date.append(line[0])
+				user_counter_list.append(user_location_counter)
+				urlFoLaction = "http://www.freegeoip.net/json/{0}".format(line[3])
+				locationInfo = json.loads(urllib.urlopen(urlFoLaction).read())
+				if(len(locationInfo['country_name'])>0):
+					#has_info_counter=has_info_counter+1
+					tableint=1
+					city_users.append(user_location_counter)
+					city_list.append(locationInfo['city'])
+					country_list.append(locationInfo['country_name'])
+					city_date.append(line[0])
+
+					# print 'Country: ' + locationInfo['country_name']
+					# print 'City: ' + locationInfo['city']
+					# print ''
+					# print 'Latitude: ' + str(locationInfo['latitude'])
+					# print 'Longitude: ' + str(locationInfo['longitude'])
+					# print 'IP: ' + str(locationInfo['ip'])
+
+
 			if(line[2]=='/api/remove_course/'):
 				course_counter=course_counter+1
 				course_list.append(course_counter)
 				course_removed.append(line[3])
 				course_removed_date.append(date)
-			if(line[2]=='/api/remove_user/'):
-				user_counter=user_counter+1
-				user_list.append(user_counter)
-				user_removed.append(line[3])
-				user_removed_date.append(date)
+
 
 
 
@@ -124,18 +148,22 @@ def recent_activity():
 	#y = x[0] x = xcounter+1
 	#else skip
 	data= {}
+
+	bar_chart = pygal.StackedLine(x_label_rotation=20,y_title='User Number',tooltip_border_radius=10,disable_xml_declaration=True)
+	bar_chart.title= "Number of Users vs Time"
+	bar_chart.x_labels = user_date
+
+	bar_chart.add('User Activity',user_counter_list)
+	chart3 = bar_chart.render(is_unicode=True)
+
 	bar_chart = pygal.StackedLine(x_label_rotation=20,tooltip_border_radius=10)
-	bar_chart.title= "removed courses vs time"
+	bar_chart.title= "Removed Courses vs Time"
 	bar_chart.x_labels = course_removed_date
 	bar_chart.add('courses removed',course_list)
 	chart = bar_chart.render(is_unicode=True)
 
-	bar_chart = pygal.StackedLine(x_label_rotation=20,tooltip_border_radius=10)
-	bar_chart.title= "removed users vs time"
-	bar_chart.x_labels = user_removed_date
-	bar_chart.add('users removed',user_list)
-	chart2 = bar_chart.render(is_unicode=True)
-	return render_template('activity.html',data=data,chart =chart,chart2=chart2)
+
+	return render_template('activity.html',city_users=city_users,city_date=city_date,country_list=country_list,city_list=city_list,tableint=tableint,data=data,chart =chart,chart3=chart3,course_counter=course_counter,user_location_counter=user_location_counter,user_counter=user_counter)
 
 @app.route('/admin/users')
 def admin_user_list():
