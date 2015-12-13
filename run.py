@@ -1,13 +1,16 @@
 from flask import Flask, render_template, request, session
 import logging
 from logging import Formatter
+from flask import request
 from logging.handlers import RotatingFileHandler
 import hashlib
 import MySQLdb
+from datetime import *
 import pygal
 import json
 import urllib2
 import re
+import urllib
 from random import randint
 
 
@@ -21,9 +24,12 @@ app.secret_key = "sfsKG7*(*&)*LIJHGljhlkjhdk903"
 #  Web App  #
 #############
 @app.route('/')
-@app.route('/index')
+@app.route('/index',methods={"GET"})
 def index():
-	app.logger.critical('/index')
+
+	ip = request.environ.get('HTTP_X_REAL_IP',request.remote_addr)
+	app.logger.critical('/index,'+ip)
+
 	response = api_college()
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
@@ -59,7 +65,7 @@ def minors():
 
 @app.route('/user/new')
 def user_new():
-	app.logger.info('/user/new')
+
 	response_obj = {}
 	return render_template('user_new.html', data=response_obj)
 
@@ -71,96 +77,172 @@ def user_login():
 @app.route('/admin')
 @app.route('/admin/activity')
 def recent_activity():
+
+
+	#give the admin a feel for whats happening on the site without having to go through logs
+	#graph data from log
+	with open('info_temp.log','r') as f:
+		course_list=[]
+		tableint=0
+		course_counter=0
+		course_removed=[]
+		course_removed_date=[]
+		user_counter=0
+		city_list=[]
+		country_list=[]
+		city_date=[]
+		city_users=[]
+		user_date = []
+		user_location_counter=0
+		user_counter_list=[]
+		for line in f:
+			formatter = '%Y-%m-%d %H:%M:%S'
+
+			line = line.split(',')
+			date=datetime.strptime(line[0],formatter)
+
+
+		#if statement per graph that we want
+			# if(line[2]=='/index'):
+			# 	user_dates.append(date)
+			# 	users_ip.append(line[3])
+			# if(line[2]=='/api/user/new'):
+			# 	new_date.append(date)
+			# 	new_number=new_number+1
+			if(line[2]=='/index'):
+				user_location_counter= user_location_counter+1
+				user_date.append(line[0])
+				user_counter_list.append(user_location_counter)
+				urlFoLaction = "http://www.freegeoip.net/json/{0}".format(line[3])
+				locationInfo = json.loads(urllib.urlopen(urlFoLaction).read())
+				if(len(locationInfo['country_name'])>0):
+					#has_info_counter=has_info_counter+1
+					tableint=1
+					city_users.append(user_location_counter)
+					city_list.append(locationInfo['city'])
+					country_list.append(locationInfo['country_name'])
+					city_date.append(line[0])
+
+					# print 'Country: ' + locationInfo['country_name']
+					# print 'City: ' + locationInfo['city']
+					# print ''
+					# print 'Latitude: ' + str(locationInfo['latitude'])
+					# print 'Longitude: ' + str(locationInfo['longitude'])
+					# print 'IP: ' + str(locationInfo['ip'])
+
+
+			if(line[2]=='/api/remove_course/'):
+				course_counter=course_counter+1
+				course_list.append(course_counter)
+				course_removed.append(line[3])
+				course_removed_date.append(date)
+
+
+
+
+
+
 	#with open append x append y
 	#if x[2] = /index
 	#y = x[0] x = xcounter+1
 	#else skip
 	data= {}
-	bar_chart = pygal.StackedLine()
-	bar_chart.title= "User Activity"
-	bar_chart.x_labels = map(str,range(11))
-	bar_chart.add('Requested Courses', [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])
-	bar_chart.add('Added Users', [1, 1, 1, 2, 2, 3, 4, 5, 7, 9, 12])
+
+	bar_chart = pygal.StackedLine(x_label_rotation=20,y_title='User Number',tooltip_border_radius=10,disable_xml_declaration=True)
+	bar_chart.title= "Number of Users vs Time"
+	bar_chart.x_labels = user_date
+
+	bar_chart.add('User Activity',user_counter_list)
+	chart3 = bar_chart.render(is_unicode=True)
+
+	bar_chart = pygal.StackedLine(x_label_rotation=20,tooltip_border_radius=10)
+	bar_chart.title= "Removed Courses vs Time"
+	bar_chart.x_labels = course_removed_date
+	bar_chart.add('courses removed',course_list)
 	chart = bar_chart.render(is_unicode=True)
-	return render_template('activity.html',data=data,chart =chart)
+
+
+	return render_template('activity.html',city_users=city_users,city_date=city_date,country_list=country_list,city_list=city_list,tableint=tableint,data=data,chart =chart,chart3=chart3,course_counter=course_counter,user_location_counter=user_location_counter,user_counter=user_counter)
 
 @app.route('/admin/users')
 def admin_user_list():
-
 	response_obj = api_users()
 	response_obj=json.dumps(response_obj,ensure_ascii=False)
 	response_obj=json.loads(response_obj)
-
-
-
-
 	return render_template('admin_users.html',data=response_obj,alternate=10)#data= response_obj)
 
 
 @app.route('/admin/user_info/delete/<user_id>')
 def admin_delete_user(user_id):
 	api_remove_user(user_id)
-
 	return render_template('admin_remove_user.html',data=user_id)
 
 @app.route('/admin/course_info/delete/<course_id>')
 def admin_delete_course(course_id):
 	api_remove_course(course_id)
-
 	return render_template('admin_remove_course.html',data=course_id)
+
+
 @app.route('/admin/user_info/<user_id>')
 def admin_user_details(user_id):
 	user_id=user_id.replace('%20','')
 	user_id =user_id.encode('ascii','ignore')
 	user_id=user_id.split('+')
-	response_obj = api_user_courses(user_id[0])
+	response_obj = api_admin_user_courses(user_id[0])
 	user_name = user_id[1]+" "+user_id[2]
 	userid = user_id[0]
 	# response_obj=json.dumps(response_obj,ensure_ascii=False)
 	# #print response_obj
 	response_obj=json.loads(response_obj)
-	print response_obj
 	return render_template('admin_users_details.html',data=response_obj,alternate=10,userid=userid,user_name=user_name)#data= response_obj)
 
-@app.route('/admin/courses')
-def admin_course_list():
 
+@app.route('/admin/courses',methods=['GET','POST'])
+def admin_course_list():
+	#if ('Course Name' in request.form.values()):
+	if len(request.form)>0:
+		print request.form['course_name']
+		print request.form['subject']
+		print request.form['course_number']
+		print request.form['college_id']
+		stmt = """INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', '%s', '%s')""" % (request.form['course_name'], request.form['subject'], request.form['course_number'],request.form['college_id'] )
+		query(stmt)
 	response_obj = api_course_list()
 	response_obj=json.dumps(response_obj,ensure_ascii=False)
 	response_obj=json.loads(response_obj)
 	return render_template('admin_course.html',data=response_obj,alternate=10)#data= response_obj)
+
 @app.route('/admin/course/mapping')
 def admin_course_mapping():
 	#thinking of having two text box lists and whateve is selected gets relation ships
 	return render_template('mapping.html')
+
 @app.route('/admin/course_info/<course_id>')
 def admin_course_details(course_id):
 	course_id=course_id.replace('%20','')
 	course_id =course_id.encode('ascii','ignore')
 	course_id=course_id.split('+')
-	print course_id[0]
 	response_obj = api_admin_course(course_id[0])
 	course_name = course_id[1]
 	course_id = course_id[0]
 	# response_obj=json.dumps(response_obj,ensure_ascii=False)
 	# #print response_obj
 	response_obj=json.loads(response_obj)
-	print response_obj
-
-
 	return render_template('admin_course_details.html',data=response_obj,alternate=10,course_id=course_id,course_name=course_name)#data= response_obj)
-
+@app.route('/admin/courses/add_course')
+def admin_add_course():
+	return render_template('admin_add_course.html')
 #########
 #  API  #
 #########
 @app.route('/api/admin/remove_user/<userid>')
 def api_remove_user(userid):
-	app.logger.critical('/api/remove_user/'+userid)
+	app.logger.critical('/api/remove_user/,'+userid)
 	query("DELETE FROM user WHERE id =%s" % userid)
 
 @app.route('/api/admin/remove_course/<courseid>')
 def api_remove_course(courseid):
-	app.logger.critical('/api/remove_course/'+courseid)
+	app.logger.critical('/api/remove_course/,'+courseid)
 	query("DELETE FROM course WHERE id =%s" % courseid)
 
 @app.route('/api/admin/users')
@@ -258,13 +340,15 @@ def api_user_setcollege(college_id):
 
 @app.route('/api/user/scenarios')
 def api_user_scenarios():
-	api.logger.info('/api/user/scenarios')
-	scenarios = []
-	sql = ""
-	response_obj = [
-		{'major':"Biology", 'minor':"Chemistry"}
-	]
-	return prepare_for_departure(content=response_obj, success=True)
+	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = 1 AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;")
+	scenarios = {}
+	for scenario in result:
+		if scenario[0] not in scenarios:
+			scenarios[scenario[0]] = []
+
+		scenarios[scenario[0]].append({"program_id":scenario[1], "program_type_id":scenario[3], "program_name":scenario[2]})
+
+	return prepare_for_departure(content={"scenarios":scenarios}, success=True)
 
 @app.route('/api/user/scenarios/new', methods=['POST'])
 def api_user_scenarios_new():
@@ -291,7 +375,7 @@ def api_user_scenarios_new():
 
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
-	app.logger.info('/api/user/new')
+	app.logger.critical('/api/user/new')
 	post_body = request.data
 
 	try:#invalid json will cause a crash
@@ -307,6 +391,16 @@ def api_user_new():
 			 (user['first_name'], user['last_name'], user['email'], hashed_pass, user['college_id']))
 
 	return prepare_for_departure(success=True)
+
+@app.route('/api/admin/user/courses')
+def api_admin_user_courses(id):
+	app.logger.info('/api/user/<int:user_id>/courses')
+
+	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % id)
+	courses = []
+	for course in result:
+		courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
+	return prepare_for_departure(content={'courses':courses}, success=False)
 
 @app.route('/api/user/courses')
 def api_user_courses():
@@ -424,6 +518,8 @@ def loggedIn():
 	if ('user_id' in session):
 		return True
 	return False
+
+
 
 def query(stmt):
 	try:

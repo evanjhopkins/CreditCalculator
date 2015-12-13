@@ -17,6 +17,13 @@ $(document).ready(function(){
     $('#myTable').DataTable();
 });
 	</script>
+    <style type="text/css">
+.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #000000;border-collapse: collapse;}
+.tftable th {font-size:12px;color:#ffffff;background-color:#ba2828;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;text-align:left;}
+.tftable tr {background-color:#d4e3e5;}
+.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;}
+.tftable tr:hover {background-color:#ffffff;}
+</style>
 </head>
 
 
@@ -48,12 +55,9 @@ $(document).ready(function(){
         </span>
       </div>
 
-    <div class="nav">
-        <a href="/admin/courses/mappings"><span class="step">Mappings</span></a>
-        <a href="/admin/courses/add_course"><span class="step">New Course</span></a>
-    </div>
 
-    <table id = "myTable" class = "tablesorter" border = "1">
+
+    <table id = "myTable" class = "tftable" border = "1">
         <thead>
         <tr>
             <th>ID</th>
@@ -86,6 +90,24 @@ $(document).ready(function(){
 
 
 </table>
+<hr noshade>
+
+   <p><b>Add New Course:</b></p>
+    <form action="/admin/courses" method="post" onsubmit="location.reload()">
+  Course Name:<br>
+  <input type="text" name="course_name" >
+  <br>
+  Subject:<br>
+  <input type="text" name="subject">
+  <br>
+  Course Number:<br>
+  <input type="text" name="course_number">
+  <br>
+  College id:<br>
+  <input type="text" name="college_id">
+  <br>
+        <input type="submit"/>
+</form>
 
 </div>
 </body>

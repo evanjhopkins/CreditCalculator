@@ -1,6 +1,6 @@
-
 <head>
-	<title>courses</title>
+	<title>Courses
+    </title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
@@ -17,13 +17,6 @@ $(document).ready(function(){
     $('#myTable').DataTable();
 });
 	</script>
-    <style type="text/css">
-.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #000000;border-collapse: collapse;}
-.tftable th {font-size:12px;color:#ffffff;background-color:#ba2828;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;text-align:left;}
-.tftable tr {background-color:#d4e3e5;}
-.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;}
-.tftable tr:hover {background-color:#ffffff;}
-</style>
 </head>
 
 
@@ -55,48 +48,7 @@ $(document).ready(function(){
         </span>
       </div>
 
-
-<div> Update class :{{course_name}}</div>
-<div class="datagrid">
-    <table id="myTable" class="tftable" border="1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Subject</th>
-            <th>Course Number</th>
-            <th>College ID</th>
-
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for courses in data.content.courses %}
-        {% if loop.index%2==0 %}
-        <tr class="alt">
-        {% else %}
-        <tr>
-        {% endif %}
-            <td>{{courses['id']}}</td>
-            <td>{{courses['name']}}</td>
-            <td>{{courses['subject']}}</td>
-            <td>{{courses['course_number']}}</td>
-            <td>{{courses['college_id']}}</td>
-
-
-        </tr>
-        {% endfor %}
-        </tbody>
-
-</tbody>
-</table></div>
-<div>
-
-    <a href="/admin/course_info/delete/{{course_id}}" onclick="return confirm('Are you sure you would like to permanantly delete the course:{{course_name}}?')">remove course</a>
-</div>
-<div>
-
-</div>
-</body>
-
-<!-- add in a list when an item is selected show user and generate messege underneath?
+    <div class="nav">
+        <a href="/admin/courses/mappings"><span class="step">Mappings</span></a>
+        <a href="/admin/courses/add_course"><span class="step">New Course</span></a>
+    </div>

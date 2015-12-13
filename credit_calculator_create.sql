@@ -169,7 +169,7 @@ CREATE TABLE `program` (
   KEY `college_id` (`college_id`),
   CONSTRAINT `program_ibfk_1` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`),
   CONSTRAINT `program_type_id` FOREIGN KEY (`program_type_id`) REFERENCES `program_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,6 +178,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
+INSERT INTO `program` VALUES (1,'Computer Science',1,2),(2,'Chemistry',1,2),(3,'Women\'s Studies',2,2),(4,'English',2,2);
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +219,7 @@ CREATE TABLE `scenario` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `scenario_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,6 +228,7 @@ CREATE TABLE `scenario` (
 
 LOCK TABLES `scenario` WRITE;
 /*!40000 ALTER TABLE `scenario` DISABLE KEYS */;
+INSERT INTO `scenario` VALUES (1,1);
 /*!40000 ALTER TABLE `scenario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,6 +255,7 @@ CREATE TABLE `scenario_program` (
 
 LOCK TABLES `scenario_program` WRITE;
 /*!40000 ALTER TABLE `scenario_program` DISABLE KEYS */;
+INSERT INTO `scenario_program` VALUES (1,1),(1,3);
 /*!40000 ALTER TABLE `scenario_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,4 +323,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-01  0:35:05
+-- Dump completed on 2015-12-08  2:38:29

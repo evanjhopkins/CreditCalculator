@@ -1,25 +1,114 @@
-{% extends "admin_frame.html" %}
+<head>
+	<title>Courses
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,800,800italic,700' rel='stylesheet' type='text/css'>
+    <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/selectize.js') }}"></script>
+    	<script type="text/javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 
-{% block imports %}
+
+	<script type="text/javascript">
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
+	</script>
     <style>
+<style type="text/css">
+.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #000000;border-collapse: collapse;}
+.tftable th {font-size:12px;color:#ffffff;background-color:#ba2828;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;text-align:left;}
+.tftable tr {background-color:#d4e3e5;}
+.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #000000;}
+.tftable tr:hover {background-color:#ffffff;}
+</style>
+
+    </style>
+            <style>
 .center {
     margin: auto;
-    width: 70%;
+    width: 75%;
 
-    padding: 10px;
+
 }
 	</style>
+</head>
 
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/courses.css') }}" />
- <link rel="stylesheet" href="{{ url_for('static',filename='css/users.css') }}" />
-{% endblock %}
 
-{% block content %}
-<div class="center" >
+<body>
+<div class="content">
+      <div class="top">
+        {% if 1>2 %}
+          <form class="login-form" action="/api/user/login" method="POST">
+            <span class="login-error"></span>
+            <input type="text" name="email" placeholder="email..."/>
+            <input type="password" name="password" placeholder="password..." />
+            <span class="login-submit">Log In</span>
+          </form>
+        {% else %}
+          <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
+        {% endif %}
+        <div class="header">
+          <span class="title">Marist</span>
+          <span class="sub_title"><b>Admin</b> Credit Calculator</span>
+        </div>
+        <hr noshade>
+      </div>
+
+      <div class="nav">
+        <a href="/admin/activity"><span class="step">Recent Activity - </span></a>
+          <a href="/admin/users"><span class="step">Users -</span></a>
+          <a href="/admin/courses"><span class="step">Courses </span></a>
+
+        </span>
+      </div>
+
+
+{% if tableint==1 %}
+
+
+    <table id="myTable" class="tftable"  border="1">
+        <thead>
+        <tr>
+            <th>User Number</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Date</th>
+
+
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for i in city_list %}
+
+        <tr>
+
+            <td>{{city_users[loop.index0]}}</td>
+            <td>{{country_list[loop.index0]}}</td>
+            <td>{{i}}</td>
+            <td>{{city_date[loop.index0]}}</td>
+
+
+
+        </tr>
+        {% endfor %}
+        </tbody>
+
+</tbody>
+</table>
+    <div class="center">
+{% endif %}
+
+{{chart3|safe}}
+
 {{chart|safe}}
+
+{{chart2|safe}}
 </div>
-<div class="center" >
-{{chart|safe}}
-</div>
-{% endblock %}
+
+
 <!-- add in a list when an item is selected show user and generate messege underneath?
