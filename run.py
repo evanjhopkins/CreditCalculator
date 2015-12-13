@@ -82,7 +82,9 @@ def minors():
 	result = query(sql)
 	majors = []
 	for major in result:
-		majors.append({'name':major[1], 'id':major[0], 'percent':randint(0,99)})
+		percent = api_map(major[0])['percent']
+
+		majors.append({'name':major[1], 'id':major[0], 'percent':percent})
 
 	return prepare_for_departure(content={'minors':majors}, success=True)
 
@@ -539,6 +541,8 @@ def api_map(program_id):
 	percent = 0
 	if(program_id == 1):
 		courses_in_program = 15
+	if(program_id == 4):
+		courses_in_program = 6
 	if courses_in_program>0:
 		percent = ((len(final_map)*100/courses_in_program))
 
