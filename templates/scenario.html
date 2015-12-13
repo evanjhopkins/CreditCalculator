@@ -1,0 +1,39 @@
+{% block imports %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/scenario.css') }}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+
+{% endblock %}
+
+{% block content %}
+<div class="major">
+  Major: Computer Science  <span class="percent">34%</span>
+</div>
+
+<div class="major">
+  Major: Political Science <span class="percent">34%</span>
+</div>
+
+Course Mapping
+<div class="map">
+<div class="course  local">DCC Course</div><div class="arrow"><i class="fa fa-long-arrow-right"></i></div><div class="course ">Marist Course</div>
+</div>
+<hr>
+
+<div class="map">
+<div class="course  local">Computer Prog1</div><div class="arrow"><i class="fa fa-long-arrow-right"></i></div><div class="course ">Software Development 1</div>
+</div>
+
+<div class="map">
+<div class="course  local">Computer Prog1</div><div class="arrow"><i class="fa fa-times-circle"></i></div><div class="course ">[Doesn't transfer]</div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+</script>
+{% endblock %}

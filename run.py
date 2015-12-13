@@ -34,6 +34,11 @@ def index():
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
+@app.route('/scenario')
+def scenario():
+	return render_template('scenario.html', data={})
+
+
 @app.route('/overview')
 def overview():
 	if (not loggedIn()):
@@ -415,7 +420,6 @@ def api_user_new():
 
 @app.route('/api/admin/user/courses')
 def api_admin_user_courses(id):
-	app.logger.info('/api/user/<int:user_id>/courses')
 
 	result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % id)
 	courses = []
@@ -501,6 +505,44 @@ def api_login():
 		session['courses'].append({'course_id': course[0], 'course_name': course[1]})
 
 	return prepare_for_departure(success=True)
+
+@app.route('/api/map/<int:program_id>')
+def api_map(program_id):
+
+	result = query("SELECT * FROM course_mapping WHERE program_id=%s" % program_id)
+	cmaps = []
+	for cmap in result:
+		cmaps.append({"local":cmap[1], "foreign":cmap[0]})
+
+	completed_courses = []
+	final_map = []
+	result = query("SELECT * FROM completed_course WHERE transfer_id=%s" % session['user_id']);
+	for course in result:
+		last_map = 0
+		#print course[1]
+		for cmap in cmaps:
+			print str(cmap['local']) +" =?= "+str(course[1])
+
+			if int(cmap['local']) == int(course[1]):
+				final_map.append(cmap)
+				last_map = cmap
+				#remove every other map that points to the same marist course
+				for i, val in enumerate(cmaps):
+					#print str(val['foreign']) +" =?= "+str(last_map['foreign'])
+					if int(val['foreign']) == int(last_map['foreign']):
+						cmaps.pop(i)
+
+				break
+
+	courses_in_program = 0
+	if(program_id == 1):
+		courses_in_program = 15
+
+	return_obj = {}
+	return_obj['percent'] = ((len(final_map)*100/courses_in_program))
+	return_obj['map'] = final_map
+	return prepare_for_departure(success=True, content=return_obj)
+	#completed_courses = 	
 
 @app.route('/api/user/setmajor', methods=['POST'])
 def api_user_setmajor():
