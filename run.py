@@ -36,6 +36,9 @@ def index():
 
 @app.route('/overview')
 def overview():
+	if (not loggedIn()):
+		return render_template('overview.html', data={'scenarios':[]})
+
 	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = %s AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;" % session['user_id'])
 	scenarios = {}
 	for scenario in result:
@@ -51,6 +54,9 @@ def overview():
 
 @app.route('/majors')
 def majors():
+	if (not session['user_id']):
+		return prepare_for_departure(content={'majors':[]}, success=True)
+
 	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=1"
 	print sql
 	result = query(sql)
@@ -62,6 +68,9 @@ def majors():
 
 @app.route('/minors')
 def minors():
+	if (not session['user_id']):
+		return prepare_for_departure(content={'majors':[]}, success=True)
+
 	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=2"
 	print sql
 	result = query(sql)
