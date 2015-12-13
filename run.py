@@ -266,6 +266,29 @@ def api_user_scenarios():
 	]
 	return prepare_for_departure(content=response_obj, success=True)
 
+@app.route('/api/user/scenarios/new', methods=['POST'])
+def api_user_scenarios_new():
+	post_body_obj = request_data()
+	print post_body_obj['scenario']['major']
+	#print(post_body_obj['scenario'])
+	#query("INSERT INTO scenario (user_id) VALUES(%s)" % session['user_id'])
+	scenario_id = -1
+	try:
+		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
+		cur = db.cursor()
+		cur.execute( "INSERT INTO scenario (user_id) VALUES(%s)" % session['user_id'])
+		scenario_id = cur.lastrowid
+		sql = "INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major'])
+		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major']))
+		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['minor']))
+		results = cur.fetchall()
+		db.commit();
+		#return results
+		return prepare_for_departure(success=True, content={})
+
+	except:
+		print "!! query failed"
+
 @app.route('/api/user/new',  methods=['POST'])
 def api_user_new():
 	app.logger.info('/api/user/new')
@@ -307,7 +330,7 @@ def api_user_courses_add():
 		result = query("SELECT * FROM course WHERE course.id=%s" % course_id)
 		course_name = result[0][1]
 		courses.append({'course_id':course_id, "course_name":course_name})
-	
+
 	session['courses'] = courses
 
 	if (loggedIn()):

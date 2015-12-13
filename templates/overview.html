@@ -33,7 +33,7 @@
   <div class="modal hide">
     <div class="major_pane">
       <span class="header">Create a new scenario</span>
-      <hr> 
+      <hr>
       <div class="error"></div>
       Major: <span class="major_names"></span>
       <div class="description">Recommended Majors:</div>
@@ -155,6 +155,23 @@
     $(".minor_pane .save").click(function(){
       if(minor > 0){
         $('.modalbg, .modal').fadeOut();
+        //#console.log(major);
+        //console.log(minor);
+        major = 1;
+        minor = 2;
+        $.ajax({
+          type: 'POST',
+          contentType: 'application/json',
+          url: '/api/user/scenarios/new',
+          dataType : 'json',
+          data : JSON.stringify({"scenario":{"major":major, "minor":minor}}),
+          success : function(result) {
+            console.log(result);
+
+          },error : function(result){
+            console.log("failed");
+          }
+        });
       }else{
         $('.minor_pane .error').html("");
         $('.minor_pane .error').append( '<div class="message"><i class=" fa fa-exclamation-triangle"></i> <span class="text">Please select a minor</span></div>' );
