@@ -20,14 +20,14 @@
     <favorites_list name="CreditCalculator" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.54057354">
+    <splitter split-orientation="horizontal" split-proportion="0.36302623">
       <split-first>
         <leaf>
           <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/run.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.43589744">
-                  <caret line="151" column="74" selection-start-line="151" selection-start-column="74" selection-end-line="151" selection-end-column="74" />
+                <state vertical-scroll-proportion="0.36690646">
+                  <caret line="208" column="226" selection-start-line="208" selection-start-column="226" selection-end-line="208" selection-end-column="226" />
                   <folding>
                     <element signature="e#0#58#0" expanded="true" />
                   </folding>
@@ -38,8 +38,8 @@
           <file leaf-file-name="admin_course_details.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/admin_course_details.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-10.461538">
-                  <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+                <state vertical-scroll-proportion="-17.307692">
+                  <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -65,16 +65,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="admin_course.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/admin_course.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-39.884617">
-                  <caret line="91" column="8" selection-start-line="91" selection-start-column="8" selection-end-line="91" selection-end-column="8" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="admin_add_course.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/admin_add_course.html">
               <provider selected="true" editor-type-id="text-editor">
@@ -89,7 +79,7 @@
             <entry file="file://$PROJECT_DIR$/temp.log">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="452" column="34" selection-start-line="452" selection-start-column="34" selection-end-line="452" selection-end-column="34" />
+                  <caret line="494" column="34" selection-start-line="494" selection-start-column="34" selection-end-line="494" selection-end-column="34" />
                   <folding />
                 </state>
               </provider>
@@ -99,11 +89,21 @@
       </split-first>
       <split-second>
         <leaf>
+          <file leaf-file-name="admin_course.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/templates/admin_course.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.40614334">
+                  <caret line="97" column="40" selection-start-line="97" selection-start-column="40" selection-end-line="97" selection-end-column="40" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="admin_users_details.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/admin_users_details.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-8.153846">
-                  <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+                <state vertical-scroll-proportion="-14.038462">
+                  <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -112,8 +112,8 @@
           <file leaf-file-name="info_temp.log" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/info_temp.log">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.87931037">
-                  <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+                <state vertical-scroll-proportion="-1.7586207">
+                  <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
                   <folding />
                 </state>
               </provider>
@@ -133,17 +133,17 @@
             <entry file="file://$PROJECT_DIR$/course_migration.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <caret line="30" column="130" selection-start-line="30" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="activity.html" pinned="false" current-in-tab="true">
+          <file leaf-file-name="activity.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/activity.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.69624573">
-                  <caret line="102" column="24" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="24" />
+                <state vertical-scroll-proportion="-11.769231">
+                  <caret line="96" column="13" selection-start-line="96" selection-start-column="13" selection-end-line="96" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -214,10 +214,11 @@
         <option value="$PROJECT_DIR$/info_temp.log" />
         <option value="$PROJECT_DIR$/templates/farts.html" />
         <option value="$PROJECT_DIR$/templates/admin_users.html" />
-        <option value="$PROJECT_DIR$/templates/admin_users_details.html" />
-        <option value="$PROJECT_DIR$/templates/admin_course_details.html" />
-        <option value="$PROJECT_DIR$/templates/admin_course.html" />
         <option value="$PROJECT_DIR$/templates/activity.html" />
+        <option value="$PROJECT_DIR$/templates/admin_course_details.html" />
+        <option value="$PROJECT_DIR$/templates/admin_users_details.html" />
+        <option value="$PROJECT_DIR$/course_migration.py" />
+        <option value="$PROJECT_DIR$/templates/admin_course.html" />
         <option value="$PROJECT_DIR$/run.py" />
       </list>
     </option>
@@ -556,7 +557,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/run.py</url>
-          <line>218</line>
+          <line>226</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
@@ -854,15 +855,7 @@
     <entry file="file://$PROJECT_DIR$/temp.log">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="452" column="34" selection-start-line="452" selection-start-column="34" selection-end-line="452" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/course_migration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="494" column="34" selection-start-line="494" selection-start-column="34" selection-end-line="494" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -901,8 +894,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/info_temp.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.87931037">
-          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+        <state vertical-scroll-proportion="-1.7586207">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -915,42 +908,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/activity.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.769231">
+          <caret line="96" column="13" selection-start-line="96" selection-start-column="13" selection-end-line="96" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin_course_details.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.461538">
-          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+        <state vertical-scroll-proportion="-17.307692">
+          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin_users_details.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.153846">
-          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+        <state vertical-scroll-proportion="-14.038462">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/course_migration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="130" selection-start-line="30" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/admin_course.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-39.884617">
-          <caret line="91" column="8" selection-start-line="91" selection-start-column="8" selection-end-line="91" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/activity.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.69624573">
-          <caret line="102" column="24" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.40614334">
+          <caret line="97" column="40" selection-start-line="97" selection-start-column="40" selection-end-line="97" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43589744">
-          <caret line="151" column="74" selection-start-line="151" selection-start-column="74" selection-end-line="151" selection-end-column="74" />
+        <state vertical-scroll-proportion="0.36690646">
+          <caret line="208" column="226" selection-start-line="208" selection-start-column="226" selection-end-line="208" selection-end-column="226" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
           </folding>

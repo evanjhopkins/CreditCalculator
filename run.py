@@ -198,8 +198,16 @@ def admin_user_details(user_id):
 	return render_template('admin_users_details.html',data=response_obj,alternate=10,userid=userid,user_name=user_name)#data= response_obj)
 
 
-@app.route('/admin/courses')
+@app.route('/admin/courses',methods=['GET','POST'])
 def admin_course_list():
+	#if ('Course Name' in request.form.values()):
+	if len(request.form)>0:
+		print request.form['course_name']
+		print request.form['subject']
+		print request.form['course_number']
+		print request.form['college_id']
+		stmt = """INSERT INTO course (name, subject, course_number, college_id) VALUES ('%s', '%s', '%s', '%s')""" % (request.form['course_name'], request.form['subject'], request.form['course_number'],request.form['college_id'] )
+		query(stmt)
 	response_obj = api_course_list()
 	response_obj=json.dumps(response_obj,ensure_ascii=False)
 	response_obj=json.loads(response_obj)

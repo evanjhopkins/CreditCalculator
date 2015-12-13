@@ -90,9 +90,26 @@ $(document).ready(function(){
 
 
 </table>
+<hr noshade>
+
+   <p><b>Add New Course:</b></p>
+    <form action="/admin/courses" method="post" onsubmit="location.reload()">
+  Course Name:<br>
+  <input type="text" name="course_name" >
+  <br>
+  Subject:<br>
+  <input type="text" name="subject">
+  <br>
+  Course Number:<br>
+  <input type="text" name="course_number">
+  <br>
+  College id:<br>
+  <input type="text" name="college_id">
+  <br>
+        <input type="submit"/>
+</form>
 
 </div>
-
 </body>
 
 <!-- add in a list when an item is selected show user and generate messege underneath?
