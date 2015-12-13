@@ -362,7 +362,7 @@ def api_user_setcollege(college_id):
 
 @app.route('/api/user/scenarios')
 def api_user_scenarios():
-	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = %s AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;" % session['user_id'])
+	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = %s AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;" % session['user_id'] if session['user_id'] else 13)
 	scenarios = {}
 	for scenario in result:
 		if scenario[0] not in scenarios:
@@ -431,7 +431,7 @@ def api_admin_user_courses(id):
 def api_user_courses():
 	app.logger.info('/api/user/<int:user_id>/courses')
 	if(loggedIn()):
-		result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % session['user_id'])
+		result = query("SELECT course.* FROM completed_course, course WHERE completed_course.course_id = course.id AND transfer_id=%s" % session['user_id'] if session['user_id'] else 13)
 		courses = []
 		for course in result:
 			courses.append({'id':course[0], 'name':course[1], 'subject':course[2], 'course_number':course[3], 'college_id':course[4]})
