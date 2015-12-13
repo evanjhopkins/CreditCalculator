@@ -19,10 +19,14 @@
  <button class="new_scenario btn">New Scenario</button>
 
   {% for scenario in data.scenarios %}
-
   <div class="scenario">
-    <div class="major">Major in {{scenario.major}}</div>
-    <div class="minor">Minor in {{scenario.minor}}</div>
+    {% for program in scenario %}
+      {% if program.type_id == 1 %}
+          <div class="major">Major in {{program.program_name}}</div>
+      {% else %}
+           <div class="minor">Minor in {{program.program_name}}</div>
+      {% endif %}
+    {% endfor %}
     <i class="fa fa-file-text icon report"></i>
     <i class="fa fa-trash icon delete"></i>
   </div>

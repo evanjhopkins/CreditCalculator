@@ -36,12 +36,18 @@ def index():
 
 @app.route('/overview')
 def overview():
-	scenarios = [
-		{'major':'Math', 'minor':'Art' },
-		{'major':'Computer Science', 'minor':'Math'},
-		{'major':'Economics', 'minor':'Business Administration'}
-	]
-	return render_template('overview.html', data={'scenarios':scenarios})
+	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = %s AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;" % session['user_id'])
+	scenarios = {}
+	for scenario in result:
+		if scenario[0] not in scenarios:
+			scenarios[scenario[0]] = []
+
+		scenarios[scenario[0]].append({"program_id":scenario[1], "program_type_id":scenario[3], "program_name":scenario[2]})
+
+	scen = []
+	for s in scenarios:
+		scen.append(scenarios[s])
+	return render_template('overview.html', data={'scenarios':scen})
 
 @app.route('/majors')
 def majors():
@@ -340,7 +346,7 @@ def api_user_setcollege(college_id):
 
 @app.route('/api/user/scenarios')
 def api_user_scenarios():
-	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = 1 AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;")
+	result = query("SELECT scenario_program.scenario_id, program_id as program_id, program.name as program_name, program_type.id as program_type_id FROM scenario, scenario_program, program, program_type WHERE scenario.user_id = %s AND scenario.id = scenario_program.scenario_id AND scenario_program.program_id = program.id AND program.program_type_id = program_type.id;" % session['user_id'])
 	scenarios = {}
 	for scenario in result:
 		if scenario[0] not in scenarios:
@@ -348,20 +354,24 @@ def api_user_scenarios():
 
 		scenarios[scenario[0]].append({"program_id":scenario[1], "program_type_id":scenario[3], "program_name":scenario[2]})
 
-	return prepare_for_departure(content={"scenarios":scenarios}, success=True)
+	scen = []
+	for s in scenarios:
+		scen.append(scenarios[s])
+
+	return prepare_for_departure(content={"scenarios":scen}, success=True)
 
 @app.route('/api/user/scenarios/new', methods=['POST'])
 def api_user_scenarios_new():
 	post_body_obj = request_data()
 	print post_body_obj['scenario']['major']
-	#print(post_body_obj['scenario'])
+	print(post_body_obj['scenario'])
 	#query("INSERT INTO scenario (user_id) VALUES(%s)" % session['user_id'])
 	scenario_id = -1
 	try:
 		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
 		cur = db.cursor()
 		cur.execute( "INSERT INTO scenario (user_id) VALUES(%s)" % session['user_id'])
-		scenario_id = cur.lastrowid
+		scenario_id = cur.lastrowid	
 		sql = "INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major'])
 		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major']))
 		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['minor']))
