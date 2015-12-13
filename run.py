@@ -541,7 +541,7 @@ def api_map(program_id):
 	percent = 0
 	if(program_id == 1):
 		courses_in_program = 15
-	if(program_id == 4):
+	if(program_id == 5):
 		courses_in_program = 6
 	if courses_in_program>0:
 		percent = ((len(final_map)*100/courses_in_program))
