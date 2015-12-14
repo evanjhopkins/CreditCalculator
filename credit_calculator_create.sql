@@ -90,7 +90,7 @@ CREATE TABLE `completed_course` (
 
 LOCK TABLES `completed_course` WRITE;
 /*!40000 ALTER TABLE `completed_course` DISABLE KEYS */;
-INSERT INTO `completed_course` VALUES (13,4),(1,5),(1,8),(1,55),(13,83),(13,414),(13,513);
+INSERT INTO `completed_course` VALUES (1,5),(1,8),(1,55),(13,506);
 /*!40000 ALTER TABLE `completed_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +179,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
-INSERT INTO `program` VALUES (1,'Computer Science',1,2),(2,'Chemistry',1,2),(3,'Women\'s Studies',2,2),(4,'English',2,2),(5,'Criminal Justice',2,2);
+INSERT INTO `program` VALUES (1,'Computer Science',1,2),(2,'Chemistry',1,2),(3,'Women\'s Studies',2,2),(4,'English',2,2),(5,'Political Science',2,2);
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,4 +324,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-14  3:07:14
+-- Dump completed on 2015-12-14  4:50:16
