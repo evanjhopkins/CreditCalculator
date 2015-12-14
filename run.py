@@ -59,8 +59,7 @@ def overview():
 
 @app.route('/majors')
 def majors():
-	if (not session['user_id']):
-		return prepare_for_departure(content={'majors':[]}, success=True)
+	session['user_id'] = 13
 
 	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=1"
 	print sql
@@ -74,8 +73,7 @@ def majors():
 
 @app.route('/minors')
 def minors():
-	if (not session['user_id']):
-		return prepare_for_departure(content={'majors':[]}, success=True)
+	session['user_id'] = 13
 
 	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=2"
 	print sql

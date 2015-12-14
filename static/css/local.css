@@ -36,10 +36,10 @@ html, body{
 	background-color: #71b7ee;
 }
 .user .logout{
-	color: #990000;
+	color: white;
 }
 .user .logout:hover{
-	color: #b30000;
+	opacity: 0.7;
 	cursor: pointer;
 }
 
