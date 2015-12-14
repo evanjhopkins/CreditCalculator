@@ -219,5 +219,9 @@
     $('.scenario .report').click(function(){
       window.location = '/scenario'; 
     });
+        if($(".scenario").length < 1){
+      $(".new_scenario").trigger('click');
+    }
+
 </script>
 {% endblock %}
