@@ -18,7 +18,7 @@
 --
 -- Table structure for table `admissions_user`
 --
-
+
 DROP DATABASE IF EXISTS creditcalc;
 CREATE DATABASE creditcalc;
 USE creditcalc;
