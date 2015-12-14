@@ -31,6 +31,7 @@
     <i class="fa fa-trash icon delete"></i>
   </div>
   {% endfor %}
+
 </scenarios>
 
 <div class="modalbg hide">
@@ -170,7 +171,7 @@
           dataType : 'json',
           data : JSON.stringify({"scenario":{"major":major, "minor":minor}}),
           success : function(result) {
-            console.log(result);
+            location.reload();
 
           },error : function(result){
             console.log("failed");
@@ -218,5 +219,10 @@
     $('.scenario .report').click(function(){
       window.location = '/scenario'; 
     });
+
+      if($(".scenario").length < 1){
+      $(".new_scenario").trigger('click');
+    }
+
 </script>
 {% endblock %}
