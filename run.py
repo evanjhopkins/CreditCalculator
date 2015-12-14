@@ -302,7 +302,7 @@ def api_college_course(college_id):
 	app.logger.info('/api/course/')
 
 	# statement depends on if were looking for one class, or all classes
-	results = query("SELECT * FROM course WHERE course.college_id=%s" % college_id)
+	results = query("SELECT * FROM course WHERE course.college_id=%s" % college_id % " AND course.name != \"NON-TRANSFERABLE COURSE\" GROUP BY name")
 
 	courses = []
 	for row in results:
@@ -382,7 +382,7 @@ def api_user_scenarios_new():
 		db = MySQLdb.connect("localhost","root","bbemt","creditcalc")
 		cur = db.cursor()
 		cur.execute( "INSERT INTO scenario (user_id) VALUES(%s)" % session['user_id'])
-		scenario_id = cur.lastrowid	
+		scenario_id = cur.lastrowid
 		sql = "INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major'])
 		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['major']))
 		cur.execute("INSERT INTO scenario_program (scenario_id, program_id) VALUES(%s, %s)" % (scenario_id, post_body_obj['scenario']['minor']))
