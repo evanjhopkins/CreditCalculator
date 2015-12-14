@@ -34,6 +34,11 @@ def index():
 	response_obj = json.loads(response)
 	return render_template('index.html', data = response_obj)
 
+@app.route('/new')
+def new():
+
+	return render_template('new.html', data={})
+
 @app.route('/scenario')
 def scenario():
 	return render_template('scenario.html', data={})

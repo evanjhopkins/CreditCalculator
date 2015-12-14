@@ -30,6 +30,9 @@ html, body{
 	background-color: #4EA6EA;
 	padding: 3px 10px 3px 10px;
 }
+.newacc{
+	color: white;
+}
 .login .submit:hover{
 	cursor: pointer;
 	/*background-color: #b30000;*/

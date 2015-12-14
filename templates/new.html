@@ -1,0 +1,23 @@
+{% extends "frame.html" %}
+
+{% block imports %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/overview.css') }}" />
+{% endblock %}
+
+{% block content %}
+
+  Email: <input type="text"/><br><br>
+  Password: <input type="password"/><br><br>
+  Password: <input type="password"/><br><br>
+  <button class="cr">Create</button>
+
+{% endblock %}
+
+{% block script %}
+<script>
+   $(".cr").click(function(){
+         window.location = '/overview';   
+
+   });
+</script>
+{% endblock %}
