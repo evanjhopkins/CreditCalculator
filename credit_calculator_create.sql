@@ -18,11 +18,13 @@
 --
 -- Table structure for table `admissions_user`
 --
+
 DROP DATABASE IF EXISTS creditcalc;
 CREATE DATABASE creditcalc;
 USE creditcalc;
 
---
+
+
 DROP TABLE IF EXISTS `admissions_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -90,7 +92,7 @@ CREATE TABLE `completed_course` (
 
 LOCK TABLES `completed_course` WRITE;
 /*!40000 ALTER TABLE `completed_course` DISABLE KEYS */;
-INSERT INTO `completed_course` VALUES (1,5),(1,8),(1,55),(13,328),(13,495),(13,690),(13,1327);
+INSERT INTO `completed_course` VALUES (1,5),(1,8),(1,55),(13,506),(13,789);
 /*!40000 ALTER TABLE `completed_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +222,7 @@ CREATE TABLE `scenario` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `scenario_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +231,6 @@ CREATE TABLE `scenario` (
 
 LOCK TABLES `scenario` WRITE;
 /*!40000 ALTER TABLE `scenario` DISABLE KEYS */;
-INSERT INTO `scenario` VALUES (1,1),(2,13),(3,13),(5,13);
 /*!40000 ALTER TABLE `scenario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +257,6 @@ CREATE TABLE `scenario_program` (
 
 LOCK TABLES `scenario_program` WRITE;
 /*!40000 ALTER TABLE `scenario_program` DISABLE KEYS */;
-INSERT INTO `scenario_program` VALUES (1,1),(1,3),(2,1),(2,4),(3,1),(3,5),(5,2),(5,3);
 /*!40000 ALTER TABLE `scenario_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,4 +324,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-14  7:50:17
+-- Dump completed on 2015-12-14 11:27:30

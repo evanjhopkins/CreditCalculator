@@ -458,10 +458,10 @@ def api_user_courses_add():
 
 	session['courses'] = courses
 
-	if (loggedIn()):
-		query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
-		for course_id in post_body_obj['courses']:
-			query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course_id))
+	session['user_id'] = 13
+	query("DELETE FROM completed_course WHERE transfer_id=%s" % session['user_id'])
+	for course_id in post_body_obj['courses']:
+		query("INSERT INTO completed_course (transfer_id, course_id) VALUES(%s, %s)" % (session['user_id'], course_id))
 
 	return prepare_for_departure(success=True)
 
