@@ -1,5 +1,4 @@
 <!doctype html>
-<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,11 +9,20 @@
     <script src="{{ url_for('static',filename='js/vendor/jquery.js') }}"></script>
     <script src="{{ url_for('static',filename='js/selectize.js') }}"></script>
     {% block imports %}{% endblock %}
+    <style>
+      .size{
+      font-size:36px;
+      }
+      .back{
+        color: #ffffff;
+        background:#9e1b1a;
+        }
+    </style>
   </head>
   <body>
-
     <div class="wrapper">
       <div class="top">
+        <div class = "back">
         {% if not session['email'] %}
           <div class="login">
           <form class="form" action="/api/user/login" method="POST">
@@ -28,8 +36,10 @@
           <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
         {% endif %}
         <div class="header">
+          <div class = "size">
           <span class="title">Marist</span>
           <span class="sub_title">Credit Calculator</span>
+            </div>
         </div>
         <hr noshade>
       </div>
@@ -42,7 +52,10 @@
       </div>
 
     </div>
+      </div>
+  </div>
   </body>
+
 
   <script>
     var isLoggedIn = ("{{session['user_id']}}") ? true : false;//is user logged in?
