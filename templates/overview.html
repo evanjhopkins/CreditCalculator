@@ -16,7 +16,7 @@
 </div>
 
 <div class="scenarios">
- <button class="new_scenario btn">New Degree</button>
+ <button class="new_scenario btn">New Scenario</button>
 
   {% for scenario in data.scenarios %}
   <div class="scenario">
@@ -31,13 +31,12 @@
     <i class="fa fa-trash icon delete"></i>
   </div>
   {% endfor %}
-
 </scenarios>
 
 <div class="modalbg hide">
   <div class="modal hide">
     <div class="major_pane">
-      <span class="header">Create a New Degree</span>
+      <span class="header">Create a new scenario</span>
       <hr>
       <div class="error"></div>
       Major: <span class="major_names"></span>
@@ -56,7 +55,7 @@
     </div>
 
     <div class="minor_pane hide">
-      <span class="header">Create a New Degree</span>
+      <span class="header">Create a new scenario</span>
       <hr>
       <div class="error"></div>
       Minor: <span class="minor_names"></span>
@@ -91,6 +90,7 @@
       $(".major_pane").show();
 
       $('.modalbg, .modal').fadeIn();
+
       $.get("/majors", function( data ) {
         var obj = JSON.parse(data);
         $(".major_pane .majors").html("");
@@ -171,7 +171,7 @@
           dataType : 'json',
           data : JSON.stringify({"scenario":{"major":major, "minor":minor}}),
           success : function(result) {
-            location.reload();
+            console.log(result);
 
           },error : function(result){
             console.log("failed");
@@ -219,10 +219,5 @@
     $('.scenario .report').click(function(){
       window.location = '/scenario'; 
     });
-
-      if($(".scenario").length < 1){
-      $(".new_scenario").trigger('click');
-    }
-
 </script>
 {% endblock %}
