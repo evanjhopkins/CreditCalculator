@@ -15,14 +15,14 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
+-- Table structure for table `admissions_user`
+--
 DROP DATABASE IF EXISTS creditcalc;
 CREATE DATABASE creditcalc;
 USE creditcalc;
 
 --
--- Table structure for table `admissions_user`
---
-
 DROP TABLE IF EXISTS `admissions_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -90,7 +90,7 @@ CREATE TABLE `completed_course` (
 
 LOCK TABLES `completed_course` WRITE;
 /*!40000 ALTER TABLE `completed_course` DISABLE KEYS */;
-INSERT INTO `completed_course` VALUES (1,5),(1,8),(1,55),(13,506);
+INSERT INTO `completed_course` VALUES (1,5),(1,8),(1,55),(13,328),(13,495),(13,690),(13,1327);
 /*!40000 ALTER TABLE `completed_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +170,7 @@ CREATE TABLE `program` (
   KEY `college_id` (`college_id`),
   CONSTRAINT `program_ibfk_1` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`),
   CONSTRAINT `program_type_id` FOREIGN KEY (`program_type_id`) REFERENCES `program_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +179,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
-INSERT INTO `program` VALUES (1,'Computer Science',1,2),(2,'Chemistry',1,2),(3,'Women\'s Studies',2,2),(4,'English',2,2),(5,'Political Science',2,2);
+INSERT INTO `program` VALUES (1,'Computer Science',1,2),(2,'Chemistry',1,2),(3,'Women\'s Studies',2,2),(4,'English',2,2),(5,'Political Science',2,2),(6,'Math',1,2),(7,'Business',1,2),(8,'Math',2,2);
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +220,7 @@ CREATE TABLE `scenario` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `scenario_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +229,7 @@ CREATE TABLE `scenario` (
 
 LOCK TABLES `scenario` WRITE;
 /*!40000 ALTER TABLE `scenario` DISABLE KEYS */;
-INSERT INTO `scenario` VALUES (1,1);
+INSERT INTO `scenario` VALUES (1,1),(2,13),(3,13),(5,13);
 /*!40000 ALTER TABLE `scenario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +256,7 @@ CREATE TABLE `scenario_program` (
 
 LOCK TABLES `scenario_program` WRITE;
 /*!40000 ALTER TABLE `scenario_program` DISABLE KEYS */;
-INSERT INTO `scenario_program` VALUES (1,1),(1,3);
+INSERT INTO `scenario_program` VALUES (1,1),(1,3),(2,1),(2,4),(3,1),(3,5),(5,2),(5,3);
 /*!40000 ALTER TABLE `scenario_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,4 +324,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-14  4:50:16
+-- Dump completed on 2015-12-14  7:50:17
