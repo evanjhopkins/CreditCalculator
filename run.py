@@ -302,7 +302,7 @@ def api_college_course(college_id):
 	app.logger.info('/api/course/')
 
 	# statement depends on if were looking for one class, or all classes
-	results = query("SELECT * FROM course WHERE course.college_id=%s" % college_id % " AND course.name != \"NON-TRANSFERABLE COURSE\" GROUP BY name")
+	results = query("SELECT * FROM course WHERE course.college_id=%s AND course.name != \"NON-TRANSFERABLE COURSE\" GROUP BY name" % college_id)
 
 	courses = []
 	for row in results:
