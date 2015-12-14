@@ -2,6 +2,7 @@
 	<title>Courses
     </title>
     <meta charset="utf-8" />
+     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/local.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/selectize.css') }}" />
@@ -17,6 +18,38 @@ $(document).ready(function(){
     $('#myTable').DataTable();
 });
 	</script>
+<style>
+    .inner {
+    width: 40%;
+    margin:  auto;
+
+}
+</style>
+    <style>
+.btn {
+        margin-top:6%
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 12px;
+  background: #363636;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+.back{
+        color: #ffffff;
+        background:#9e1b1a;
+        }
+.btn:hover {
+
+  background: #6b6a6b;
+  background-image: -webkit-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -moz-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -ms-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -o-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: linear-gradient(to bottom, #b0b0b0, #b0b0b0);
+  text-decoration: none;
+}
+</style>
 
 <style type="text/css">
 .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #000000;border-collapse: collapse;}
@@ -31,9 +64,12 @@ $(document).ready(function(){
 
 
 <body>
+
 <div class="content">
       <div class="top">
+          <div class = "back">
         {% if 1>2 %}
+
           <form class="login-form" action="/api/user/login" method="POST">
             <span class="login-error"></span>
             <input type="text" name="email" placeholder="email..."/>
@@ -41,22 +77,27 @@ $(document).ready(function(){
             <span class="login-submit">Log In</span>
           </form>
         {% else %}
+
           <div class="user">{{session['email']}} (<span class="logout">log out</span>)</div>
-        {% endif %}
+
+              {% endif %}
         <div class="header">
+
           <span class="title">Marist</span>
           <span class="sub_title"><b>Admin</b> Credit Calculator</span>
+
+        </div>
+              <div class="inner">
+        <a href="/admin/activity"style="text-align:center"><span class="btn">Recent Activity</span></a>
+          <a href="/admin/users"><span class="btn">Users</span></a>
+          <a href="/admin/courses"><span class="btn">Courses</span></a>
         </div>
         <hr noshade>
       </div>
 
-      <div class="nav">
-        <a href="/admin/activity"><span class="step">Recent Activity - </span></a>
-          <a href="/admin/users"><span class="step">Users -</span></a>
-          <a href="/admin/courses"><span class="step">Courses </span></a>
 
+    </div>
         </span>
-      </div>
 
 
 <div> Current Courses for: {{user_name}}</div>
@@ -95,7 +136,7 @@ $(document).ready(function(){
 </table>
 <div>
 
-    <a href="/admin/user_info/delete/{{userid}}" onclick="return confirm('Are you sure you would like to permanantly delete user:{{user_name}}?')">remove user</a>
+    <a class="btn"href="/admin/user_info/delete/{{userid}}" onclick="return confirm('Are you sure you would like to permanantly delete user:{{user_name}}?')">remove user</a>
 </div>
 
 

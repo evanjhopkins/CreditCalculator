@@ -173,7 +173,7 @@ def recent_activity():
 	#else skip
 	data= {}
 
-	bar_chart = pygal.StackedLine(x_label_rotation=20,y_title='User Number',tooltip_border_radius=10,disable_xml_declaration=True)
+	bar_chart = pygal.StackedLine(x_label_rotation=90,y_title='User Number',tooltip_border_radius=10,disable_xml_declaration=True)
 	bar_chart.title= "Number of Users vs Time"
 	bar_chart.x_labels = user_date
 
