@@ -10,6 +10,26 @@
     <script src="{{ url_for('static',filename='js/selectize.js') }}"></script>
     {% block imports %}{% endblock %}
     <style>
+      .btn {
+        margin-top:6%
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 12px;
+  background: #363636;
+  padding: 4px 20px 5px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+
+  background: #6b6a6b;
+  background-image: -webkit-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -moz-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -ms-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: -o-linear-gradient(top, #b0b0b0, #b0b0b0);
+  background-image: linear-gradient(to bottom, #b0b0b0, #b0b0b0);
+  text-decoration: none;
+}
       .size{
       font-size:36px;
       }
@@ -29,7 +49,9 @@
             <span class="login .error"></span>
             <input type="text" name="email" placeholder="email..."/>
             <input type="password" name="password" placeholder="password..." />
-            <span class="submit">Log In</span>
+
+            <span class="btn">Log In</span>
+
           </form>
         </div>
         {% else %}
@@ -68,7 +90,7 @@
       e.stopPropagation();//prevent dismissal
     });
 
-    $(".login .submit").click(function(e){
+    $(".login .btn").click(function(e){
       e.preventDefault();
       var data = $('.login .form').serializeArray();
       $.post( "/api/user/login", data)
