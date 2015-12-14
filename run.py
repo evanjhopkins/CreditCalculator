@@ -51,23 +51,25 @@ def overview():
 
 @app.route('/majors')
 def majors():
-	response_obj = {'majors':[
-		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
-		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
-		{'name':"Female Studies", 'percent':randint(0,99), 'id':3},
-		{'name':"Biology", 'percent':randint(0,99), 'id':4}
-	]}
-	return prepare_for_departure(content=response_obj, success=True)
+	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=1"
+	print sql
+	result = query(sql)
+	majors = []
+	for major in result:
+		majors.append({'name':major[1], 'id':major[0], 'percent':randint(0,99)})
+
+	return prepare_for_departure(content={'majors':majors}, success=True)
 
 @app.route('/minors')
 def minors():
-	response_obj = {'minors':[
-		{'name':"Criminal Justice", 'percent':randint(0,99), 'id':1},
-		{'name':"Computer Science", 'percent':randint(0,99), 'id':2},
-		{'name':"Female Studies", 'percent':randint(0,99), 'id':3},
-		{'name':"Biology", 'percent':randint(0,99), 'id':4}
-	]}
-	return prepare_for_departure(content=response_obj, success=True)
+	sql = "SELECT * FROM program WHERE college_id = 2 AND program_type_id=2"
+	print sql
+	result = query(sql)
+	majors = []
+	for major in result:
+		majors.append({'name':major[1], 'id':major[0], 'percent':randint(0,99)})
+
+	return prepare_for_departure(content={'minors':majors}, success=True)
 
 @app.route('/user/new')
 def user_new():
